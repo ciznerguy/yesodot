@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סיכום פרק 5</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סיכום דוגמאות: פרק 5, לולאות</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>מסמך מלווה לקוד הדוגמאות בקובץ <code>Ch5/Chapter5.cs</code></p>
+</header>
+
+<div class="howto">
+  <strong>איך מריצים דוגמה?</strong>
+  <ol>
+    <li>פותחים ב-Visual Studio את הקובץ <code>Yesodot.slnx</code>.</li>
+    <li>בקובץ הראשי <code>Program.cs</code> מוחקים את שני הלוכסנים בתחילת השורה <code>// Chapter5.Run();</code></li>
+    <li>פותחים את הקובץ <code>Ch5/Chapter5.cs</code>. בפעולה <code>Run</code> שבראשו מוצאים את השורה של הדוגמה, למשל <code>// example45();</code>, ומוחקים את שני הלוכסנים.</li>
+    <li>מריצים (F5 או Ctrl+F5).</li>
+    <li>לפני שעוברים לדוגמה הבאה, מחזירים את הלוכסנים לשורה הקודמת.</li>
+  </ol>
+  <p style="margin:8px 0 0">לפני כל הרצה כדאי לנסות לנחש מה יודפס, ורק אחר כך להשוות לפלט.</p>
+</div>
+
+<h2 class="chapter first">פרק 5: לולאות</h2>
+
+<div class="intro">
+  <p style="margin-top:0"><strong>לולאה</strong> היא קטע קוד שרץ כמה פעמים. בלי לולאה, כדי להדפיס 8 כוכביות צריך לכתוב 8 שורות זהות. עם לולאה כותבים את השורה פעם אחת, ואפשר לקבוע את מספר הפעמים רק בזמן הריצה, לפי הקלט.</p>
+<pre class="code">for (int i = 1; i &lt;= num; i++)
+{
+    Console.Write("*");
+}</pre>
+  <table>
+    <tr><th>חלק</th><th>בדוגמה</th><th>מתי מתבצע</th></tr>
+    <tr><td>התחלה</td><td><code>int i = 1</code></td><td>פעם אחת בלבד, לפני הסיבוב הראשון</td></tr>
+    <tr><td>תנאי</td><td><code>i &lt;= num</code></td><td>לפני כל סיבוב. כשהוא שקר, הלולאה נגמרת</td></tr>
+    <tr><td>גוף הלולאה</td><td>מה שבתוך <code>{ }</code></td><td>בכל סיבוב, כשהתנאי אמת</td></tr>
+    <tr><td>קידום</td><td><code>i++</code></td><td>בסוף כל סיבוב</td></tr>
+  </table>
+  <p style="margin-bottom:0"><strong>סדר הביצוע:</strong> התחלה, תנאי, גוף, קידום, תנאי, גוף, קידום, וכן הלאה, עד שהתנאי שקר. המשתנה <code>i</code> נקרא <strong>משתנה הבקרה</strong> של הלולאה.</p>
+</div>
+
+<table>
+  <tr><th style="width:70px">דוגמה</th><th>נושא</th></tr>
+  <tr><td>41</td><td>לולאה ראשונה: הדפסת כוכביות</td></tr>
+  <tr><td>42</td><td>הדפסת מספרים ברצף</td></tr>
+  <tr><td>43</td><td>הדפסת המספרים האי זוגיים, בשתי דרכים</td></tr>
+  <tr><td>44</td><td>הדפסה בסדר יורד</td></tr>
+  <tr><td>45</td><td>חישוב עצרת</td></tr>
+  <tr><td>46</td><td>צובר: סכום וממוצע של מחירים</td></tr>
+  <tr><td>47</td><td>מונה: כמה ציונים עברו</td></tr>
+  <tr><td>48</td><td>מציאת הציון הגבוה ביותר</td></tr>
+  <tr><td>49</td><td>ערך נלווה: למי יש את הציון הגבוה ביותר</td></tr>
+  <tr><td>50</td><td>השני בגודלו</td></tr>
+  <tr><td>51</td><td>חישוב חזקה בלולאה</td></tr>
+  <tr><td>52</td><td>לולאות מקוננות: מלבן ומשולש</td></tr>
+</table>
+
+<section class="ex">
+  <h3><span class="num">41</span>לולאה ראשונה: הדפסת כוכביות</h3>
+  <p>המשתמשת מקלידה כמה כוכביות להדפיס, והלולאה רצה בדיוק כמספר הזה. הפקודה <code>Write</code> מדפיסה בלי לרדת שורה, ולכן כל הכוכביות באותה שורה. אחרי הלולאה יורדים שורה פעם אחת.</p>
+  <div class="label">דוגמת הרצה (הקלט מודגש)</div>
+<pre class="out">How many stars? <b>5</b>
+*****</pre>
+  <div class="note"><strong>טעות נפוצה:</strong> נקודה פסיק בסוף שורת הלולאה, <code>for (int i = 1; i &lt;= num; i++);</code>, מסיימת את הלולאה מיד. הלולאה רצה על "כלום", והבלוק שאחריה מתבצע פעם אחת בלבד.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">42</span>הדפסת מספרים ברצף</h3>
+  <p>משתנה הבקרה משתנה בכל סיבוב, ואפשר להשתמש בערך שלו בתוך הלולאה. כאן מדפיסים אותו.</p>
+<pre class="code">for (int i = 1; i &lt;= num; i++)
+{
+    Console.Write(i + " ");
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>7</b>
+1 2 3 4 5 6 7</pre>
+  <div class="note"><strong>&lt; או &lt;=?</strong> עם <code>i &lt;= num</code> המספר 7 מודפס. עם <code>i &lt; num</code> הלולאה עוצרת לפני 7. טעות של סיבוב אחד יותר או פחות היא אחת הטעויות הנפוצות בלולאות.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">43</span>הדפסת המספרים האי זוגיים, בשתי דרכים</h3>
+  <table>
+    <tr><th>דרך</th><th>קוד</th><th>מספר סיבובים עבור 10</th></tr>
+    <tr><td>1: עוברים על כל המספרים ובודקים בתנאי</td><td><code>for (int i = 1; i &lt;= num; i++)</code><br>ובתוכה <code>if (i % 2 == 1)</code><br>ובתוך התנאי שורת הדפסה <code>Console.Write(i + " ");</code></td><td>10</td></tr>
+    <tr><td>2: מקדמים ב-2 בכל סיבוב</td><td><code>for (int i = 1; i &lt;= num; i += 2)</code><br>ובתוכה רק שורת הדפסה <code>Console.Write(i + " ");</code></td><td>5</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה (שתי השורות זהות)</div>
+<pre class="out">Enter a number: <b>10</b>
+1 3 5 7 9
+1 3 5 7 9</pre>
+  <div class="note"><strong>שימו לב:</strong> הקידום לא חייב להיות <code>i++</code>. אפשר לקדם בכל מספר, וכך הדרך השנייה עושה חצי מהסיבובים ובלי תנאי בכלל.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">44</span>הדפסה בסדר יורד</h3>
+  <p>לולאה יכולה גם לרדת: מתחילים מהמספר הגדול, ממשיכים כל עוד המשתנה גדול או שווה ל-1, ומקטינים באחד בכל סיבוב.</p>
+<pre class="code">for (int i = num; i &gt;= 1; i--)</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>6</b>
+6 5 4 3 2 1</pre>
+  <div class="note"><strong>לולאה אינסופית:</strong> אם כותבים בטעות <code>i++</code> בלולאה יורדת, המשתנה רק גדל, התנאי <code>i &gt;= 1</code> תמיד אמת, והלולאה לא נגמרת.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">45</span>חישוב עצרת</h3>
+  <p>עצרת של מספר היא מכפלת כל המספרים מ-1 ועד המספר. למשל, עצרת של 5 היא 1 כפול 2 כפול 3 כפול 4 כפול 5, כלומר 120.</p>
+<pre class="code">int factorial = 1;
+for (int i = 1; i &lt;= num; i++)
+{
+    factorial *= i;
+}</pre>
+  <div class="label">טבלת מעקב עבור הקלט 5</div>
+  <table>
+    <tr><th>סיבוב</th><th>i</th><th>i &lt;= 5</th><th>factorial אחרי הסיבוב</th></tr>
+    <tr><td>לפני הלולאה</td><td></td><td></td><td>1</td></tr>
+    <tr><td>1</td><td>1</td><td>true</td><td>1</td></tr>
+    <tr><td>2</td><td>2</td><td>true</td><td>2</td></tr>
+    <tr><td>3</td><td>3</td><td>true</td><td>6</td></tr>
+    <tr><td>4</td><td>4</td><td>true</td><td>24</td></tr>
+    <tr><td>5</td><td>5</td><td>true</td><td>120</td></tr>
+    <tr><td>סיום</td><td>6</td><td>false</td><td>120</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>5</b>
+5! = 120</pre>
+  <div class="note"><strong>למה מתחילים ב-1?</strong> משתנה שאוסף מכפלה מתחיל ב-1. אם הוא מתחיל ב-0, כל כפל ייתן 0 והתוצאה תהיה תמיד 0.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">46</span>צובר: סכום וממוצע של מחירים</h3>
+  <p><strong>צובר</strong> הוא משתנה שאוסף ערכים לאורך הלולאה. משתנה שאוסף סכום מתחיל ב-0. בכל סיבוב קולטים מחיר ומוסיפים אותו לצובר. את הממוצע מחשבים רק אחרי הלולאה, כשהסכום כבר שלם.</p>
+<pre class="code">double sum = 0;
+for (int i = 1; i &lt;= numOfProducts; i++)
+{
+    price = double.Parse(Console.ReadLine());
+    sum += price;
+}
+average = sum / numOfProducts;</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many products? <b>3</b>
+Enter the price of product 1: <b>10</b>
+Enter the price of product 2: <b>20</b>
+Enter the price of product 3: <b>15.5</b>
+The total is 45.5
+The average price is 15.1666666666667</pre>
+  <div class="note"><strong>שימו לב:</strong> הקלט נמצא בתוך הלולאה, כי בכל סיבוב קולטים מחיר חדש. החישוב של הממוצע נמצא אחרי הלולאה. אם הוא היה בתוכה, הוא היה מחושב שוב ושוב עם סכום חלקי.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">47</span>מונה: כמה ציונים עברו</h3>
+  <p><strong>מונה</strong> הוא צובר שסופר כמה פעמים קרה משהו. הוא מתחיל ב-0, וגדל באחד רק כשהתנאי מתקיים.</p>
+<pre class="code">if (grade &gt;= 55)
+{
+    count++;
+}
+...
+percent = (double)count / numOfGrades * 100;</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many grades? <b>4</b>
+Enter grade 1: <b>90</b>
+Enter grade 2: <b>40</b>
+Enter grade 3: <b>55</b>
+Enter grade 4: <b>70</b>
+3 grades passed
+That is 75 percent</pre>
+  <div class="note"><strong>מלכודת מפרק 2:</strong> בלי ההמרה <code>(double)</code>, החישוב <code>3 / 4</code> הוא חילוק שלמים ונותן 0, והאחוז יוצא 0.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">48</span>מציאת הציון הגבוה ביותר</h3>
+  <p><strong>הרעיון:</strong> שומרים במשתנה את הגדול ביותר שראינו עד עכשיו. את הציון הראשון קולטים לפני הלולאה, והוא הגדול ביותר בינתיים. בלולאה קולטים את שאר הציונים, ומשווים כל אחד לגדול ביותר.</p>
+<pre class="code">max = int.Parse(Console.ReadLine());
+for (int i = 2; i &lt;= numOfGrades; i++)
+{
+    grade = int.Parse(Console.ReadLine());
+    if (grade &gt; max)
+    {
+        max = grade;
+    }
+}</pre>
+  <div class="label">טבלת מעקב עבור הציונים 70, 95, 60, 88</div>
+  <table>
+    <tr><th>שלב</th><th>grade</th><th>grade &gt; max</th><th>max</th></tr>
+    <tr><td>לפני הלולאה</td><td></td><td></td><td>70</td></tr>
+    <tr><td>i = 2</td><td>95</td><td>true</td><td>95</td></tr>
+    <tr><td>i = 3</td><td>60</td><td>false</td><td>95</td></tr>
+    <tr><td>i = 4</td><td>88</td><td>false</td><td>95</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many grades? <b>4</b>
+Enter grade 1: <b>70</b>
+Enter grade 2: <b>95</b>
+Enter grade 3: <b>60</b>
+Enter grade 4: <b>88</b>
+The highest grade is 95</pre>
+  <div class="note"><strong>למה הלולאה מתחילה מ-2?</strong> הציון הראשון כבר נקלט לפני הלולאה. <strong>ולמה לא מתחילים את max ב-0?</strong> אם כל המספרים שליליים, אף אחד מהם לא יהיה גדול מ-0, והתוצאה תהיה 0, מספר שלא הוקלד בכלל. לכן מתחילים מהערך הראשון שנקלט.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">49</span>ערך נלווה: למי יש את הציון הגבוה ביותר</h3>
+  <p>לפעמים צריך לדעת לא רק מה הערך הגבוה, אלא גם למי הוא שייך. לכן שומרים שני משתנים, הציון הגבוה והשם שנלווה אליו, ומעדכנים את שניהם יחד.</p>
+<pre class="code">if (grade &gt; max)
+{
+    max = grade;
+    maxName = name;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many students? <b>3</b>
+Enter the name of student 1: <b>Dana</b>
+Enter the grade of student 1: <b>85</b>
+Enter the name of student 2: <b>Noa</b>
+Enter the grade of student 2: <b>97</b>
+Enter the name of student 3: <b>Maya</b>
+Enter the grade of student 3: <b>90</b>
+Noa has the highest grade: 97</pre>
+  <div class="note"><strong>טעות נפוצה:</strong> לעדכן רק את <code>max</code> ולשכוח את <code>maxName</code>. אז הציון נכון, אבל השם שייך לתלמידה אחרת.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">50</span>השני בגודלו</h3>
+  <p>שומרים שני משתנים: <code>first</code> לגדול ביותר, ו-<code>second</code> לשני בגודלו. לפני הלולאה קולטים שני מספרים ומסדרים אותם לפי הגודל. לכל מספר חדש יש שלושה מקרים:</p>
+  <table>
+    <tr><th>מקרה</th><th>מה עושים</th></tr>
+    <tr><td>המספר גדול מ-first</td><td>first יורד למקום השני, והמספר החדש עולה לראשון</td></tr>
+    <tr><td>אחרת, המספר גדול מ-second</td><td>המספר החדש מחליף רק את second</td></tr>
+    <tr><td>אחרת</td><td>לא משנים כלום</td></tr>
+  </table>
+<pre class="code">if (num &gt; first)
+{
+    second = first;
+    first = num;
+}
+else if (num &gt; second)
+{
+    second = num;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many numbers? (at least 2) <b>5</b>
+Enter number 1: <b>4</b>
+Enter number 2: <b>9</b>
+Enter number 3: <b>2</b>
+Enter number 4: <b>7</b>
+Enter number 5: <b>8</b>
+The largest is 9
+The second largest is 8</pre>
+  <div class="note"><strong>הסדר חשוב:</strong> במקרה הראשון קודם מעבירים את first ל-second, ורק אחר כך שמים את המספר החדש ב-first. בסדר ההפוך, הגדול הקודם נמחק.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">51</span>חישוב חזקה בלולאה</h3>
+  <p>חזקה היא כפל של הבסיס בעצמו. למשל, 2 בחזקת 5 הוא 2 כפול 2 כפול 2 כפול 2 כפול 2, כלומר 32. הלולאה רצה כמספר המעריך, ובכל סיבוב מכפילה את התוצאה בבסיס. התוצאה מתחילה ב-1, כמו בעצרת.</p>
+<pre class="code">for (int i = 1; i &lt;= exponent; i++)
+{
+    result *= baseNum;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter the base: <b>2</b>
+Enter the exponent: <b>5</b>
+2 ^ 5 = 32
+Math.Pow gives 32</pre>
+  <div class="note"><strong>שימו לב:</strong> כאן משתנה הבקרה <code>i</code> רק סופר סיבובים, ולא משתתף בחישוב. בעצרת, לעומת זאת, כופלים ב-<code>i</code> עצמו. השורה האחרונה בפלט משווה לפעולה המוכנה מפרק 3.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">52</span>לולאות מקוננות: מלבן ומשולש</h3>
+  <p><strong>לולאה מקוננת</strong> היא לולאה בתוך לולאה. הלולאה החיצונית עוברת על השורות, והפנימית מדפיסה את הכוכביות של שורה אחת. בסוף כל שורה יורדים שורה.</p>
+  <table>
+    <tr><th>צורה</th><th>הלולאה הפנימית</th><th>כמה כוכביות בשורה</th></tr>
+    <tr><td>מלבן</td><td><code>for (int j = 1; j &lt;= cols; j++)</code></td><td>תמיד אותו מספר</td></tr>
+    <tr><td>משולש</td><td><code>for (int j = 1; j &lt;= i; j++)</code></td><td>כמספר השורה</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many rows? <b>3</b>
+How many columns? <b>5</b>
+Rectangle:
+*****
+*****
+*****
+Triangle:
+*
+**
+***</pre>
+  <div class="note"><strong>הסוד של המשולש:</strong> התנאי של הלולאה הפנימית תלוי במשתנה של הלולאה החיצונית. בשורה 1 הפנימית רצה פעם אחת, בשורה 2 פעמיים, וכן הלאה. <strong>וכמה פעמים בסך הכול?</strong> במלבן של 3 שורות ו-5 עמודות, הפקודה שבתוך הלולאה הפנימית מתבצעת 3 כפול 5, כלומר 15 פעמים.</div>
+</section>
+
+<h2 class="chapter">דף חזרה מהיר</h2>
+<table>
+  <tr><th>נושא</th><th>מה חשוב לזכור</th></tr>
+  <tr><td>סדר הביצוע</td><td>התחלה פעם אחת, ואז תנאי, גוף, קידום, שוב ושוב עד שהתנאי שקר</td></tr>
+  <tr><td>נקודה פסיק</td><td>אין נקודה פסיק בסוף שורת ה-<code>for</code></td></tr>
+  <tr><td><code>&lt;</code> או <code>&lt;=</code></td><td>בודקים את הסיבוב האחרון: האם הוא צריך לקרות?</td></tr>
+  <tr><td>לולאה יורדת</td><td>מתחילים מהגדול, <code>&gt;=</code> בתנאי, ו-<code>--</code> בקידום</td></tr>
+  <tr><td>צובר סכום</td><td>מתחיל ב-0</td></tr>
+  <tr><td>צובר מכפלה</td><td>מתחיל ב-1</td></tr>
+  <tr><td>מונה</td><td>מתחיל ב-0, וגדל באחד רק כשהתנאי מתקיים</td></tr>
+  <tr><td>ממוצע</td><td>מחשבים אחרי הלולאה, ובחילוק עשרוני</td></tr>
+  <tr><td>מקסימום</td><td>מתחיל מהערך הראשון שנקלט, לא מ-0. הלולאה מתחילה מ-2</td></tr>
+  <tr><td>ערך נלווה</td><td>מעדכנים אותו יחד עם המקסימום, באותו תנאי</td></tr>
+  <tr><td>השני בגודלו</td><td>קודם מעבירים את הגדול למקום השני, ורק אחר כך מעדכנים את הגדול</td></tr>
+  <tr><td>לולאה מקוננת</td><td>החיצונית לשורות, הפנימית לעמודות. במשולש, הפנימית תלויה בחיצונית</td></tr>
+</table>
+
+</div>
+</body>
+</html>
