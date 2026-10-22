@@ -4,21 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZviaReview_Ch3_4
+namespace Yesodot
 {
-    internal class Program
+    // פרקים 3 ו-4: הספרייה המתמטית ומחלקת אקראי, משפטי תנאי
+    // כדי להריץ דוגמה מהקובץ הזה:
+    // בקובץ הראשי יש להסיר את סימן ההערה מהשורה של הקובץ הזה,
+    // ובפעולת ההרצה שלמטה יש להסיר את סימן ההערה מהדוגמה הרצויה.
+    internal static class Chapter3_4
     {
         // עצם אחד להגרלת מספרים אקראיים, משותף לכל הדוגמאות.
         // מגדירים אותו פעם אחת בלבד, מחוץ לפעולות,
         // כדי שבכל הגרלה נקבל באמת מספר אקראי.
+
+        // שורת חובה 
         static Random rnd = new Random();
 
-        static void Main(string[] args)
+        // פעולת ההרצה של הקובץ
+        public static void Run()
         {
             // יש להסיר את סימן ההערה מהדוגמה שרוצים להריץ
 
             // פרק 3: הספרייה המתמטית ומחלקת אקראי
-             example21();
+           //  example21();
             // example22();
             // example23();
             // example24();
@@ -26,7 +33,7 @@ namespace ZviaReview_Ch3_4
             // example26();
             // example27();
             // example28();
-            // example29();
+             example29();
             // example30();
 
             // פרק 4: משפטי תנאי
@@ -243,6 +250,7 @@ namespace ZviaReview_Ch3_4
         public static void example29()
         {
             int anyNumber, upTo4, from10To14, dice;
+           // static Random rnd = new Random();
 
             anyNumber = rnd.Next();
             upTo4 = rnd.Next(5);
@@ -306,7 +314,6 @@ namespace ZviaReview_Ch3_4
         }
 
         // ==========================================================
-        // פרק 4: משפטי תנאי
         // ==========================================================
 
         // דוגמה 31: משפט תנאי פשוט
@@ -315,7 +322,8 @@ namespace ZviaReview_Ch3_4
         // ההוראות שבתוך הסוגריים המסולסלים מתבצעות רק כשהתנאי אמת.
         // ההוראה שאחרי הסוגריים המסולסלים מתבצעת תמיד.
         // שימו לב: אין נקודה פסיק בסוף שורת התנאי.
-        public static void example31()
+        public static void example31()        // פרק 4: משפטי תנאי
+
         {
             int num;
 

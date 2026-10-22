@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B4B6650A-7166-4A45-9F6B-5FFD80B76A5C}</ProjectGuid>
+    <ProjectGuid>{43A99FB2-7FF3-4AC4-A43A-B03E302D1455}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ZviaReview_Ch3_4</RootNamespace>
-    <AssemblyName>ZviaReview_Ch3_4</AssemblyName>
+    <RootNamespace>Yesodot</RootNamespace>
+    <AssemblyName>Yesodot</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,10 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Ch1_2\Chapter1_2.cs" />
+    <Compile Include="Ch3_4\Chapter3_4.cs" />
+    <Compile Include="Ch5\Chapter5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Ch1_2\Summary_Ch1_Ch2.html" />
+    <None Include="Ch1_2\quiz.html" />
+    <None Include="Ch3_4\Summary_Ch3_4.html" />
+    <None Include="Ch3_4\quiz.html" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
