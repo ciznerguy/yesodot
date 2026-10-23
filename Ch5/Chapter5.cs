@@ -19,8 +19,8 @@ namespace Yesodot
 
             // פרק 5: לולאות
             // example41();
-            // example42();
-            // example43();
+             //example42();
+            example43();
             // example44();
             // example45();
             // example46();
@@ -49,10 +49,10 @@ namespace Yesodot
         public static void example41()
         {
             int num;
-
+            // קולטים מהמשתמש כמה כוכביות להדפיס
             Console.Write("How many stars? ");
             num = int.Parse(Console.ReadLine());
-
+            // לולאה שרצה לפי מספר הכוכביות שהמשתמש הקליד, ומדפיסה כוכבית בכל סיבוב
             for (int i = 1; i <= num; i++)
             {
                 Console.Write("*");
@@ -72,11 +72,11 @@ namespace Yesodot
             Console.Write("Enter a number: ");
             num = int.Parse(Console.ReadLine());
 
-            for (int i = 1; i <= num; i++)
+            for (int i = 0; i < num; i++) 
             {
-                Console.Write(i + " ");
+                Console.Write(i + ",");
             }
-
+         
             Console.WriteLine();
         }
 
@@ -93,16 +93,17 @@ namespace Yesodot
             Console.Write("Enter a number: ");
             num = int.Parse(Console.ReadLine());
 
-            for (int i = 1; i <= num; i++)
-            {
-                if (i % 2 == 1)
-                {
-                    Console.Write(i + " ");
-                }
-            }
-            Console.WriteLine();
+            //for (int i = 1; i <= num; i++)
+            //{
+            //    if (i % 2 == 1)
+            //    {
+            //        Console.Write(i + " ");
+            //    }
+            //}
+           
+            //Console.WriteLine();
 
-            for (int i = 1; i <= num; i += 2)
+            for (int i = 0; i <= num; i += 2)
             {
                 Console.Write(i + " ");
             }

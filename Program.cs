@@ -30,7 +30,7 @@ namespace Yesodot
             // פרק 5: לולאות
             // הקובץ נמצא בתיקייה הבאה:
             // Ch5
-            // Chapter5.Run();
+             Chapter5.Run();
         }
     }
 }
