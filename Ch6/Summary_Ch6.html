@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סיכום פרק 6</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סיכום דוגמאות: פרק 6, לולאת כל עוד</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>מסמך מלווה לקוד הדוגמאות בקובץ <code>Ch6/Chapter6.cs</code></p>
+</header>
+
+<div class="howto">
+  <strong>איך מריצים דוגמה?</strong>
+  <ol>
+    <li>פותחים ב-Visual Studio את הקובץ <code>Yesodot.slnx</code>.</li>
+    <li>בקובץ הראשי <code>Program.cs</code> מוחקים את שני הלוכסנים בתחילת השורה <code>// Chapter6.Run();</code></li>
+    <li>פותחים את הקובץ <code>Ch6/Chapter6.cs</code>. בפעולה <code>Run</code> שבראשו מוצאים את השורה של הדוגמה, למשל <code>// example57();</code>, ומוחקים את שני הלוכסנים.</li>
+    <li>מריצים (F5 או Ctrl+F5).</li>
+    <li>לפני שעוברים לדוגמה הבאה, מחזירים את הלוכסנים לשורה הקודמת.</li>
+  </ol>
+  <p style="margin:8px 0 0">לפני כל הרצה כדאי לנסות לנחש מה יודפס, ורק אחר כך להשוות לפלט.</p>
+</div>
+
+<h2 class="chapter first">פרק 6: לולאת כל עוד</h2>
+
+<div class="intro">
+  <p style="margin-top:0"><strong>לולאת כל עוד</strong> (<code>while</code>) חוזרת על גוף הלולאה כל עוד התנאי אמת. היא מתאימה כשלא יודעים מראש כמה סיבובים יהיו, למשל כשקולטים עד שהמשתמש מקליד ערך מסוים, או כשעוברים על הספרות של מספר.</p>
+<pre class="code">int num = 0;
+while (num &gt;= 0)
+{
+    num = int.Parse(Console.ReadLine());
+}</pre>
+  <table>
+    <tr><th></th><th><code>for</code></th><th><code>while</code></th></tr>
+    <tr><td>מתי משתמשים</td><td>כשמספר הסיבובים ידוע מראש</td><td>כשמספר הסיבובים תלוי במה שקורה בזמן הריצה</td></tr>
+    <tr><td>התחלה</td><td>בתוך שורת הלולאה</td><td>לפני הלולאה, בשורה נפרדת</td></tr>
+    <tr><td>קידום</td><td>בתוך שורת הלולאה</td><td>בתוך גוף הלולאה, באחריותנו</td></tr>
+    <tr><td>בדיקת התנאי</td><td>לפני כל סיבוב</td><td>לפני כל סיבוב</td></tr>
+  </table>
+  <p style="margin-bottom:0"><strong>שתי סכנות:</strong> אם המשתנה של התנאי לא משתנה בתוך הלולאה, התנאי נשאר אמת והלולאה <strong>לא נגמרת</strong>. אם התנאי שקר כבר בהתחלה, הלולאה <strong>לא מתבצעת אפילו פעם אחת</strong>.</p>
+</div>
+
+<table>
+  <tr><th style="width:70px">דוגמה</th><th>נושא</th></tr>
+  <tr><td>53</td><td>קליטה עד שמוקלד מספר שלילי</td></tr>
+  <tr><td>54</td><td>לולאת תקינות קלט</td></tr>
+  <tr><td>55</td><td>ממוצע עד ערך עצירה</td></tr>
+  <tr><td>56</td><td>סכום הספרות של מספר</td></tr>
+  <tr><td>57</td><td>המספר ההפוך: הוספת ספרה מימין</td></tr>
+  <tr><td>58</td><td>הספרה השמאלית ומספר הספרות</td></tr>
+  <tr><td>59</td><td>הספרה הגדולה ביותר</td></tr>
+  <tr><td>60</td><td>בניית מספר: הוספת ספרה משמאל</td></tr>
+  <tr><td>61</td><td>לולאה שרצה לפחות פעם אחת</td></tr>
+  <tr><td>62</td><td>תפריט עם דגל</td></tr>
+  <tr><td>63</td><td>דילוג לסיבוב הבא</td></tr>
+  <tr><td>64</td><td>יציאה מהלולאה באמצע</td></tr>
+  <tr><td>65</td><td>משחק הניחושים</td></tr>
+</table>
+
+<section class="ex">
+  <h3><span class="num">53</span>קליטה עד שמוקלד מספר שלילי</h3>
+  <p>לא יודעים מראש כמה מספרים המשתמשת תקליד, ולכן לולאת <code>while</code> מתאימה. המשתנה מקבל ערך התחלתי 0 כדי שהתנאי יהיה אמת בכניסה הראשונה. בתוך הלולאה סופרים רק את המספרים שאינם שליליים.</p>
+<pre class="code">int num = 0, count = 0;
+while (num &gt;= 0)
+{
+    num = int.Parse(Console.ReadLine());
+    if (num &gt;= 0)
+    {
+        count++;
+    }
+}</pre>
+  <div class="label">דוגמת הרצה (הקלט מודגש)</div>
+<pre class="out">Enter a number (negative to stop): <b>4</b>
+Enter a number (negative to stop): <b>9</b>
+Enter a number (negative to stop): <b>0</b>
+Enter a number (negative to stop): <b>-2</b>
+You entered 3 numbers</pre>
+  <div class="note"><strong>למה צריך את התנאי בתוך הלולאה?</strong> המספר השלילי נקלט בתוך הלולאה, באותו סיבוב שבו בודקים אותו. בלי התנאי, גם הוא היה נספר.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">54</span>לולאת תקינות קלט</h3>
+  <p>קולטים פעם אחת לפני הלולאה. כל עוד הקלט <strong>לא תקין</strong>, מבקשים שוב. התנאי של הלולאה הוא בדיוק התנאי לקלט שגוי.</p>
+<pre class="code">num = int.Parse(Console.ReadLine());
+while (num &lt; 100 || num &gt; 999)
+{
+    Console.Write("Not a 3 digit number. Try again: ");
+    num = int.Parse(Console.ReadLine());
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a 3 digit number: <b>45</b>
+Not a 3 digit number. Try again: <b>1200</b>
+Not a 3 digit number. Try again: <b>347</b>
+Finally! The number is 347</pre>
+  <div class="note"><strong>שימו לב ל-||:</strong> מספר לא תקין הוא קטן מ-100 <strong>או</strong> גדול מ-999. עם <code>&amp;&amp;</code> התנאי לעולם לא יתקיים, כי אין מספר שגם קטן מ-100 וגם גדול מ-999.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">55</span>ממוצע עד ערך עצירה</h3>
+  <p>קולטים מספרים עד שמוקלד <strong>מינוס 1</strong>. ערך העצירה לא נכנס לחישוב, ולכן הסדר בלולאה חשוב: קודם מוסיפים לצובר, ורק בסוף הסיבוב קולטים את המספר הבא.</p>
+<pre class="code">num = int.Parse(Console.ReadLine());
+while (num != -1)
+{
+    sum += num;
+    count++;
+    num = int.Parse(Console.ReadLine());
+}</pre>
+  <div class="label">שתי הרצות</div>
+<pre class="out">Enter a number (-1 to stop): <b>10</b>
+Enter a number (-1 to stop): <b>20</b>
+Enter a number (-1 to stop): <b>30</b>
+Enter a number (-1 to stop): <b>-1</b>
+The average of 3 numbers is 20
+
+Enter a number (-1 to stop): <b>-1</b>
+No numbers were entered</pre>
+  <div class="note"><strong>למה בודקים <code>count &gt; 0</code> לפני החילוק?</strong> אם הערך הראשון הוא כבר מינוס 1, לא נקלטו מספרים, ואי אפשר לחלק ב-0.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">56</span>סכום הספרות של מספר</h3>
+  <p>כל עוד נשארו ספרות במספר, לוקחים את ספרת האחדות, מוסיפים לסכום, ומוחקים אותה. מספר הסיבובים שווה למספר הספרות, ולא יודעים אותו מראש.</p>
+<pre class="code">while (num &gt; 0)
+{
+    sum += num % 10;
+    num /= 10;
+}</pre>
+  <div class="label">טבלת מעקב עבור 546</div>
+  <table>
+    <tr><th>סיבוב</th><th>num % 10</th><th>sum</th><th>num אחרי הסיבוב</th></tr>
+    <tr><td>לפני</td><td></td><td>0</td><td>546</td></tr>
+    <tr><td>1</td><td>6</td><td>6</td><td>54</td></tr>
+    <tr><td>2</td><td>4</td><td>10</td><td>5</td></tr>
+    <tr><td>3</td><td>5</td><td>15</td><td>0</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>546</b>
+The sum of the digits is 15</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">57</span>המספר ההפוך: הוספת ספרה מימין</h3>
+  <p>כדי להוסיף ספרה <strong>מימין</strong> למספר, כופלים אותו ב-10 ומוסיפים את הספרה. בכל סיבוב לוקחים את ספרת האחדות של המספר ומוסיפים אותה מימין למספר ההפוך.</p>
+<pre class="code">temp = num;
+while (temp &gt; 0)
+{
+    digit = temp % 10;
+    reverse = reverse * 10 + digit;
+    temp /= 10;
+}</pre>
+  <div class="label">טבלת מעקב עבור 123</div>
+  <table>
+    <tr><th>סיבוב</th><th>digit</th><th>reverse</th><th>temp</th></tr>
+    <tr><td>לפני</td><td></td><td>0</td><td>123</td></tr>
+    <tr><td>1</td><td>3</td><td>3</td><td>12</td></tr>
+    <tr><td>2</td><td>2</td><td>32</td><td>1</td></tr>
+    <tr><td>3</td><td>1</td><td>321</td><td>0</td></tr>
+  </table>
+  <div class="note"><strong>למה עובדים על <code>temp</code>?</strong> הלולאה מוחקת ספרה בכל סיבוב, ובסוף המשתנה שווה 0. כדי להדפיס את המספר המקורי, הלולאה עובדת על עותק שלו.</div>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>1230</b>
+The reverse of 1230 is 321</pre>
+  <div class="note"><strong>שאלה למחשבה:</strong> למה ההפוך של 1230 הוא 321 ולא 0321? כי במספר אין משמעות לאפס מוביל. הספרה 0 נכנסה ראשונה, ו-0 כפול 10 עדיין 0.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">58</span>הספרה השמאלית ומספר הספרות</h3>
+  <p>כל עוד יש במספר יותר מספרה אחת (המספר גדול מ-9), מוחקים את ספרת האחדות. מה שנשאר בסוף הוא הספרה השמאלית. במקביל סופרים כמה ספרות נמחקו.</p>
+<pre class="code">int count = 1;
+while (temp &gt; 9)
+{
+    temp /= 10;
+    count++;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>48731</b>
+The most significant digit is 4
+The number has 5 digits</pre>
+  <div class="note"><strong>למה המונה מתחיל ב-1?</strong> הלולאה עוצרת כשנשארת ספרה אחת, והיא לא נמחקת. המונה מתחיל ב-1 כדי לספור גם אותה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">59</span>הספרה הגדולה ביותר</h3>
+  <p>זה אותו רעיון של מציאת מקסימום מפרק 5, רק על ספרות של מספר. מתחילים מספרת האחדות, מוחקים אותה, ומשווים כל ספרה שנשארה לגדולה ביותר.</p>
+<pre class="code">maxDigit = num % 10;
+num /= 10;
+while (num &gt; 0)
+{
+    currentDigit = num % 10;
+    if (currentDigit &gt; maxDigit)
+    {
+        maxDigit = currentDigit;
+    }
+    num /= 10;
+}</pre>
+  <div class="label">טבלת מעקב עבור 387</div>
+  <table>
+    <tr><th>שלב</th><th>currentDigit</th><th>maxDigit</th><th>num</th></tr>
+    <tr><td>לפני הלולאה</td><td></td><td>7</td><td>38</td></tr>
+    <tr><td>סיבוב 1</td><td>8</td><td>8</td><td>3</td></tr>
+    <tr><td>סיבוב 2</td><td>3</td><td>8</td><td>0</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>387</b>
+The biggest digit is 8</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">60</span>בניית מספר: הוספת ספרה משמאל</h3>
+  <p>המשתמשת מקלידה ספרות: קודם האחדות, אחר כך העשרות, וכן הלאה, עד מינוס 1. ספרה שנכנסת <strong>משמאל</strong> צריכה להגיע למקום הנכון, ולכן כופלים אותה במשתנה <code>place</code>, שגדל פי 10 אחרי כל ספרה.</p>
+<pre class="code">newNum += digit * place;
+place *= 10;</pre>
+  <div class="label">טבלת מעקב עבור הספרות 7, 4, 3</div>
+  <table>
+    <tr><th>ספרה</th><th>place לפני</th><th>מה נוסף</th><th>newNum</th></tr>
+    <tr><td>7</td><td>1</td><td>7</td><td>7</td></tr>
+    <tr><td>4</td><td>10</td><td>40</td><td>47</td></tr>
+    <tr><td>3</td><td>100</td><td>300</td><td>347</td></tr>
+  </table>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a digit (-1 to stop): <b>7</b>
+Enter a digit (-1 to stop): <b>4</b>
+Enter a digit (-1 to stop): <b>3</b>
+Enter a digit (-1 to stop): <b>-1</b>
+The number is 347</pre>
+  <div class="note"><strong>ההבדל מדוגמה 57:</strong> ספרה מימין נכנסת בכפל המספר ב-10. ספרה משמאל נכנסת בכפל <strong>הספרה</strong> במקום שלה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">61</span>לולאה שרצה לפחות פעם אחת</h3>
+  <p>בלולאת <code>do-while</code> התנאי נבדק <strong>בסוף</strong>, אחרי גוף הלולאה. לכן הגוף מתבצע תמיד לפחות פעם אחת. אין צורך לקלוט לפני הלולאה, ואין צורך לתת למשתנה ערך התחלתי מומצא.</p>
+<pre class="code">do
+{
+    number = int.Parse(Console.ReadLine());
+    if (number &gt;= 0)
+    {
+        sum += number;
+    }
+} while (number &gt;= 0);</pre>
+  <div class="label">שתי הרצות</div>
+<pre class="out">Enter a positive number, negative to exit: <b>3</b>
+Enter a positive number, negative to exit: <b>5</b>
+Enter a positive number, negative to exit: <b>-7</b>
+The sum is 8
+
+Enter a positive number, negative to exit: <b>-1</b>
+The sum is 0</pre>
+  <div class="note"><strong>שימו לב:</strong> בסוף שורת <code>while</code> של לולאת <code>do-while</code> יש נקודה פסיק. זה המקום היחיד שבו לולאה מסתיימת בנקודה פסיק.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">62</span>תפריט עם דגל</h3>
+  <p>הלולאה מציגה את התפריט שוב ושוב. משתנה בוליאני, שנקרא <strong>דגל</strong>, קובע אם להמשיך. כשבוחרים 0, הדגל הופך לשקר, והלולאה נגמרת בסוף אותו סיבוב.</p>
+<pre class="code">bool keepGoing = true;
+while (keepGoing)
+{
+    ...
+    else if (choice == 0)
+    {
+        keepGoing = false;
+    }
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Choose an option:
+1 - Square of a number
+2 - Line of stars
+0 - Exit
+<b>1</b>
+Enter a number: <b>3</b>
+3^2 = 9
+Choose an option:
+...
+<b>2</b>
+Enter number of stars: <b>5</b>
+*****
+Choose an option:
+...
+<b>0</b>
+Bye!</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">63</span>דילוג לסיבוב הבא</h3>
+  <p>קולטים מספרים עד שנקלטים 3 מספרים זוגיים, אבל המספר 6 לא נספר. הפקודה <code>continue</code> מפסיקה את הסיבוב הנוכחי וקופצת מיד לבדיקת התנאי. השורות שאחריה לא מתבצעות בסיבוב הזה.</p>
+<pre class="code">if (num == 6)
+{
+    continue;
+}
+if (num % 2 == 0)
+{
+    count++;
+}</pre>
+  <div class="label">טבלת מעקב עבור הקלט 6, 4, 7, 8, 6, 2</div>
+  <table>
+    <tr><th>קלט</th><th>מה קרה</th><th>count</th></tr>
+    <tr><td>6</td><td>דילוג</td><td>0</td></tr>
+    <tr><td>4</td><td>זוגי, נספר</td><td>1</td></tr>
+    <tr><td>7</td><td>אי זוגי</td><td>1</td></tr>
+    <tr><td>8</td><td>זוגי, נספר</td><td>2</td></tr>
+    <tr><td>6</td><td>דילוג</td><td>2</td></tr>
+    <tr><td>2</td><td>זוגי, נספר, הלולאה נגמרת</td><td>3</td></tr>
+  </table>
+<pre class="out">Got 3 even numbers</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">64</span>יציאה מהלולאה באמצע</h3>
+  <p>התנאי <code>while (true)</code> תמיד אמת, ולכן הלולאה נראית אינסופית. הפקודה <code>break</code> מפסיקה את הלולאה מיד ויוצאת ממנה, גם באמצע הסיבוב.</p>
+<pre class="code">while (true)
+{
+    answer = char.Parse(Console.ReadLine());
+    if (answer == 'n' || answer == 'N')
+    {
+        break;
+    }
+    num = int.Parse(Console.ReadLine());
+    sum += num;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Add another number? (y/n) <b>y</b>
+Enter the number: <b>10</b>
+Add another number? (y/n) <b>y</b>
+Enter the number: <b>15</b>
+Add another number? (y/n) <b>n</b>
+The total sum is 25</pre>
+  <div class="note"><strong>continue מול break:</strong> <code>continue</code> מדלג לסיבוב הבא, והלולאה ממשיכה. <code>break</code> יוצא מהלולאה לגמרי.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">65</span>משחק הניחושים</h3>
+  <p>המחשב מגריל מספר סודי מ-0 עד 99. אחרי כל ניחוש התוכנית אומרת אם המספר הסודי גדול או קטן יותר. הלולאה ממשיכה כל עוד הניחוש שונה מהמספר הסודי, ומונה סופר את הניחושים.</p>
+<pre class="code">int secret = rnd.Next(100);
+int guess = -1, numOfGuesses = 0;
+while (guess != secret)
+{
+    guess = int.Parse(Console.ReadLine());
+    numOfGuesses++;
+    ...
+}</pre>
+  <div class="label">דוגמת הרצה (המספר מוגרל, ולכן אצלכן יצא אחר)</div>
+<pre class="out">Enter your guess: <b>50</b>
+The secret number is smaller
+Enter your guess: <b>25</b>
+The secret number is bigger
+Enter your guess: <b>37</b>
+The secret number is smaller
+Enter your guess: <b>31</b>
+Correct! You found 31 after 4 guesses</pre>
+  <div class="note"><strong>למה הניחוש מתחיל ב-1-?</strong> כדי שהתנאי יהיה אמת בכניסה הראשונה. 1- לא יכול להיות המספר הסודי, כי ההגרלה נותנת רק 0 עד 99. <strong>אסטרטגיה:</strong> לנחש תמיד את האמצע של הטווח שנשאר. כך מוצאים כל מספר עד 99 בתוך 7 ניחושים לכל היותר.</div>
+</section>
+
+<h2 class="chapter">דף חזרה מהיר</h2>
+<table>
+  <tr><th>נושא</th><th>מה חשוב לזכור</th></tr>
+  <tr><td><code>for</code> או <code>while</code></td><td>מספר סיבובים ידוע: <code>for</code>. לא ידוע: <code>while</code></td></tr>
+  <tr><td>התחלה וקידום</td><td>ב-<code>while</code> הם באחריותנו: ערך לפני הלולאה, ושינוי בתוכה</td></tr>
+  <tr><td>לולאה אינסופית</td><td>קורה כשהמשתנה של התנאי לא משתנה בתוך הלולאה</td></tr>
+  <tr><td>תקינות קלט</td><td>התנאי של הלולאה הוא התנאי לקלט <strong>שגוי</strong></td></tr>
+  <tr><td>ערך עצירה</td><td>קולטים לפני הלולאה ובסוף כל סיבוב, כדי שהערך לא ייכנס לחישוב</td></tr>
+  <tr><td>עבודה על ספרות</td><td><code>num % 10</code> נותן ספרה, <code>num /= 10</code> מוחק ספרה, <code>while (num &gt; 0)</code></td></tr>
+  <tr><td>שמירת המקורי</td><td>הלולאה הורסת את המספר. עובדים על עותק</td></tr>
+  <tr><td>ספרה מימין</td><td><code>num * 10 + digit</code></td></tr>
+  <tr><td>ספרה משמאל</td><td><code>num + digit * place</code>, ו-<code>place *= 10</code></td></tr>
+  <tr><td><code>do-while</code></td><td>רצה לפחות פעם אחת. נקודה פסיק בסוף</td></tr>
+  <tr><td><code>continue</code></td><td>מדלג לסיבוב הבא</td></tr>
+  <tr><td><code>break</code></td><td>יוצא מהלולאה מיד</td></tr>
+</table>
+
+</div>
+</body>
+</html>

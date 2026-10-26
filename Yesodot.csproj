@@ -47,6 +47,7 @@
     <Compile Include="Ch1_2\Chapter1_2.cs" />
     <Compile Include="Ch3_4\Chapter3_4.cs" />
     <Compile Include="Ch5\Chapter5.cs" />
+    <Compile Include="Ch6\Chapter6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +58,7 @@
     <None Include="Ch3_4\quiz.html" />
     <None Include="Ch5\Summary_Ch5.html" />
     <None Include="Ch5\quiz.html" />
+    <None Include="Ch6\Summary_Ch6.html" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
