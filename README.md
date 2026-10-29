@@ -10,6 +10,7 @@
 | [📝 מבדק](https://ciznerguy.github.io/yesodot/Ch3_4/quiz.html) | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch3_4/Summary_Ch3_4.html) | [💻 קוד](Ch3_4/Chapter3_4.cs) | [📁 Ch3_4](Ch3_4) | מ-21 עד 40 | הספרייה המתמטית ומחלקת אקראי, משפטי תנאי | 3–4 |
 | [📝 מבדק](https://ciznerguy.github.io/yesodot/Ch5/quiz.html) | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch5/Summary_Ch5.html) | [💻 קוד](Ch5/Chapter5.cs) | [📁 Ch5](Ch5) | מ-41 עד 52 | לולאות | 5 |
 | בהכנה | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch6/Summary_Ch6.html) | [💻 קוד](Ch6/Chapter6.cs) | [📁 Ch6](Ch6) | מ-53 עד 65 | לולאת While | 6 |
+| בהכנה | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch7/Summary_Ch7.html) | [💻 קוד](Ch7/Chapter7.cs) | [📁 Ch7](Ch7) | מ-66 עד 79 | פעולות | 7 |
 
 - **חוברת מלווה:** הסבר, דוגמת הרצה ונקודות חשובות לכל דוגמה בקוד. אפשר גם להדפיס אותה מהדפדפן.
 - **מבדק:** בסוף מקבלים ציון ורשימה של הנושאים שכדאי לחזור עליהם.
@@ -25,6 +26,7 @@
 | `Ch3_4/Chapter3_4.cs` | הדוגמאות של פרקים 3 ו-4 |
 | `Ch5/Chapter5.cs` | הדוגמאות של פרק 5 |
 | `Ch6/Chapter6.cs` | הדוגמאות של פרק 6 |
+| `Ch7/Chapter7.cs` | הדוגמאות של פרק 7 |
 
 ## איך מריצים דוגמה
 

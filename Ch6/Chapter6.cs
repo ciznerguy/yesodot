@@ -21,9 +21,9 @@ namespace Yesodot
             // יש להסיר את סימן ההערה מהדוגמה שרוצים להריץ
 
             // פרק 6: לולאת כל עוד
-            // example53();
-            // example54();
-            // example55();
+             //example53();
+           //  example54_2();
+             example55();
             // example56();
             // example57();
             // example58();
@@ -88,6 +88,28 @@ namespace Yesodot
             Console.WriteLine("Finally! The number is " + num);
         }
 
+        // יש לכתוב תוכנית הקולטת מספרים
+        // כל עוד המספר חיובי נסכום את המספרים
+        // כאשר המספר השלילי הוא ערך עצירה, לא נסכום אותו
+
+
+        public static void example54_2()
+        {
+            int num, sum = 0;
+
+            // קולטים את המספר הראשון לפני הלולאה, כדי שיהיה לנו ערך לבדיקה בתנאי
+            Console.Write("Enter a number (negative to stop): ");
+            num = int.Parse(Console.ReadLine());
+            while (num >= 0)
+            {
+                sum += num;
+                // קולטים את המספר הבא בסוף כל סיבוב, כדי שיהיה לנו ערך לבדיקה בתנאי
+                Console.Write("Enter a number (negative to stop): ");
+                num = int.Parse(Console.ReadLine());
+            }
+            Console.WriteLine("The sum of the positive numbers is " + sum);
+        }
+
         // דוגמה 55: ממוצע עד ערך עצירה
         // קולטים מספרים עד שמוקלד מינוס 1, ומחשבים את הממוצע שלהם.
         // ערך העצירה עצמו לא נכנס לחישוב.
@@ -98,7 +120,7 @@ namespace Yesodot
         {
             int num, sum = 0, count = 0;
             double average;
-
+            // קלט של המספר הראשון לפני הלולאה, כדי שיהיה לנו ערך לבדיקה בתנאי
             Console.Write("Enter a number (-1 to stop): ");
             num = int.Parse(Console.ReadLine());
 
@@ -106,7 +128,7 @@ namespace Yesodot
             {
                 sum += num;
                 count++;
-
+                //המשך הקלטים
                 Console.Write("Enter a number (-1 to stop): ");
                 num = int.Parse(Console.ReadLine());
             }

@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סיכום פרק 7</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סיכום דוגמאות: פרק 7, פעולות</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>מסמך מלווה לקוד הדוגמאות בקובץ <code>Ch7/Chapter7.cs</code></p>
+</header>
+
+<div class="howto">
+  <strong>איך מריצים דוגמה?</strong>
+  <ol>
+    <li>פותחים ב-Visual Studio את הקובץ <code>Yesodot.slnx</code>.</li>
+    <li>בקובץ הראשי <code>Program.cs</code> מוחקים את שני הלוכסנים בתחילת השורה <code>// Chapter7.Run();</code></li>
+    <li>פותחים את הקובץ <code>Ch7/Chapter7.cs</code>. בפעולה <code>Run</code> שבראשו מוצאים את השורה של הדוגמה, למשל <code>// example72();</code>, ומוחקים את שני הלוכסנים.</li>
+    <li>מריצים (F5 או Ctrl+F5).</li>
+    <li>לפני שעוברים לדוגמה הבאה, מחזירים את הלוכסנים לשורה הקודמת.</li>
+  </ol>
+  <p style="margin:8px 0 0">בפרק הזה, ליד כל דוגמה בקוד כתובות גם פעולות העזר שהיא משתמשת בהן.</p>
+</div>
+
+<h2 class="chapter first">פרק 7: פעולות</h2>
+
+<div class="intro">
+  <p style="margin-top:0"><strong>פעולה</strong> היא אוסף הוראות שקיבל שם. כותבים אותה פעם אחת, וקוראים לה בכל מקום שצריך. כשקוראים לפעולה, התוכנית קופצת אליה, מבצעת את ההוראות, וחוזרת לשורה שאחרי הקריאה.</p>
+<pre class="code">static int Max(int n1, int n2, int n3)
+{
+    ...
+    return max;
+}</pre>
+  <table>
+    <tr><th>חלק בכותרת</th><th>בדוגמה</th><th>משמעות</th></tr>
+    <tr><td>סוג הערך המוחזר</td><td><code>int</code></td><td>מה הפעולה מחזירה. <code>void</code> אם היא לא מחזירה כלום</td></tr>
+    <tr><td>שם הפעולה</td><td><code>Max</code></td><td>שם משמעותי שמתאר מה הפעולה עושה</td></tr>
+    <tr><td>פרמטרים</td><td><code>int n1, int n2, int n3</code></td><td>הערכים שהפעולה מקבלת, כל אחד עם טיפוס</td></tr>
+    <tr><td>החזרת ערך</td><td><code>return max;</code></td><td>מחזירה את הערך ומסיימת את הפעולה</td></tr>
+  </table>
+  <table>
+    <tr><th>סוג פעולה</th><th>איך קוראים לה</th></tr>
+    <tr><td>לא מחזירה ערך (<code>void</code>)</td><td>כהוראה בפני עצמה: <code>DrawSquare(3);</code></td></tr>
+    <tr><td>מחזירה ערך</td><td>בתוך ביטוי, השמה או הדפסה: <code>max = Max(a, b, c);</code></td></tr>
+  </table>
+  <p style="margin-bottom:0"><strong>תיעוד:</strong> מעל כל פעולה כותבים הערה קצרה: מה הפעולה מקבלת, ומה היא מחזירה או מדפיסה.</p>
+</div>
+
+<table>
+  <tr><th style="width:70px">דוגמה</th><th>נושא</th></tr>
+  <tr><td>66</td><td>למה צריך פעולות: ציור ריבועים</td></tr>
+  <tr><td>67</td><td>פעולות מוכנות כקופסה שחורה</td></tr>
+  <tr><td>68</td><td>טווח ההכרה של משתנים</td></tr>
+  <tr><td>69</td><td>פעולה שמקבלת פרמטר</td></tr>
+  <tr><td>70</td><td>פעולה שמקבלת כמה פרמטרים</td></tr>
+  <tr><td>71</td><td>הזמנת מוצרים</td></tr>
+  <tr><td>72</td><td>פעולה שמחזירה ערך</td></tr>
+  <tr><td>73</td><td>האם המספר פלינדרום</td></tr>
+  <tr><td>74</td><td>תיאור מזג האוויר</td></tr>
+  <tr><td>75</td><td>כמה פעמים ספרה מופיעה במספר</td></tr>
+  <tr><td>76</td><td>העמסת פעולות</td></tr>
+  <tr><td>77</td><td>מרחק בין שתי נקודות</td></tr>
+  <tr><td>78</td><td>תקינות תאריך</td></tr>
+  <tr><td>79</td><td>שאלת סיכום: עידוד קניית ספרים</td></tr>
+</table>
+
+<section class="ex">
+  <h3><span class="num">66</span>למה צריך פעולות: ציור ריבועים</h3>
+  <p>בלי פעולות, כדי לצייר שני ריבועים בגדלים שונים היינו כותבים את אותן לולאות פעמיים. עם פעולות כותבים את הקוד פעם אחת, וקוראים לו עם גדלים שונים.</p>
+<pre class="code">static void PrintLine(int length)
+{
+    for (int i = 1; i &lt;= length; i++)
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine();
+}
+
+static void DrawSquare(int size)
+{
+    for (int i = 1; i &lt;= size; i++)
+    {
+        PrintLine(size);
+    }
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">A square of size 3:
+***
+***
+***
+A square of size 5:
+*****
+*****
+*****
+*****
+*****</pre>
+  <div class="note"><strong>שימו לב:</strong> פעולה יכולה לקרוא לפעולה אחרת. <code>DrawSquare</code> משתמשת ב-<code>PrintLine</code> כדי להדפיס כל שורה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">67</span>פעולות מוכנות כקופסה שחורה</h3>
+  <p>כבר השתמשנו בהרבה פעולות שמישהו אחר כתב: <code>Console.WriteLine</code>, <code>int.Parse</code>, <code>Math.Sqrt</code>. לא צריך לדעת איך הן כתובות מבפנים. מספיק לדעת מה הן מקבלות ומה הן מחזירות, ולכן קוראים להן <strong>קופסה שחורה</strong>.</p>
+<pre class="code">double root = Math.Sqrt(81);
+int bigger = Math.Max(17, 42);
+int number = int.Parse("123");</pre>
+  <div class="label">פלט</div>
+<pre class="out">Square root of 81: 9
+The bigger of 17 and 42: 42
+The text 123 as a number, plus 1: 124</pre>
+  <div class="note"><strong>שם המחלקה:</strong> כשקוראים לפעולה ממחלקה אחרת, כותבים את שם המחלקה, נקודה, ושם הפעולה. לפעולה שכתבנו באותה מחלקה קוראים בשם בלבד.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">68</span>טווח ההכרה של משתנים</h3>
+  <p>משתנה שהוגדר בתוך פעולה מוכר <strong>רק בתוכה</strong>. אם בשתי פעולות יש משתנה עם אותו שם, אלה שני משתנים שונים לגמרי.</p>
+<pre class="code">public static void example68()
+{
+    int num = 7;
+    ShowOtherNum();
+    Console.WriteLine(num);   // 7
+}
+
+static void ShowOtherNum()
+{
+    int num = 99;
+    Console.WriteLine(num);   // 99
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">In the example, num = 7
+In the other method, num = 99
+Back in the example, num = 7</pre>
+  <div class="note"><strong>שימו לב:</strong> גם משתנה הבקרה של לולאה, כמו <code>i</code>, מוכר רק בתוך הלולאה. לכן אפשר להשתמש בשם <code>i</code> שוב בלולאה אחרת.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">69</span>פעולה שמקבלת פרמטר</h3>
+  <p><strong>פרמטר</strong> הוא ערך שהפעולה מקבלת כשקוראים לה. הוא כתוב בסוגריים בכותרת. בקריאה שולחים ערך, והוא נכנס לפרמטר. אפשר לשלוח מספר, משתנה או ביטוי: הפעולה מקבלת רק את הערך.</p>
+<pre class="code">int num = 4;
+PrintStars(3);
+PrintStars(num);
+PrintStars(num * 2);</pre>
+  <div class="label">פלט</div>
+<pre class="out">***
+****
+********</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">70</span>פעולה שמקבלת כמה פרמטרים</h3>
+  <p>הפרמטרים מופרדים בפסיק, ולכל אחד יש טיפוס משלו. בקריאה שולחים ערכים <strong>באותו מספר, באותו סדר ומאותו טיפוס</strong>. הערך הראשון נכנס לפרמטר הראשון, והשני לשני.</p>
+<pre class="code">static void PrintAverage(int n1, int n2)
+{
+    double average = (n1 + n2) / 2.0;
+    Console.WriteLine("The average of " + n1 + " and " + n2 + " is " + average);
+}</pre>
+  <div class="label">דוגמת הרצה (הקלט מודגש)</div>
+<pre class="out">Enter the first grade: <b>85</b>
+Enter the second grade: <b>90</b>
+The average of 85 and 90 is 87.5
+The average of 80 and 95 is 87.5</pre>
+  <div class="note"><strong>שם המשתנה לא משנה:</strong> בקריאה שולחים את הערכים של <code>grade1</code> ו-<code>grade2</code>, ובתוך הפעולה הם נקראים <code>n1</code> ו-<code>n2</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">71</span>הזמנת מוצרים</h3>
+  <p>בהזמנה טלפונית מוסיפים למחיר את עלות המשלוח: רגיל 5 ש"ח, אקספרס 10 ש"ח. חבר מועדון מקבל הנחה של 2 ש"ח. הפעולה מקבלת שלושה פרמטרים <strong>מטיפוסים שונים</strong>, ומדפיסה את העלות הכוללת.</p>
+<pre class="code">static void CalculateShippingCost(double totalCost, string shippingMethod, bool isMember)</pre>
+  <div class="label">דוגמת הרצה (המחיר מוגרל)</div>
+<pre class="out">Purchase #1, price: 73.83
+Enter shipping method (Standard/Express): <b>Standard</b>
+Is the customer a club member? (true/false): <b>true</b>
+The total cost is 76.83
+
+Purchase #2, price: 87.74
+Enter shipping method (Standard/Express): <b>Express</b>
+Is the customer a club member? (true/false): <b>false</b>
+The total cost is 97.74</pre>
+  <div class="note"><strong>מחיר עם אגורות:</strong> <code>rnd.Next(1000, 10001) / 100.0</code> מגריל מספר שלם מ-1000 עד 10000 ומחלק ב-100.0. כך מתקבל מחיר מ-10 עד 100 עם שתי ספרות אחרי הנקודה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">72</span>פעולה שמחזירה ערך</h3>
+  <p>פעולה יכולה לחשב ערך ו<strong>להחזיר</strong> אותו למי שקרא לה. בכותרת כותבים את הטיפוס של הערך המוחזר, ובסוף הפעולה <code>return</code>. את הערך אפשר לשמור במשתנה, להדפיס, או להשתמש בו בתוך ביטוי.</p>
+<pre class="code">max = Max(a, b, c);
+Console.WriteLine(Max(a, b, c) + 10);
+Console.WriteLine(Max(4, 9, 2));</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter three numbers, each in its own line: <b>4</b>
+<b>9</b>
+<b>2</b>
+The maximum is 9
+The maximum plus 10 is 19
+The maximum of 4, 9, 2 is 9</pre>
+  <div class="note"><strong>טעות נפוצה:</strong> לקרוא לפעולה שמחזירה ערך ולא להשתמש בו, למשל <code>Max(a, b, c);</code> לבד בשורה. הפעולה מחשבת, אבל התוצאה הולכת לאיבוד.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">73</span>האם המספר פלינדרום</h3>
+  <p>פלינדרום הוא מספר שנקרא אותו דבר משני הכיוונים, למשל 91819. פעולה אחת מחזירה את המספר ההפוך, כמו בפרק 6. הפעולה השנייה משתמשת בה.</p>
+<pre class="code">static bool IsPalindrome(int num)
+{
+    return num == Reverse(num);
+}</pre>
+  <p>הפעולה מחזירה <code>bool</code>, ולכן אפשר לקרוא לה ישר בתוך תנאי: <code>if (IsPalindrome(num))</code> או <code>while (!IsPalindrome(num))</code>.</p>
+  <div class="label">שתי הרצות</div>
+<pre class="out">Enter a number: <b>91819</b>
+91819 is a palindrome
+Random palindrome: 22622, found after 2 tries
+
+Enter a number: <b>1234</b>
+1234 is not a palindrome
+Random palindrome: 61616, found after 39 tries</pre>
+  <div class="note"><strong>החזרה של תנאי:</strong> <code>return num == Reverse(num);</code> מחזיר ישר את תוצאת ההשוואה, אמת או שקר. אין צורך ב-<code>if</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">74</span>תיאור מזג האוויר</h3>
+  <p>מעל 30 מעלות: חם. בין 20 ל-30: חמים. מתחת ל-20: קר. הפעולה מקבלת את הטמפרטורה ואם ירד גשם, ומחזירה <strong>מחרוזת</strong> שמתארת את היום.</p>
+<pre class="code">static string DescribeWeather(double temperature, bool isRaining)</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Day 1 temperature: <b>40</b>
+Did it rain? (true/false): <b>true</b>
+It's hot and rainy
+Day 2 temperature: <b>25</b>
+Did it rain? (true/false): <b>false</b>
+It's warm and sunny
+Day 3 temperature: <b>12</b>
+Did it rain? (true/false): <b>true</b>
+It's cool and rainy</pre>
+  <div class="note"><strong>החזרה אחת בסוף:</strong> הפעולה בונה את המחרוזת בשלבים, ומחזירה אותה פעם אחת בסוף. כך קל יותר לקרוא אותה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">75</span>כמה פעמים ספרה מופיעה במספר</h3>
+  <p>הפעולה מקבלת מספר וספרה, ועוברת על הספרות בלולאת <code>while</code>, כמו בפרק 6. בכל פעם שספרת האחדות שווה לספרה המבוקשת, המונה גדל.</p>
+<pre class="code">static int CountDigit(int number, int digit)
+{
+    int count = 0;
+    while (number &gt; 0)
+    {
+        if (number % 10 == digit)
+        {
+            count++;
+        }
+        number /= 10;
+    }
+    return count;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">2 appears in 2422526 4 times
+Enter a number: <b>1223</b>
+Enter a digit: <b>2</b>
+2 appears in 1223 2 times</pre>
+  <div class="note"><strong>מקרה קצה:</strong> עבור המספר 0 הלולאה לא מתבצעת אפילו פעם אחת, ולכן הפעולה מחזירה 0 גם כשמחפשים את הספרה 0.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">76</span>העמסת פעולות</h3>
+  <p>אפשר לכתוב כמה פעולות <strong>עם אותו שם</strong>, בתנאי שהפרמטרים שלהן שונים: במספר או בטיפוס. לפי הערכים ששולחים, המחשב יודע לאיזו פעולה לקרוא.</p>
+  <table>
+    <tr><th>כותרת</th><th>קריאה</th><th>תוצאה</th></tr>
+    <tr><td><code>int Min(int x, int y)</code></td><td><code>Min(1, 2)</code></td><td>1</td></tr>
+    <tr><td><code>int Min(int x, int y, int z)</code></td><td><code>Min(4, 3, 2)</code></td><td>2</td></tr>
+    <tr><td><code>double Min(double x, double y)</code></td><td><code>Min(1.3, 2.7)</code></td><td>1.3</td></tr>
+  </table>
+  <div class="note"><strong>מה אסור:</strong> שתי פעולות עם אותו שם ואותם טיפוסי פרמטרים, גם אם שמות הפרמטרים שונים. למשל <code>Min(int x, int y)</code> ו-<code>Min(int a, int b)</code> הן אותה חתימה, וזו שגיאת קומפילציה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">77</span>מרחק בין שתי נקודות</h3>
+  <p><strong>תכנון מלמעלה למטה:</strong> מתחילים מהפעולה הגדולה, ומפרקים אותה לפעולות עזר קטנות. המרחק הוא שורש של סכום ריבועי ההפרשים. לחזקה כתבנו פעולה משלנו, ולשורש השתמשנו בפעולה המוכנה.</p>
+<pre class="code">static double Distance(int x1, int y1, int x2, int y2)
+{
+    double sum = Power(x2 - x1, 2) + Power(y2 - y1, 2);
+    return Math.Sqrt(sum);
+}</pre>
+  <div class="label">שתי הרצות</div>
+<pre class="out">Enter 2 points: x1, y1, x2, y2, each in its own line
+<b>0</b>
+<b>0</b>
+<b>4</b>
+<b>4</b>
+The distance is 5.65685424949238
+
+Enter 2 points: x1, y1, x2, y2, each in its own line
+<b>1</b>
+<b>2</b>
+<b>4</b>
+<b>6</b>
+The distance is 5</pre>
+  <div class="note"><strong>לבדוק עם מספרים מוכרים:</strong> בין 1,2 ל-4,6 ההפרשים הם 3 ו-4, והמרחק הוא 5, בדיוק כמו במשולש פיתגורס.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">78</span>תקינות תאריך</h3>
+  <p>תאריך תקין: השנה חיובית, החודש בין 1 ל-12, והיום בין 1 למספר הימים בחודש. במקום פעולה אחת ארוכה, כל בדיקה היא פעולה קטנה עם שם ברור:</p>
+  <table>
+    <tr><th>פעולה</th><th>מקבלת</th><th>מחזירה</th></tr>
+    <tr><td><code>IsInRange</code></td><td>ערך תחתון, ערך עליון ומספר</td><td>אמת אם המספר בטווח</td></tr>
+    <tr><td><code>IsLeapYear</code></td><td>שנה</td><td>אמת אם השנה מעוברת</td></tr>
+    <tr><td><code>DaysInMonth</code></td><td>חודש ושנה</td><td>מספר הימים בחודש</td></tr>
+    <tr><td><code>IsValidDate</code></td><td>יום, חודש ושנה</td><td>אמת אם התאריך תקין</td></tr>
+  </table>
+  <div class="label">פלט</div>
+<pre class="out">The date 29/2/2024 is valid
+The date 29/2/2023 is not valid
+The date 31/4/2025 is not valid
+The date 15/13/2025 is not valid
+The date 30/6/2025 is valid</pre>
+  <div class="note"><strong>שנה מעוברת:</strong> מתחלקת ב-4 ולא ב-100, או מתחלקת ב-400. לכן 2024 מעוברת ו-2023 לא.<br><strong>למה הפעולות לא קולטות בעצמן?</strong> פעולה שמקבלת פרמטרים אפשר להפעיל על נתונים מכל מקור: קלט, הגרלה או רשימה קבועה, כמו בדוגמה הזו.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">79</span>שאלת סיכום: עידוד קניית ספרים</h3>
+  <ul>
+    <li><strong>מבצע 2:</strong> קונים שני ספרים, ומשלמים חצי מחיר על הזול מביניהם.</li>
+    <li><strong>מבצע 3:</strong> קונים שלושה ספרים, והזול מביניהם בחינם.</li>
+  </ul>
+  <table>
+    <tr><th>פעולה</th><th>מה היא עושה</th></tr>
+    <tr><td><code>TwoBooksPrice</code></td><td>מחזירה את הסכום לשני ספרים, עם חצי מחיר על הזול</td></tr>
+    <tr><td><code>ThreeBooksPrice</code></td><td>מחזירה את הסכום לשלושה ספרים, בלי הזול</td></tr>
+    <tr><td><code>PayForDeal</code></td><td>קולטת מחירים לפי מספר המבצע, וקוראת לפעולה המתאימה. מחזירה מינוס 1 אם אין מבצע כזה</td></tr>
+  </table>
+  <div class="label">שלוש הרצות</div>
+<pre class="out">Choose a deal (2 or 3): <b>2</b>
+Enter two prices, each in its own line: <b>40</b>
+<b>60</b>
+You pay 80
+
+Choose a deal (2 or 3): <b>3</b>
+Enter three prices, each in its own line: <b>30</b>
+<b>50</b>
+<b>20</b>
+You pay 80
+
+Choose a deal (2 or 3): <b>5</b>
+No such deal</pre>
+  <div class="note"><strong>ערך מיוחד כסימן:</strong> מחיר לא יכול להיות שלילי, ולכן מינוס 1 משמש כסימן לבחירה לא תקינה. מי שקורא לפעולה בודק את הערך הזה לפני שהוא מדפיס.</div>
+</section>
+
+<h2 class="chapter">דף חזרה מהיר</h2>
+<table>
+  <tr><th>נושא</th><th>מה חשוב לזכור</th></tr>
+  <tr><td>למה פעולות</td><td>כותבים פעם אחת, משתמשים הרבה פעמים, ואין שכפול קוד</td></tr>
+  <tr><td>כותרת</td><td>טיפוס מוחזר, שם, ופרמטרים בסוגריים</td></tr>
+  <tr><td><code>void</code></td><td>פעולה שלא מחזירה ערך. קוראים לה כהוראה בפני עצמה</td></tr>
+  <tr><td><code>return</code></td><td>מחזיר ערך ומסיים את הפעולה מיד</td></tr>
+  <tr><td>שימוש בערך מוחזר</td><td>שומרים במשתנה, מדפיסים, או משתמשים בביטוי</td></tr>
+  <tr><td>קריאה עם פרמטרים</td><td>אותו מספר, אותו סדר, אותו טיפוס</td></tr>
+  <tr><td>שמות פרמטרים</td><td>לא חייבים להיות זהים לשמות המשתנים ששולחים</td></tr>
+  <tr><td>טווח הכרה</td><td>משתנה מוכר רק בפעולה (או בלולאה) שבה הוגדר</td></tr>
+  <tr><td>פעולה מחזירה <code>bool</code></td><td>אפשר לקרוא לה ישר בתוך <code>if</code> או <code>while</code></td></tr>
+  <tr><td>העמסה</td><td>אותו שם, פרמטרים שונים במספר או בטיפוס</td></tr>
+  <tr><td>מלמעלה למטה</td><td>מפרקים בעיה גדולה לפעולות עזר קטנות</td></tr>
+  <tr><td>תיעוד</td><td>מעל כל פעולה: מה היא מקבלת ומה היא מחזירה</td></tr>
+</table>
+
+</div>
+</body>
+</html>
