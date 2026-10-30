@@ -61,6 +61,7 @@
     <None Include="Ch5\quiz.html" />
     <None Include="Ch6\Summary_Ch6.html" />
     <None Include="Ch7\Summary_Ch7.html" />
+    <None Include="Appendices\Getting_Started.html" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

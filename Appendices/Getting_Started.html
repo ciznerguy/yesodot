@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מדריך התחלה</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+<style>
+  pre.prompt {
+    direction: rtl;
+    text-align: right;
+    white-space: pre-wrap;
+    unicode-bidi: isolate;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .actions { margin: 12px 0 4px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .actions button {
+    font: inherit; font-weight: 700; padding: 10px 20px; border: none; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer;
+  }
+  #copyMsg { color: var(--accent); font-weight: 600; }
+  a { color: var(--accent); }
+  @media print { .actions { display: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>מדריך התחלה: איפה ואיך מתכנתים</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>OnlineGDB לכתיבת קוד, ו-Gemini כמורה פרטי שעוזר בלי לפתור במקומכם</p>
+</header>
+
+<div class="intro">
+  <p style="margin:0"><strong>בשיעורים נתכנת בסביבה OnlineGDB.</strong> זה אתר שבו כותבים קוד ומריצים אותו ישר בדפדפן, בלי להתקין שום תוכנה. הוא עובד בכל מחשב, גם בבית וגם בבית הספר. כדי לשמור את העבודות ולשתף אותן עם המורה, צריך לפתוח בו חשבון.</p>
+</div>
+
+<h2 class="chapter first">חלק 1: פתיחת חשבון ב-OnlineGDB</h2>
+
+<section class="ex">
+  <h3><span class="num">1</span>נרשמים לאתר</h3>
+  <ol>
+    <li>נכנסים לאתר: <a href="https://www.onlinegdb.com/" target="_blank" rel="noopener"><code>www.onlinegdb.com</code></a></li>
+    <li>בתפריט הכחול שבצד שמאל לוחצים על <strong>Sign Up</strong>.</li>
+    <li>בוחרים אחת משתי דרכים:
+      <ul>
+        <li><strong>הדרך הקלה:</strong> לוחצים על הכפתור האדום <strong>Google+</strong> ובוחרים בחשבון הגוגל שלכם.</li>
+        <li><strong>עם אימייל:</strong> ממלאים שם (<strong>Name</strong>), כתובת אימייל (<strong>Email Address</strong>) וסיסמה (<strong>Password</strong>), ולוחצים על הכפתור הירוק <strong>REGISTER NOW</strong>.</li>
+      </ul>
+    </li>
+    <li>בפעם הבאה נכנסים דרך <strong>Login</strong> באותו תפריט, באותה דרך שבה נרשמתם.</li>
+  </ol>
+  <div class="note"><strong>שימו לב:</strong> בחרו סיסמה שתזכרו. אם נרשמתם עם גוגל, תמיד תיכנסו עם אותו חשבון גוגל.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">2</span>מעבירים את השפה ל-#C</h3>
+  <ol>
+    <li>למעלה מימין יש תיבה בשם <strong>Language</strong>.</li>
+    <li>פותחים אותה ובוחרים <strong>C# (mono)</strong>.</li>
+    <li>בעורך מופיעה תוכנית קצרה שמדפיסה <code>Hello World</code>. זו התבנית שממנה מתחילים.</li>
+  </ol>
+  <p>דרך קיצור: הקישור הזה פותח את האתר כשהשפה כבר מוגדרת ל-#C:<br>
+  <a href="https://www.onlinegdb.com/online_csharp_compiler" target="_blank" rel="noopener"><code>www.onlinegdb.com/online_csharp_compiler</code></a></p>
+<pre class="code">using System;
+class HelloWorld {
+  static void Main() {
+    Console.WriteLine("Hello World");
+  }
+}</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">3</span>מריצים ושומרים</h3>
+  <ul>
+    <li><strong>הרצה:</strong> לוחצים על הכפתור הירוק <strong>Run</strong> שבסרגל העליון. הפלט מופיע בחלון שבתחתית המסך.</li>
+    <li><strong>קלט:</strong> כשהתוכנית מבקשת קלט, מקלידים אותו בחלון התחתון ולוחצים Enter.</li>
+    <li><strong>שמירה:</strong> לוחצים על <strong>Save</strong> בסרגל העליון ונותנים לקובץ שם ברור, למשל <code>Ex5_Loops</code>.</li>
+    <li><strong>העבודות השמורות</strong> נמצאות תחת <strong>My Projects</strong> בתפריט שבצד שמאל.</li>
+  </ul>
+  <div class="note"><strong>שימו לב:</strong> שמירה עובדת רק אחרי שנכנסתם לחשבון. בלי חשבון, הקוד נמחק כשסוגרים את הדף.</div>
+</section>
+
+<h2 class="chapter">חלק 2: איך משתפים קוד עם המורה</h2>
+
+<section class="ex">
+  <h3><span class="num">4</span>שולחים קישור לקוד</h3>
+  <ol>
+    <li>שומרים את הקוד (<strong>Save</strong>).</li>
+    <li>לוחצים על הכפתור הכתום <strong>Share</strong> שבסרגל העליון.</li>
+    <li>נפתח חלון עם קישור. מעתיקים אותו.</li>
+    <li>מדביקים את הקישור במקום שהמורה ביקש, למשל בתגובה פרטית על המטלה בקלאסרום.</li>
+  </ol>
+  <div class="note"><strong>חשוב:</strong> הקישור שומר את הקוד כמו שהוא ברגע הלחיצה. אם שיניתם את הקוד אחר כך, לוחצים שוב על <strong>Share</strong> ושולחים את הקישור החדש.</div>
+</section>
+
+<h2 class="chapter">חלק 3: מורה פרטי ב-Gemini</h2>
+
+<div class="intro">
+  <p style="margin:0">ל-Gemini של משרד החינוך יש מצב שנקרא <strong>למידה מותאמת אישית</strong>. במצב הזה הוא לא נותן תשובות מוכנות, אלא עוזר להבין לבד: שואל שאלות, נותן רמזים ובודק שהבנתם. בעזרת ההנחיה שבהמשך הוא יתנהג כמו מורה פרטי ל-#C, לפי החומר שלמדנו בכיתה.</p>
+</div>
+
+<section class="ex">
+  <h3><span class="num">5</span>פותחים את Gemini במצב למידה</h3>
+  <ol>
+    <li>נכנסים לאתר: <a href="https://gemini.google.com/" target="_blank" rel="noopener"><code>gemini.google.com</code></a></li>
+    <li>מתחברים עם <strong>חשבון הגוגל של בית הספר</strong>, אותו חשבון שבו נכנסים לקלאסרום. למעלה מימין רואים באיזה חשבון אתם מחוברים.</li>
+    <li>לוחצים על הכפתור <strong>+</strong> שבצד ימין של תיבת הכתיבה (התיבה שכתוב בה "יש לך שאלה ל-Gemini?").</li>
+    <li>בתפריט שנפתח בוחרים <strong>למידה מותאמת אישית</strong>.</li>
+  </ol>
+  <div class="note"><strong>שימו לב:</strong> אם אינכם רואים בתפריט את "למידה מותאמת אישית", בדקו שאתם מחוברים עם חשבון בית הספר ולא עם חשבון פרטי.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">6</span>מדביקים את ההנחיה</h3>
+  <ol>
+    <li>לוחצים על הכפתור <strong>העתקת ההנחיה</strong> שמתחת לתיבה.</li>
+    <li>חוזרים ל-Gemini, לוחצים בתיבת הכתיבה ומדביקים (Ctrl+V).</li>
+    <li>שולחים. מעכשיו אפשר לשאול שאלות, לשלוח קוד, ולהדביק הודעות שגיאה מ-OnlineGDB.</li>
+  </ol>
+  <div class="label">ההנחיה</div>
+<pre class="prompt" id="prompt" dir="rtl">אתה מורה פרטי שמלמד אותי לתכנת ב-C#. אני מתחילה, אז דבר איתי בעברית, בשפה פשוטה, וצעד אחד בכל פעם.
+
+חומר הלימוד:
+https://github.com/ciznerguy/yesodot
+לפני שאתה מסביר נושא, בדוק מה כתוב עליו בחומר הזה והשתמש באותם מושגים ובאותה רמה. אם אין לך גישה לקישור, תגיד לי, ואני אעתיק לך את החלק הרלוונטי.
+
+איפה אני כותבת קוד:
+אני מתכנתת ב-OnlineGDB (https://www.onlinegdb.com/) כשהשפה מוגדרת ל-C#. כל דוגמה שאתה נותן צריכה לרוץ שם כמו שהיא, כלומר תוכנית קונסול עם Main.
+
+הכלל הכי חשוב:
+אל תכתוב לי את הפתרון לתרגיל, גם אם אבקש. תכוון אותי אליו:
+- שאל אותי שאלות שיעזרו לי לחשוב מה הצעד הבא.
+- תן רמז קטן, ורק אם אני עדיין תקועה תן רמז קצת יותר ברור.
+- כשאתה צריך להדגים, תן דוגמה קצרה על בעיה אחרת ודומה, לא על התרגיל שלי.
+- כשאני שולחת קוד, תגיד לי מה כבר עובד, ואז תצביע על המקום שכדאי לבדוק בלי לתקן אותו בשבילי.
+
+הודעות שגיאה:
+לפעמים אדביק הודעת שגיאה מ-OnlineGDB. במקרה כזה:
+1. תסביר במילים פשוטות מה השגיאה אומרת.
+2. תראה לי איך למצוא את מספר השורה שבה הבעיה.
+3. תגיד לי מה לבדוק בשורה הזאת, ותן לי לתקן לבד.
+
+המטרה שלנו היא שהתוכנית שלי תרוץ ושאני אבין למה היא רצה. בסוף כל הסבר, תשאל אותי שאלה קצרה כדי לבדוק שהבנתי.</pre>
+  <div class="actions"><button type="button" id="copyBtn">העתקת ההנחיה</button><span id="copyMsg"></span></div>
+  <div class="note"><strong>בכל שיחה חדשה</strong> מדביקים את ההנחיה מחדש. Gemini לא זוכר אותה משיחה קודמת.<br><strong>למה הוא לא נותן פתרון?</strong> כך ביקשנו בהנחיה. המטרה היא שתדעו לפתור לבד, גם בבחינה.</div>
+</section>
+
+<h2 class="chapter">סיכום מהיר</h2>
+<table>
+  <tr><th>מה רוצים לעשות</th><th>איפה</th></tr>
+  <tr><td>לכתוב ולהריץ קוד</td><td>OnlineGDB, השפה <strong>C# (mono)</strong>, כפתור <strong>Run</strong></td></tr>
+  <tr><td>לשמור עבודה</td><td>כפתור <strong>Save</strong>, ואחר כך <strong>My Projects</strong></td></tr>
+  <tr><td>לשלוח קוד למורה</td><td>כפתור <strong>Share</strong>, מעתיקים את הקישור ושולחים</td></tr>
+  <tr><td>לקבל עזרה בלי פתרון מוכן</td><td>Gemini עם חשבון בית הספר, <strong>+</strong>, <strong>למידה מותאמת אישית</strong>, ומדביקים את ההנחיה</td></tr>
+  <tr><td>לחזור על החומר</td><td><a href="https://github.com/ciznerguy/yesodot" target="_blank" rel="noopener">github.com/ciznerguy/yesodot</a>: קוד, חוברת ומבדק לכל פרק</td></tr>
+</table>
+
+</div>
+<script>
+document.getElementById("copyBtn").addEventListener("click", function () {
+  var text = document.getElementById("prompt").innerText;
+  var msg = document.getElementById("copyMsg");
+  function done() { msg.textContent = "ההנחיה הועתקה. אפשר להדביק ב-Gemini."; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+  } else {
+    fallback();
+  }
+  function fallback() {
+    var t = document.createElement("textarea");
+    t.value = text;
+    document.body.appendChild(t);
+    t.select();
+    try { document.execCommand("copy"); done(); } catch (e) { msg.textContent = "לא הצלחתי להעתיק. סמנו את הטקסט והעתיקו עם Ctrl+C."; }
+    document.body.removeChild(t);
+  }
+});
+</script>
+</body>
+</html>
