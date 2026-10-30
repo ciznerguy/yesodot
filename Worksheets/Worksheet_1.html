@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דף עבודה 1</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+<style>
+  pre.prompt {
+    direction: rtl;
+    text-align: right;
+    white-space: pre-wrap;
+    unicode-bidi: isolate;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .actions { margin: 12px 0 4px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .actions button {
+    font: inherit; font-weight: 700; padding: 10px 20px; border: none; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer;
+  }
+  #copyMsg { color: var(--accent); font-weight: 600; }
+  a { color: var(--accent); }
+  @media print { .actions { display: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>דף עבודה 1</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>חומר: פרקים 1 עד 6 (משתנים, אופרטורים, הספרייה המתמטית, משפטי תנאי, לולאת for, לולאת while)</p>
+</header>
+
+<div class="intro">
+  <p style="margin:0 0 6px"><strong>הוראות:</strong></p>
+  <ul>
+    <li>כל שאלה היא תוכנית נפרדת ב-OnlineGDB, עם <code>Main</code> משלה.</li>
+    <li>השאלות מסודרות מהקלה לקשה.</li>
+    <li>אין צורך בלולאה בתוך לולאה באף שאלה.</li>
+    <li>בדקו כל תוכנית עם הקלט שבדוגמת ההרצה, ובנוסף עם קלט משלכם.</li>
+    <li>בסיום שומרים (<strong>Save</strong>), לוחצים <strong>Share</strong> ושולחים למורה את הקישור של כל שאלה.</li>
+  </ul>
+  <p style="margin:8px 0 0">בדוגמאות ההרצה, מה שהמשתמש מקליד מופיע <b style="color:#1f5f99">בצבע</b>.</p>
+</div>
+
+<section class="ex">
+  <h3><span class="num">1</span>לוח הכפל</h3>
+  <p>כתבו תוכנית שקולטת מהמשתמש מספר שלם, שחייב להיות בין 1 ל-9.<br>
+  אם המספר בטווח, התוכנית מדפיסה את לוח הכפל שלו, מ-1 עד 10.<br>
+  אם המספר לא בטווח, התוכנית מדפיסה הודעת שגיאה ומסתיימת.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter a number between 1 and 9: <b>12</b>
+Error. The number must be between 1 and 9</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter a number between 1 and 9: <b>7</b>
+7 x 1 = 7
+7 x 2 = 14
+7 x 3 = 21
+7 x 4 = 28
+7 x 5 = 35
+7 x 6 = 42
+7 x 7 = 49
+7 x 8 = 56
+7 x 9 = 63
+7 x 10 = 70</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">2</span>קופה בחנות</h3>
+  <p>לקוח קנה בחנות 10 מוצרים. כתבו תוכנית שקולטת את המחירים של 10 המוצרים.<br>
+  בסוף התוכנית מדפיסה:</p>
+  <ul>
+    <li>את הסכום הכולל.</li>
+    <li>אם הסכום גדול מ-200, הלקוח מקבל הנחה של 10%. התוכנית מדפיסה הודעה על ההנחה.</li>
+    <li>את הסכום לתשלום.</li>
+  </ul>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter price 1: <b>25</b>
+Enter price 2: <b>40</b>
+Enter price 3: <b>15.5</b>
+Enter price 4: <b>30</b>
+Enter price 5: <b>12</b>
+Enter price 6: <b>50</b>
+Enter price 7: <b>8</b>
+Enter price 8: <b>22</b>
+Enter price 9: <b>18</b>
+Enter price 10: <b>9.5</b>
+Total: 230
+You got a 10% discount
+To pay: 207</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter price 1: <b>10</b>
+Enter price 2: <b>5</b>
+Enter price 3: <b>12</b>
+Enter price 4: <b>8</b>
+Enter price 5: <b>20</b>
+Enter price 6: <b>15</b>
+Enter price 7: <b>9</b>
+Enter price 8: <b>11</b>
+Enter price 9: <b>6</b>
+Enter price 10: <b>4</b>
+Total: 100
+To pay: 100</pre>
+  <div class="note"><strong>שימו לב:</strong> מחיר יכול להיות מספר עשרוני, לכן בחרו טיפוס מתאים למשתנה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">3</span>ספרות של מספר</h3>
+  <p>כתבו תוכנית שקולטת מספר שלם.<br>
+  אם המספר חיובי, התוכנית מדפיסה:</p>
+  <ul>
+    <li>כמה ספרות יש במספר.</li>
+    <li>את סכום הספרות.</li>
+    <li>האם סכום הספרות זוגי (<code>even</code>) או אי זוגי (<code>odd</code>).</li>
+  </ul>
+  <p>אם המספר לא חיובי, התוכנית מדפיסה הודעת שגיאה ומסתיימת.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter a positive number: <b>-5</b>
+Error. The number must be positive</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter a positive number: <b>4825</b>
+Digits: 4
+Sum of digits: 19
+The sum is odd</pre>
+  <div class="note"><strong>רמז:</strong> <code>num % 10</code> נותן את ספרת האחדות, ו-<code>num / 10</code> מוריד אותה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">4</span>סכום עד אפס</h3>
+  <p>כתבו תוכנית שקולטת מספרים שלמים, עד שהמשתמש מקליד 0.<br>
+  בסוף התוכנית מדפיסה כמה מספרים נקלטו (בלי ה-0) ואת הסכום שלהם.</p>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number (0 to finish): <b>8</b>
+Enter a number (0 to finish): <b>15</b>
+Enter a number (0 to finish): <b>-3</b>
+Enter a number (0 to finish): <b>20</b>
+Enter a number (0 to finish): <b>0</b>
+Count: 4
+Sum: 40</pre>
+  <div class="note"><strong>שימו לב:</strong> לא יודעים מראש כמה מספרים יוקלדו, לכן כאן מתאימה לולאת while ולא for.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">5</span>ציוני הכיתה</h3>
+  <p>כתבו תוכנית שקולטת 10 ציונים (מספרים שלמים בין 0 ל-100) ומדפיסה:</p>
+  <ul>
+    <li>את הממוצע, מעוגל לספרה אחת אחרי הנקודה.</li>
+    <li>את הציון הגבוה ביותר.</li>
+    <li>כמה תלמידים נכשלו (ציון מתחת ל-55).</li>
+  </ul>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter grade 1: <b>80</b>
+Enter grade 2: <b>45</b>
+Enter grade 3: <b>92</b>
+Enter grade 4: <b>70</b>
+Enter grade 5: <b>66</b>
+Enter grade 6: <b>50</b>
+Enter grade 7: <b>100</b>
+Enter grade 8: <b>88</b>
+Enter grade 9: <b>75</b>
+Enter grade 10: <b>90</b>
+Average: 75.6
+Highest grade: 100
+Failed: 2</pre>
+  <div class="note"><strong>שימו לב:</strong> סכום של מספרים שלמים חלקי 10 נותן חלוקת שלמים. חשבו איך לקבל ממוצע עשרוני. לעיגול משתמשים ב-<code>Math.Round</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">6</span>רק הספרות הזוגיות</h3>
+  <p>כתבו תוכנית שקולטת מספר שלם וחיובי, ובונה ממנו מספר חדש שבו נשארות רק הספרות הזוגיות, באותו סדר שבו הן מופיעות במספר המקורי.<br>
+  אם אין במספר אף ספרה זוגית, התוכנית מדפיסה <code>No even digits</code>.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter a positive number: <b>52846</b>
+New number: 2846</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter a positive number: <b>3201</b>
+New number: 20</pre>
+  <div class="label">דוגמת הרצה 3</div>
+<pre class="out">Enter a positive number: <b>1357</b>
+No even digits</pre>
+  <div class="note"><strong>רמז:</strong> מפרקים את המספר מהסוף להתחלה. כל ספרה זוגית מוסיפים למספר החדש לפי המקום שלה: אחדות, עשרות, מאות וכן הלאה. שימו לב ש-0 היא ספרה זוגית.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">7</span>שאלת בונוס: נחש את המספר</h3>
+  <p>המחשב מגריל מספר שלם בין 1 ל-100. המשתמש מנסה לנחש אותו.<br>
+  אחרי כל ניחוש שגוי התוכנית מדפיסה <code>Too big</code> אם הניחוש גדול מהמספר, או <code>Too small</code> אם הוא קטן ממנו, ומבקשת ניחוש נוסף.<br>
+  כשהמשתמש מנחש נכון, התוכנית מדפיסה כמה ניסיונות היו לו. אם הצליח ב-5 ניסיונות או פחות, היא מדפיסה גם <code>Excellent</code>.</p>
+  <div class="label">דוגמת הרצה (המחשב הגריל 34)</div>
+<pre class="out">Guess a number between 1 and 100: <b>50</b>
+Too big
+Guess again: <b>25</b>
+Too small
+Guess again: <b>37</b>
+Too big
+Guess again: <b>31</b>
+Too small
+Guess again: <b>34</b>
+Correct! Tries: 5
+Excellent</pre>
+  <div class="note"><strong>שימו לב:</strong> כדי להגריל מספר בין 1 ל-100 כותבים <code>rnd.Next(1, 101)</code>. הגבול העליון לא נכלל.</div>
+</section>
+
+</div>
+</body>
+</html>
