@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דף עבודה 2: פעולות</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+<style>
+  pre.prompt {
+    direction: rtl;
+    text-align: right;
+    white-space: pre-wrap;
+    unicode-bidi: isolate;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .actions { margin: 12px 0 4px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .actions button {
+    font: inherit; font-weight: 700; padding: 10px 20px; border: none; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer;
+  }
+  #copyMsg { color: var(--accent); font-weight: 600; }
+  a { color: var(--accent); }
+  @media print { .actions { display: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>דף עבודה 2: פעולות</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>חומר: פרק 7 (פעולות), בעזרת החומר של פרקים 1 עד 6</p>
+</header>
+
+<div class="intro">
+  <p style="margin:0 0 6px"><strong>הוראות:</strong></p>
+  <ul>
+    <li>כל השאלות נכתבות בתוכנית אחת ב-OnlineGDB: כל הפעולות באותה תוכנית, ו-<code>Main</code> אחד שקורא לכולן לפי הסדר.</li>
+    <li>בכל שאלה כותבים פעולה, וקוראים לה מ-<code>Main</code>.</li>
+    <li>באף שאלה הפעולה לא מחזירה ערך: כל הפעולות הן <code>void</code>, וההדפסה נעשית בתוך הפעולה.</li>
+    <li>השאלות מסודרות מהקלה לקשה. שאלה 6 היא שאלת בונוס.</li>
+    <li>בסיום שומרים (<strong>Save</strong>), לוחצים <strong>Share</strong> ושולחים למורה קישור אחד לכל דף העבודה.</li>
+  </ul>
+  <p style="margin:8px 0 0">בדוגמאות ההרצה, מה שהמשתמש מקליד מופיע <b style="color:#1f5f99">מודגש</b>.</p>
+</div>
+
+<section class="ex">
+  <h3><span class="num">1</span>האם אפשר להצביע</h3>
+  <p>כתבו פעולה בשם <code>CheckVote</code> שלא מקבלת ערכים.<br>
+  הפעולה קולטת שם וגיל, ומדפיסה אם האדם יכול להצביע בבחירות (מגיל 18 ומעלה).<br>
+  ב-<code>Main</code> קוראים לפעולה.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter your name: <b>Dana</b>
+Enter your age: <b>16</b>
+Dana, you cannot vote yet</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter your name: <b>Yossi</b>
+Enter your age: <b>20</b>
+Yossi, you can vote</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">2</span>ריבוע של מספר</h3>
+  <p>כתבו פעולה בשם <code>PrintSquare</code> שמקבלת מספר שלם ומדפיסה את הריבוע שלו.<br>
+  ב-<code>Main</code> קולטים מספר ושולחים אותו לפעולה.</p>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a number: <b>7</b>
+The square of 7 is 49</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">3</span>המספר הגדול</h3>
+  <p>כתבו פעולה בשם <code>PrintBigger</code> שמקבלת שני מספרים שלמים ומדפיסה את הגדול מביניהם.<br>
+  אם המספרים שווים, הפעולה מדפיסה שהם שווים.<br>
+  ב-<code>Main</code> קולטים שני מספרים ושולחים אותם לפעולה.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter first number: <b>12</b>
+Enter second number: <b>30</b>
+The bigger number is 30</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter first number: <b>8</b>
+Enter second number: <b>8</b>
+The numbers are equal</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">4</span>שם וגיל</h3>
+  <p>כתבו פעולה בשם <code>PrintAgeInfo</code> שמקבלת שם (מחרוזת) וגיל (מספר שלם). הפעולה מדפיסה:</p>
+  <ul>
+    <li>ברכה עם השם.</li>
+    <li>בן כמה הוא יהיה בעוד 10 שנים.</li>
+    <li>אם הגיל מתחת ל-18, כמה שנים נשארו עד גיל 18. אחרת, שהוא בוגר.</li>
+  </ul>
+  <p>ב-<code>Main</code> קולטים שם וגיל ושולחים אותם לפעולה.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter your name: <b>Noa</b>
+Enter your age: <b>15</b>
+Hello Noa
+In 10 years you will be 25
+Years left until 18: 3</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter your name: <b>Avi</b>
+Enter your age: <b>25</b>
+Hello Avi
+In 10 years you will be 35
+You are an adult</pre>
+  <div class="note"><strong>שימו לב:</strong> בקריאה לפעולה שולחים את הערכים באותו סדר ובאותו טיפוס כמו הפרמטרים.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">5</span>מספר ראשוני</h3>
+  <p>כתבו פעולה בשם <code>CheckPrime</code> שמקבלת מספר שלם ומדפיסה אם הוא ראשוני או לא.<br>
+  ב-<code>Main</code> קולטים מספר ושולחים אותו לפעולה.</p>
+  <div class="label">דוגמת הרצה 1</div>
+<pre class="out">Enter a number: <b>13</b>
+13 is prime</pre>
+  <div class="label">דוגמת הרצה 2</div>
+<pre class="out">Enter a number: <b>21</b>
+21 is not prime</pre>
+  <div class="note"><strong>רמז:</strong> מספר ראשוני מתחלק רק ב-1 ובעצמו. המספר 1 אינו ראשוני.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">6</span>שאלת בונוס: 7 בום</h3>
+  <p>כתבו פעולה בשם <code>SevenBoom</code> שמקבלת מספר בין 1 ל-99.<br>
+  הפעולה מדפיסה את המספרים מ-1 עד המספר שהתקבל, בשורה אחת. במקום כל מספר שמתחלק ב-7 או שיש בו את הספרה 7, היא מדפיסה <code>BOOM</code>.<br>
+  ב-<code>Main</code> קולטים מספר ושולחים אותו לפעולה.</p>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out" style="white-space:pre-wrap">Enter a number between 1 and 99: <b>30</b>
+1 2 3 4 5 6 BOOM 8 9 10 11 12 13 BOOM 15 16 BOOM 18 19 20 BOOM 22 23 24 25 26 BOOM BOOM 29 30</pre>
+  <div class="note"><strong>רמז:</strong> 27 מכיל את הספרה 7, ו-28 מתחלק ב-7. חשבו איך בודקים את ספרת האחדות ואת ספרת העשרות.</div>
+</section>
+
+</div>
+</body>
+</html>
