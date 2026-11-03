@@ -19,14 +19,15 @@
 
 | דף עבודה | חומר | מה יש בו |
 |---|---|---|
-| [דף עבודה 1](https://ciznerguy.github.io/yesodot/Worksheets/Worksheet_1.html) | פרקים 1–6 | 6 שאלות מהקלה לקשה ושאלת בונוס: משפטי תנאי, לולאת for ולולאת while, בלי לולאות מקוננות |
-| [דף עבודה 2](https://ciznerguy.github.io/yesodot/Worksheets/Worksheet_2.html) | פרק 7 | 5 שאלות מהקלה לקשה ושאלת בונוס על פעולות בלי ערך מוחזר (void), עם פרמטרים ובלי פרמטרים. כל השאלות בתוכנית אחת ובקישור אחד |
+| [דף עבודה 1](https://ciznerguy.github.io/yesodot/Worksheets/Worksheet_1.html) | פרקים 1–6 | <div dir="rtl" align="right">6 שאלות מהקלה לקשה ושאלת בונוס: משפטי תנאי, לולאת for ולולאת while, בלי לולאות מקוננות</div> |
+| [דף עבודה 2](https://ciznerguy.github.io/yesodot/Worksheets/Worksheet_2.html) | פרק 7 | <div dir="rtl" align="right">5 שאלות מהקלה לקשה ושאלת בונוס על פעולות בלי ערך מוחזר (void), עם פרמטרים ובלי פרמטרים. כל השאלות בתוכנית אחת ובקישור אחד</div> |
 
 ## 📎 נספחים
 
 | נספח | מה יש בו |
 |---|---|
-| [🚀 מדריך התחלה](https://ciznerguy.github.io/yesodot/Appendices/Getting_Started.html) | איך פותחים חשבון ב-OnlineGDB, איך משתפים קוד עם המורה, ואיך משתמשים ב-Gemini של משרד החינוך כמורה פרטי |
+| [🚀 מדריך התחלה](https://ciznerguy.github.io/yesodot/Appendices/Getting_Started.html) | <div dir="rtl" align="right">איך פותחים חשבון ב-OnlineGDB, איך משתפים קוד עם המורה, ואיך משתמשים ב-Gemini של משרד החינוך כמורה פרטי</div> |
+| [🧩 סוגי פעולות](https://ciznerguy.github.io/yesodot/Appendices/Methods_Guide.html) | <div dir="rtl" align="right">מדריך מקוצר לארבעת סוגי הפעולות: איך מזהים כל סוג לפי הניסוח בשאלה, דוגמה קצרה להרצה לכל סוג, וטבלת סיכום</div> |
 
 ## מבנה הפרויקט
 

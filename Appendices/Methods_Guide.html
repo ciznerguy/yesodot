@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סוגי פעולות</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+<style>
+  pre.prompt {
+    direction: rtl;
+    text-align: right;
+    white-space: pre-wrap;
+    unicode-bidi: isolate;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .actions { margin: 12px 0 4px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .actions button {
+    font: inherit; font-weight: 700; padding: 10px 20px; border: none; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer;
+  }
+  #copyMsg { color: var(--accent); font-weight: 600; }
+  a { color: var(--accent); }
+  @media print { .actions { display: none; } }
+</style>
+<style>
+  .grid { display: flex; flex-direction: column; gap: 12px; }
+  section.ex { margin-bottom: 0; padding: 12px 16px 10px; }
+  section.ex h3 { font-size: 17px; margin-bottom: 4px; }
+  .ask { margin: 4px 0 8px; padding: 6px 10px; background: var(--accent-soft); border-radius: 6px; font-size: 14px; }
+  .ask b { color: var(--accent); }
+  pre { font-size: 13px; line-height: 1.4; padding: 8px 12px; }
+  .label { margin: 8px 0 3px; font-size: 13px; }
+  header.cover { padding: 18px 22px 12px; margin-bottom: 12px; }
+  header.cover h1 { font-size: 24px; }
+  .tip { margin-top: 12px; }
+  table { margin-top: 12px; font-size: 14px; }
+  th, td { padding: 6px 10px; }
+  td code, th code { font-size: 13px; white-space: nowrap; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    body { font-size: 12.5px; line-height: 1.5; }
+    pre { font-size: 11.5px; line-height: 1.4; padding: 6px 10px; }
+    section.ex { padding: 10px 14px; break-inside: avoid; }
+    section.ex h3 { font-size: 15px; }
+    .ask { font-size: 12.5px; }
+    table { font-size: 12px; break-inside: avoid; }
+    td code { font-size: 11px; }
+    header.cover h1 { font-size: 21px; }
+    header.cover { padding: 12px 16px 8px; margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סוגי פעולות: מדריך מקוצר</h1>
+  <p>יסודות מדעי המחשב, שפת #C. ארבעה סוגי פעולות, איך מזהים כל סוג בשאלה, ודוגמה קצרה להרצה.</p>
+  <p>את הפעולות כותבים בתוך <code>class Program</code>, מחוץ ל-<code>Main</code>, ואת הקריאות כותבים בתוך <code>Main</code>.</p>
+</header>
+
+<div class="grid">
+
+<section class="ex">
+  <h3><span class="num">1</span>לא מקבלת ולא מחזירה</h3>
+  <div class="ask">בשאלה: "יש לכתוב <b>פעולה המדפיסה</b> שורה של 10 כוכביות"</div>
+<pre class="code">static void PrintStars()
+{
+    for (int i = 1; i &lt;= 10; i++)
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine();
+}</pre>
+  <div class="label">קריאה מ-Main ופלט</div>
+<pre class="code">PrintStars();</pre>
+<pre class="out">**********</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">2</span>מקבלת פרמטרים ומדפיסה</h3>
+  <div class="ask">בשאלה: "יש לכתוב <b>פעולה המקבלת</b> שני מספרים <b>ומדפיסה</b> את סכומם"</div>
+<pre class="code">static void PrintSum(int a, int b)
+{
+    Console.WriteLine("Sum: " + (a + b));
+}</pre>
+  <div class="label">קריאה מ-Main ופלט</div>
+<pre class="code">PrintSum(3, 4);</pre>
+<pre class="out">Sum: 7</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">3</span>לא מקבלת, אבל מחזירה</h3>
+  <div class="ask">בשאלה: "יש לכתוב <b>פעולה הקולטת</b> מספר חיובי <b>ומחזירה</b> אותו"</div>
+<pre class="code">static int ReadPositive()
+{
+    Console.Write("Enter a positive number: ");
+    int num = int.Parse(Console.ReadLine());
+    while (num &lt;= 0)
+    {
+        Console.Write("Error. Enter a positive number: ");
+        num = int.Parse(Console.ReadLine());
+    }
+    return num;
+}</pre>
+  <div class="label">קריאה מ-Main ופלט</div>
+<pre class="code">int n = ReadPositive();
+Console.WriteLine("You entered " + n);</pre>
+<pre class="out">Enter a positive number: <b>-3</b>
+Error. Enter a positive number: <b>8</b>
+You entered 8</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">4</span>מקבלת ומחזירה</h3>
+  <div class="ask">בשאלה: "יש לכתוב <b>פעולה המקבלת</b> שני מספרים <b>ומחזירה</b> את הגדול מביניהם"</div>
+<pre class="code">static int Max(int a, int b)
+{
+    if (a &gt; b)
+    {
+        return a;
+    }
+    return b;
+}</pre>
+  <div class="label">קריאה מ-Main ופלט</div>
+<pre class="code">int big = Max(4, 9);
+Console.WriteLine("The bigger is " + big);</pre>
+<pre class="out">The bigger is 9</pre>
+  <div class="note" style="margin-top:8px"><strong>לרוב לא מדפיסה.</strong> את הערך המוחזר שומרים במשתנה או מדפיסים ב-Main.</div>
+</section>
+
+</div>
+
+<table>
+  <tr><th>מילה בשאלה</th><th>מה כותבים</th><th>כותרת לדוגמה</th><th>קריאה לדוגמה</th></tr>
+  <tr><td>רק "מדפיסה"</td><td>void, סוגריים ריקים</td><td><code>static void PrintStars()</code></td><td><code>PrintStars();</code></td></tr>
+  <tr><td>"מקבלת" + "מדפיסה"</td><td>void, פרמטרים בסוגריים</td><td><code>static void PrintSum(int a, int b)</code></td><td><code>PrintSum(3, 4);</code></td></tr>
+  <tr><td>"מחזירה" בלי "מקבלת"</td><td>טיפוס מוחזר, סוגריים ריקים, return</td><td><code>static int ReadPositive()</code></td><td><code>int n = ReadPositive();</code></td></tr>
+  <tr><td>"מקבלת" + "מחזירה"</td><td>טיפוס מוחזר, פרמטרים, return</td><td><code>static int Max(int a, int b)</code></td><td><code>int big = Max(4, 9);</code></td></tr>
+</table>
+
+
+</div>
+</body>
+</html>

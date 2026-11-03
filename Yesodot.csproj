@@ -66,6 +66,7 @@
     <None Include="Worksheets\Worksheet_1.html" />
     <None Include="Worksheets\Worksheet_2.html" />
     <None Include="Appendices\Getting_Started.html" />
+    <None Include="Appendices\Methods_Guide.html" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
