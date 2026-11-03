@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מבדק פרק 7</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --ok: #2e7d32;
+    --ok-soft: #e8f5e9;
+    --bad: #c62828;
+    --bad-soft: #fdecea;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e6e9ef;
+      --muted: #a3abba;
+      --line: #343a46;
+      --paper: #1c2029;
+      --bg: #12151b;
+      --accent: #6aa8e0;
+      --accent-soft: #1d2b3a;
+      --ok: #81c784;
+      --ok-soft: #1c2e1f;
+      --bad: #ef9a9a;
+      --bad-soft: #3a1f1f;
+      --warn: #ffb74d;
+      --warn-soft: #33281a;
+      --code-bg: #232833;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .page { max-width: 780px; margin: 0 auto; padding: 24px 16px 80px; }
+  header {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 4px 0; color: var(--muted); }
+  .name-row { margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .name-row input {
+    font: inherit;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    min-width: 0;
+    flex: 1 1 200px;
+  }
+  .progress {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 8px 0 10px;
+  }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .progress small { color: var(--muted); }
+  .q {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .q .head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .q .qnum { font-weight: 700; color: var(--accent); }
+  .q .topic { font-size: 13px; color: var(--muted); }
+  .q .text { margin: 6px 0 10px; font-weight: 600; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 15px;
+  }
+  pre.code {
+    text-align: left;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0 0 12px;
+    font-size: 15px;
+    overflow-x: auto;
+  }
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--paper);
+  }
+  .opt:hover { border-color: var(--accent); }
+  .opt input { margin: 0; flex: none; width: 18px; height: 18px; accent-color: var(--accent); }
+  .opt pre { margin: 0; text-align: left; white-space: pre; font-size: 15px; }
+  .opt.correct { background: var(--ok-soft); border-color: var(--ok); }
+  .opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .explain {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    font-size: 15px;
+  }
+  .done .explain { display: block; }
+  .done .opt { cursor: default; }
+  .verdict { font-weight: 700; margin-left: 6px; }
+  .verdict.ok { color: var(--ok); }
+  .verdict.bad { color: var(--bad); }
+  button {
+    font: inherit;
+    font-weight: 700;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+  .msg { color: var(--warn); font-weight: 600; margin: 8px 0; }
+  #result {
+    display: none;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .score { font-size: 54px; font-weight: 800; line-height: 1.1; }
+  .score.high { color: var(--ok); }
+  .score.mid { color: var(--warn); }
+  .score.low { color: var(--bad); }
+  .review {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 8px;
+  }
+  .review ul { margin: 6px 0; padding-right: 20px; }
+  .review li { margin: 6px 0; }
+  .review .ex { color: var(--muted); font-size: 15px; }
+  .allgood {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--ok-soft);
+    border-right: 4px solid var(--ok);
+    border-radius: 8px;
+  }
+  a { color: var(--accent); }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .q { padding: 14px; }
+    header { padding: 16px; }
+    .score { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>מבדק חזרה: פרק 7</h1>
+  <p>פעולות</p>
+  <p>יש במבדק 24 שאלות. בחרי תשובה אחת בכל שאלה, ובסוף לחצי על "בדיקת המבדק".</p>
+  <p>אפשר להיעזר בטבלת מעקב על דף, אבל בלי להריץ את הקוד.</p>
+  <div class="name-row">
+    <label for="name">שם:</label>
+    <input id="name" type="text" autocomplete="off" placeholder="לא חובה">
+  </div>
+</header>
+
+<div class="progress">
+  <div class="bar"><div id="barFill"></div></div>
+  <small id="progressText"></small>
+</div>
+
+<div id="result"></div>
+<div id="quiz"></div>
+
+<div class="actions" id="actions">
+  <button id="submitBtn" type="button">בדיקת המבדק</button>
+</div>
+<div class="msg" id="msg"></div>
+
+</div>
+
+<script>
+var BOOKLET = "Summary_Ch7.html";
+
+var TOPICS = {
+  call:     { name: "קריאה לפעולה וסדר הביצוע", ex: [66] },
+  blackbox: { name: "פעולות מוכנות וקופסה שחורה", ex: [67] },
+  scope:    { name: "טווח ההכרה של משתנים", ex: [68] },
+  params:   { name: "פרמטרים", ex: [69, 70, 71] },
+  ret:      { name: "ערך מוחזר ופקודת return", ex: [72, 74] },
+  bool:     { name: "פעולה בוליאנית", ex: [73, 78] },
+  loopin:   { name: "לולאה בתוך פעולה", ex: [75] },
+  overload: { name: "העמסת פעולות", ex: [76] },
+  compose:  { name: "פעולה שקוראת לפעולה אחרת", ex: [77, 78, 79] }
+};
+
+// כל שאלה: נושא, טקסט, קוד (לא חובה), אפשרויות, אינדקס התשובה הנכונה, הסבר
+// אפשרות שמתחילה ב-"$" מוצגת כקוד
+var QUESTIONS = [
+  {
+    "t": "call",
+    "text": "פעולה סיימה לבצע את ההוראות שלה. איפה התוכנית ממשיכה?",
+    "opts": [
+      "בתחילת Main",
+      "בסוף התוכנית",
+      "בשורה הראשונה של הפעולה שוב",
+      "בשורה שאחרי הקריאה לפעולה"
+    ],
+    "a": 3,
+    "exp": "כשקוראים לפעולה, התוכנית קופצת אליה, מבצעת את ההוראות שלה, וחוזרת לשורה שאחרי הקריאה."
+  },
+  {
+    "t": "call",
+    "text": "מה יודפס?",
+    "code": "static void Hi()\n{\n    Console.Write(\"B \");\n}\n\nstatic void Main()\n{\n    Console.Write(\"A \");\n    Hi();\n    Console.Write(\"C \");\n}",
+    "opts": [
+      "$A B C",
+      "$A C B",
+      "$B A C",
+      "$A C"
+    ],
+    "a": 0,
+    "exp": "התוכנית מדפיסה A, קופצת לפעולה ומדפיסה B, וחוזרת להדפיס C."
+  },
+  {
+    "t": "call",
+    "text": "כמה כוכביות יודפסו בסך הכול?",
+    "code": "static void Line()\n{\n    for (int i = 0; i < 3; i++)\n    {\n        Console.Write(\"*\");\n    }\n    Console.WriteLine();\n}\n\nstatic void Main()\n{\n    Line();\n    Line();\n}",
+    "opts": [
+      "3",
+      "2",
+      "6",
+      "5"
+    ],
+    "a": 2,
+    "exp": "כל קריאה מדפיסה שורה של 3 כוכביות. קראנו לפעולה פעמיים, ולכן יודפסו 6."
+  },
+  {
+    "t": "blackbox",
+    "text": "מה צריך לדעת כדי להשתמש בפעולה מוכנה, כמו Math.Sqrt?",
+    "opts": [
+      "איך היא כתובה מבפנים",
+      "מה היא מקבלת ומה היא מחזירה",
+      "באיזו שנה היא נכתבה",
+      "כמה שורות יש בה"
+    ],
+    "a": 1,
+    "exp": "זו קופסה שחורה: לא צריך לדעת מה יש בפנים, מספיק לדעת מה שולחים אליה ומה מקבלים ממנה."
+  },
+  {
+    "t": "blackbox",
+    "text": "מה יודפס?",
+    "code": "Console.WriteLine(Math.Max(3, Math.Min(8, 5)));",
+    "opts": [
+      "8",
+      "5",
+      "3",
+      "16"
+    ],
+    "a": 1,
+    "exp": "קודם מחושבת הקריאה הפנימית: הקטן מבין 8 ו-5 הוא 5. אחר כך הגדול מבין 3 ו-5 הוא 5."
+  },
+  {
+    "t": "blackbox",
+    "text": "איך קוראים לפעולה Sqrt שנמצאת במחלקה Math?",
+    "opts": [
+      "$Sqrt.Math(81)",
+      "$Math(Sqrt, 81)",
+      "$Sqrt(81).Math",
+      "$Math.Sqrt(81)"
+    ],
+    "a": 3,
+    "exp": "כדי לקרוא לפעולה ממחלקה אחרת, כותבים את שם המחלקה, נקודה, ושם הפעולה."
+  },
+  {
+    "t": "scope",
+    "text": "מה יודפס?",
+    "code": "static void Change(int num)\n{\n    num = num * 2;\n}\n\nstatic void Main()\n{\n    int num = 5;\n    Change(num);\n    Console.WriteLine(num);\n}",
+    "opts": [
+      "5",
+      "10",
+      "0",
+      "שגיאת קומפילציה"
+    ],
+    "a": 0,
+    "exp": "הפעולה מקבלת עותק של הערך. num של הפעולה ו-num של Main הם שני משתנים שונים, והשינוי לא משפיע על Main."
+  },
+  {
+    "t": "scope",
+    "text": "מה יקרה?",
+    "code": "static void SetAge()\n{\n    int age = 16;\n}\n\nstatic void Main()\n{\n    SetAge();\n    Console.WriteLine(age);\n}",
+    "opts": [
+      "יודפס 16",
+      "יודפס 0",
+      "שגיאת קומפילציה, age לא מוכר ב-Main",
+      "לא יודפס כלום"
+    ],
+    "a": 2,
+    "exp": "משתנה שהוגדר בתוך פעולה מוכר רק בתוך הפעולה הזו. ב-Main אין משתנה בשם age."
+  },
+  {
+    "t": "scope",
+    "text": "מה יקרה?",
+    "code": "for (int i = 0; i < 3; i++)\n{\n    Console.Write(i);\n}\nConsole.WriteLine(i);",
+    "opts": [
+      "יודפס 0123",
+      "יודפס 012 ואחר כך 2",
+      "שגיאת קומפילציה, i לא מוכר אחרי הלולאה",
+      "יודפס 0122"
+    ],
+    "a": 2,
+    "exp": "משתנה הבקרה שהוגדר בשורת הלולאה מוכר רק בתוך הלולאה."
+  },
+  {
+    "t": "params",
+    "text": "מה יודפס?",
+    "code": "static void Diff(int a, int b)\n{\n    Console.WriteLine(a - b);\n}\n\nstatic void Main()\n{\n    Diff(3, 10);\n}",
+    "opts": [
+      "7",
+      "-7",
+      "13",
+      "שגיאה"
+    ],
+    "a": 1,
+    "exp": "הערך הראשון נכנס לפרמטר הראשון והשני לשני: a שווה 3 ו-b שווה 10. לכן 3 פחות 10 זה 7-."
+  },
+  {
+    "t": "params",
+    "text": "כותרת הפעולה היא static void Show(string name, int age). איזו קריאה תקינה?",
+    "opts": [
+      "$Show(16, \"Dana\");",
+      "$Show(\"Dana\");",
+      "$Show(\"Dana\", \"16\");",
+      "$Show(\"Dana\", 16);"
+    ],
+    "a": 3,
+    "exp": "שולחים ערכים באותו מספר, באותו סדר ומאותו טיפוס כמו הפרמטרים: קודם מחרוזת, אחר כך מספר שלם."
+  },
+  {
+    "t": "params",
+    "text": "המשתנה x שווה 4, וקוראים לפעולה כך: PrintStars(x * 2). איזה ערך יקבל הפרמטר?",
+    "opts": [
+      "8",
+      "4",
+      "x",
+      "שגיאה, אסור לשלוח ביטוי"
+    ],
+    "a": 0,
+    "exp": "אפשר לשלוח מספר, משתנה או ביטוי. הביטוי מחושב קודם, והפעולה מקבלת רק את הערך 8."
+  },
+  {
+    "t": "params",
+    "text": "איזה משפט נכון לגבי פרמטרים?",
+    "opts": [
+      "הפרמטר מוגדר בכותרת הפעולה, ומקבל ערך בזמן הקריאה",
+      "פרמטר מקבל ערך רק אם קולטים אותו בתוך הפעולה",
+      "לכל הפרמטרים של פעולה חייב להיות אותו טיפוס",
+      "לפעולה יכול להיות לכל היותר פרמטר אחד"
+    ],
+    "a": 0,
+    "exp": "הפרמטרים כתובים בסוגריים בכותרת הפעולה, מופרדים בפסיק, ולכל אחד טיפוס משלו. הערכים מגיעים מהקריאה."
+  },
+  {
+    "t": "ret",
+    "text": "מה יודפס?",
+    "code": "static int Square(int n)\n{\n    return n * n;\n}\n\nstatic void Main()\n{\n    int r = Square(3) + 1;\n    Console.WriteLine(r);\n}",
+    "opts": [
+      "9",
+      "16",
+      "10",
+      "4"
+    ],
+    "a": 2,
+    "exp": "הפעולה מחזירה 9, והערך המוחזר משמש בתוך הביטוי: 9 ועוד 1 זה 10."
+  },
+  {
+    "t": "ret",
+    "text": "מה הבעיה בפעולה?",
+    "code": "static int Twice(int n)\n{\n    Console.WriteLine(n * 2);\n}",
+    "opts": [
+      "אין בעיה",
+      "חסרה פקודת return, וזו שגיאת קומפילציה",
+      "אסור להדפיס בפעולה",
+      "הפרמטר צריך להיות double"
+    ],
+    "a": 1,
+    "exp": "הפעולה הוגדרה כמחזירה int, ולכן חייבת להחזיר ערך. הדפסה היא לא החזרה. אם לא רוצים להחזיר, כותבים void."
+  },
+  {
+    "t": "ret",
+    "text": "מה יודפס?",
+    "code": "static int Sign(int n)\n{\n    if (n > 0)\n    {\n        return 1;\n    }\n    return -1;\n}\n\nstatic void Main()\n{\n    Console.WriteLine(Sign(0));\n}",
+    "opts": [
+      "1",
+      "0",
+      "שגיאה",
+      "-1"
+    ],
+    "a": 3,
+    "exp": "0 לא גדול מ-0, ולכן הפקודה הראשונה לא מתבצעת. התוכנית מגיעה ל-return השני ומחזירה 1-."
+  },
+  {
+    "t": "ret",
+    "text": "איזו כותרת מתאימה לפעולה שמקבלת טמפרטורה ומחזירה מחרוזת שמתארת את היום?",
+    "opts": [
+      "$static void Describe(double temperature)",
+      "$static string Describe(double temperature)",
+      "$static double Describe(string temperature)",
+      "$static string Describe()"
+    ],
+    "a": 1,
+    "exp": "הטיפוס שלפני שם הפעולה הוא טיפוס הערך המוחזר, כאן string. הטמפרטורה היא פרמטר מטיפוס double."
+  },
+  {
+    "t": "bool",
+    "text": "מה יודפס?",
+    "code": "static bool IsEven(int n)\n{\n    return n % 2 == 0;\n}\n\nstatic void Main()\n{\n    if (IsEven(7))\n    {\n        Console.WriteLine(\"even\");\n    }\n    else\n    {\n        Console.WriteLine(\"odd\");\n    }\n}",
+    "opts": [
+      "$odd",
+      "$even",
+      "$True",
+      "$False"
+    ],
+    "a": 0,
+    "exp": "7 % 2 שווה 1, ולכן הפעולה מחזירה false והתוכנית נכנסת ל-else. אפשר להשתמש בפעולה בוליאנית ישר בתוך התנאי."
+  },
+  {
+    "t": "bool",
+    "text": "הפעולה IsPalindrome מחזירה true אם המספר שווה להפוך שלו. עבור איזה מספר היא תחזיר true?",
+    "opts": [
+      "1231",
+      "120",
+      "1200",
+      "1221"
+    ],
+    "a": 3,
+    "exp": "ההפוך של 1221 הוא 1221. ההפוך של 120 הוא 21, ושל 1200 הוא 21, ולכן הם לא פלינדרומים."
+  },
+  {
+    "t": "loopin",
+    "text": "הפעולה CountDigit(number, digit) מחזירה כמה פעמים הספרה מופיעה במספר. מה תחזיר הקריאה CountDigit(70707, 0)?",
+    "code": "static int CountDigit(int number, int digit)\n{\n    int count = 0;\n    while (number > 0)\n    {\n        if (number % 10 == digit)\n        {\n            count++;\n        }\n        number /= 10;\n    }\n    return count;\n}",
+    "opts": [
+      "0",
+      "3",
+      "2",
+      "5"
+    ],
+    "a": 2,
+    "exp": "הלולאה עוברת על הספרות 7, 0, 7, 0, 7. הספרה 0 מופיעה פעמיים."
+  },
+  {
+    "t": "loopin",
+    "text": "מה תחזיר הקריאה CountDigit(0, 0), עם הפעולה מהשאלה הקודמת?",
+    "opts": [
+      "0",
+      "1",
+      "לולאה אינסופית",
+      "שגיאה"
+    ],
+    "a": 0,
+    "exp": "עבור המספר 0 התנאי number > 0 שקר כבר בהתחלה, והלולאה לא מתבצעת. לכן הספרה 0 במספר 0 לא נספרת."
+  },
+  {
+    "t": "overload",
+    "text": "באותה מחלקה כבר יש פעולה static int Min(int x, int y). איזו פעולה אי אפשר להוסיף?",
+    "opts": [
+      "$static int Min(int x, int y, int z)",
+      "$static double Min(double x, double y)",
+      "$static int Min(int a, int b)",
+      "$static int Max(int x, int y)"
+    ],
+    "a": 2,
+    "exp": "אי אפשר שתי פעולות עם אותו שם ואותם טיפוסי פרמטרים, גם אם שמות הפרמטרים שונים. פעולות עמוסות נבדלות במספר הפרמטרים או בטיפוס שלהם."
+  },
+  {
+    "t": "overload",
+    "text": "יש שתי פעולות: Min(int x, int y) ו-Min(int x, int y, int z). מה יודפס?",
+    "code": "Console.WriteLine(Min(4, 9, 2));",
+    "opts": [
+      "4",
+      "2",
+      "9",
+      "שגיאה, לא ברור לאיזו פעולה לקרוא"
+    ],
+    "a": 1,
+    "exp": "נשלחו שלושה ערכים, ולכן נקראת הפעולה עם שלושה פרמטרים. היא מחזירה את הקטן מביניהם, 2."
+  },
+  {
+    "t": "compose",
+    "text": "הפעולה Power(baseNum, exponent) מחזירה את baseNum בחזקת exponent. מה יודפס?",
+    "code": "Console.WriteLine(Math.Sqrt(Power(3, 2) + Power(4, 2)));",
+    "opts": [
+      "7",
+      "25",
+      "12",
+      "5"
+    ],
+    "a": 3,
+    "exp": "קודם מחושבות הקריאות הפנימיות: 9 ועוד 16 זה 25. אחר כך השורש של 25 הוא 5. פעולה אחת יכולה לקבל ערך שהחזירה פעולה אחרת."
+  }
+];
+
+function esc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function optHtml(o) {
+  if (o.charAt(0) === "$") return "<pre>" + esc(o.slice(1)) + "</pre>";
+  return "<span>" + esc(o) + "</span>";
+}
+
+function render() {
+  var html = "";
+  QUESTIONS.forEach(function (q, i) {
+    html += '<div class="q" id="q' + i + '">';
+    html += '<div class="head"><span class="qnum">שאלה ' + (i + 1) + '</span>';
+    html += '<span class="topic">' + esc(TOPICS[q.t].name) + '</span></div>';
+    html += '<div class="text">' + esc(q.text) + '</div>';
+    if (q.code) html += '<pre class="code">' + esc(q.code) + '</pre>';
+    html += '<div class="opts">';
+    q.opts.forEach(function (o, j) {
+      html += '<label class="opt" id="q' + i + 'o' + j + '"><input type="radio" name="q' + i + '" value="' + j + '">' + optHtml(o) + '</label>';
+    });
+    html += '</div>';
+    html += '<div class="explain" id="e' + i + '"></div>';
+    html += '</div>';
+  });
+  document.getElementById("quiz").innerHTML = html;
+  document.querySelectorAll('#quiz input[type=radio]').forEach(function (r) {
+    r.addEventListener("change", updateProgress);
+  });
+  updateProgress();
+}
+
+function answers() {
+  return QUESTIONS.map(function (q, i) {
+    var c = document.querySelector('input[name="q' + i + '"]:checked');
+    return c ? parseInt(c.value, 10) : -1;
+  });
+}
+
+function updateProgress() {
+  var n = answers().filter(function (a) { return a >= 0; }).length;
+  document.getElementById("barFill").style.width = (n / QUESTIONS.length * 100) + "%";
+  document.getElementById("progressText").textContent = "ענית על " + n + " מתוך " + QUESTIONS.length + " שאלות";
+}
+
+var submittedOnce = false;
+
+function grade() {
+  var ans = answers();
+  var missing = ans.filter(function (a) { return a < 0; }).length;
+  var msg = document.getElementById("msg");
+  if (missing > 0 && !submittedOnce) {
+    msg.textContent = (missing === 1 ? "נשארה שאלה אחת בלי תשובה." : "נשארו " + missing + " שאלות בלי תשובה.") + " אפשר לחזור ולענות, או ללחוץ שוב כדי לבדוק בכל זאת.";
+    submittedOnce = true;
+    var first = ans.indexOf(-1);
+    document.getElementById("q" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  msg.textContent = "";
+
+  var correct = 0;
+  var wrongByTopic = {};
+  QUESTIONS.forEach(function (q, i) {
+    var box = document.getElementById("q" + i);
+    box.classList.add("done");
+    box.querySelectorAll("input").forEach(function (r) { r.disabled = true; });
+    var ok = ans[i] === q.a;
+    if (ok) correct++;
+    else wrongByTopic[q.t] = (wrongByTopic[q.t] || 0) + 1;
+    document.getElementById("q" + i + "o" + q.a).classList.add("correct");
+    if (ans[i] >= 0 && !ok) document.getElementById("q" + i + "o" + ans[i]).classList.add("wrong");
+    var verdict = ok ? '<span class="verdict ok">נכון.</span>'
+                     : (ans[i] < 0 ? '<span class="verdict bad">לא נענתה.</span>' : '<span class="verdict bad">לא נכון.</span>');
+    document.getElementById("e" + i).innerHTML = verdict + " " + esc(q.exp);
+  });
+
+  var total = QUESTIONS.length;
+  var score = Math.round(correct / total * 100);
+  var level = score >= 85 ? "high" : (score >= 60 ? "mid" : "low");
+  var name = document.getElementById("name").value.trim();
+
+  var r = '<div>' + (name ? esc(name) + ", " : "") + 'הציון שלך:</div>';
+  r += '<div class="score ' + level + '">' + score + '</div>';
+  r += '<div>ענית נכון על ' + correct + ' מתוך ' + total + ' שאלות.</div>';
+
+  var keys = Object.keys(TOPICS).filter(function (k) { return wrongByTopic[k]; });
+  if (keys.length === 0) {
+    r += '<div class="allgood"><strong>כל הכבוד!</strong> ענית נכון על כל השאלות. את מוכנה לפרק הבא.</div>';
+  } else {
+    r += '<div class="review"><strong>נושאים שכדאי לחזור עליהם:</strong><ul>';
+    keys.forEach(function (k) {
+      var tp = TOPICS[k];
+      r += '<li>' + esc(tp.name) + ' <span class="ex">(טעויות: ' + wrongByTopic[k] + '. לחזור על דוגמה ' + tp.ex.join(", ") + ' בקוד ובחוברת)</span></li>';
+    });
+    r += '</ul>';
+    r += '<div>החוברת המלווה: <a href="' + BOOKLET + '" target="_blank" rel="noopener">לפתיחת החוברת</a></div>';
+    r += '</div>';
+  }
+  r += '<p style="margin:14px 0 0;color:var(--muted)">למטה מופיעות כל השאלות עם התשובה הנכונה והסבר.</p>';
+
+  var res = document.getElementById("result");
+  res.innerHTML = r;
+  res.style.display = "block";
+
+  document.getElementById("actions").innerHTML = '<button id="againBtn" type="button" class="secondary">התחלה מחדש</button>';
+  document.getElementById("againBtn").addEventListener("click", restart);
+  res.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function restart() {
+  submittedOnce = false;
+  var res = document.getElementById("result");
+  res.style.display = "none";
+  res.innerHTML = "";
+  document.getElementById("actions").innerHTML = '<button id="submitBtn" type="button">בדיקת המבדק</button>';
+  document.getElementById("submitBtn").addEventListener("click", grade);
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("submitBtn").addEventListener("click", grade);
+render();
+</script>
+</body>
+</html>
