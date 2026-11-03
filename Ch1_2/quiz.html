@@ -198,7 +198,7 @@
 <header>
   <h1>מבדק חזרה: פרקים 1 ו-2</h1>
   <p>הוראות הדפסה ומשתנים, אופרטורים וביטויים לוגיים</p>
-  <p>יש במבדק 24 שאלות. בחרי תשובה אחת בכל שאלה, ובסוף לחצי על "בדיקת המבדק".</p>
+  <p>יש במבדק 24 שאלות. יש לבחור תשובה אחת בכל שאלה, ובסוף ללחוץ על "בדיקת המבדק".</p>
   <p>אפשר להיעזר בטבלת מעקב על דף, אבל בלי להריץ את הקוד.</p>
   <div class="name-row">
     <label for="name">שם:</label>
@@ -398,7 +398,7 @@ function answers() {
 function updateProgress() {
   var n = answers().filter(function (a) { return a >= 0; }).length;
   document.getElementById("barFill").style.width = (n / QUESTIONS.length * 100) + "%";
-  document.getElementById("progressText").textContent = "ענית על " + n + " מתוך " + QUESTIONS.length + " שאלות";
+  document.getElementById("progressText").textContent = "נענו " + n + " מתוך " + QUESTIONS.length + " שאלות";
 }
 
 var submittedOnce = false;
@@ -437,13 +437,13 @@ function grade() {
   var level = score >= 85 ? "high" : (score >= 60 ? "mid" : "low");
   var name = document.getElementById("name").value.trim();
 
-  var r = '<div>' + (name ? esc(name) + ", " : "") + 'הציון שלך:</div>';
+  var r = '<div>' + (name ? esc(name) + ", " : "") + 'הציון:</div>';
   r += '<div class="score ' + level + '">' + score + '</div>';
-  r += '<div>ענית נכון על ' + correct + ' מתוך ' + total + ' שאלות.</div>';
+  r += '<div>תשובות נכונות: ' + correct + ' מתוך ' + total + '.</div>';
 
   var keys = Object.keys(TOPICS).filter(function (k) { return wrongByTopic[k]; });
   if (keys.length === 0) {
-    r += '<div class="allgood"><strong>כל הכבוד!</strong> ענית נכון על כל השאלות. את מוכנה לפרק הבא.</div>';
+    r += '<div class="allgood"><strong>כל הכבוד!</strong> כל התשובות נכונות. אפשר להמשיך לפרק הבא.</div>';
   } else {
     r += '<div class="review"><strong>נושאים שכדאי לחזור עליהם:</strong><ul>';
     keys.forEach(function (k) {
