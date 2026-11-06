@@ -198,6 +198,11 @@
   <tr><td>77</td><td>מרחק בין שתי נקודות</td></tr>
   <tr><td>78</td><td>תקינות תאריך</td></tr>
   <tr><td>79</td><td>שאלת סיכום: עידוד קניית ספרים</td></tr>
+  <tr><td>80</td><td>פעולה שרק מדפיסה: הודעת ברכה</td></tr>
+  <tr><td>81</td><td>פעולה שרק מדפיסה: תפריט</td></tr>
+  <tr><td>82</td><td>פעולה שמקבלת ערך אחד</td></tr>
+  <tr><td>83</td><td>פעולה שמקבלת שני ערכים מאותו טיפוס</td></tr>
+  <tr><td>84</td><td>פעולה שמקבלת שני ערכים מטיפוסים שונים</td></tr>
 </table>
 
 <section class="ex">
@@ -473,6 +478,108 @@ You pay 80
 Choose a deal (2 or 3): <b>5</b>
 No such deal</pre>
   <div class="note"><strong>ערך מיוחד כסימן:</strong> מחיר לא יכול להיות שלילי, ולכן מינוס 1 משמש כסימן לבחירה לא תקינה. מי שקורא לפעולה בודק את הערך הזה לפני שהוא מדפיס.</div>
+</section>
+
+<h2 class="chapter">דוגמאות פשוטות</h2>
+
+<div class="intro">
+  <p style="margin:0">חמש דוגמאות קצרות לתרגול הבסיס. אף פעולה כאן לא מחזירה ערך: כולן <code>void</code>, וההדפסה נעשית בתוך הפעולה.</p>
+</div>
+
+<section class="ex">
+  <h3><span class="num">80</span>פעולה שרק מדפיסה: הודעת ברכה</h3>
+  <p>הפעולה לא מקבלת ערכים ולא מחזירה ערך. בכל קריאה היא מדפיסה את אותה הודעה.</p>
+<pre class="code">static void PrintWelcome()
+{
+    Console.WriteLine("Welcome to the class");
+}</pre>
+  <div class="label">קריאה</div>
+<pre class="code">PrintWelcome();
+PrintWelcome();</pre>
+  <div class="label">פלט</div>
+<pre class="out">Welcome to the class
+Welcome to the class</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">81</span>פעולה שרק מדפיסה: תפריט</h3>
+  <p>גם כאן הפעולה לא מקבלת ערכים. היא מדפיסה כמה שורות, וקריאה אחת מספיקה כדי להדפיס את כולן.</p>
+<pre class="code">static void PrintMenu()
+{
+    Console.WriteLine("1. Start");
+    Console.WriteLine("2. Help");
+    Console.WriteLine("3. Exit");
+}</pre>
+  <div class="label">קריאה</div>
+<pre class="code">PrintMenu();</pre>
+  <div class="label">פלט</div>
+<pre class="out">1. Start
+2. Help
+3. Exit</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">82</span>פעולה שמקבלת ערך אחד</h3>
+  <p>הערך ששולחים בקריאה נכנס לפרמטר. אפשר לשלוח מספר, ואפשר לשלוח משתנה.</p>
+<pre class="code">static void PrintDouble(int num)
+{
+    Console.WriteLine("Double of " + num + " is " + (num * 2));
+}</pre>
+  <div class="label">קריאה</div>
+<pre class="code">PrintDouble(6);
+
+Console.Write("Enter a number: ");
+int num = int.Parse(Console.ReadLine());
+PrintDouble(num);</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Double of 6 is 12
+Enter a number: <b>10</b>
+Double of 10 is 20</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">83</span>פעולה שמקבלת שני ערכים מאותו טיפוס</h3>
+  <p>שני הפרמטרים הם מספרים שלמים, וכותבים טיפוס לכל אחד מהם. בקריאה שולחים שני ערכים, מופרדים בפסיק.</p>
+<pre class="code">static void PrintSum(int a, int b)
+{
+    Console.WriteLine("Sum: " + (a + b));
+}</pre>
+  <div class="label">קריאה</div>
+<pre class="code">PrintSum(3, 4);
+
+Console.Write("Enter first number: ");
+int a = int.Parse(Console.ReadLine());
+Console.Write("Enter second number: ");
+int b = int.Parse(Console.ReadLine());
+PrintSum(a, b);</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Sum: 7
+Enter first number: <b>5</b>
+Enter second number: <b>8</b>
+Sum: 13</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">84</span>פעולה שמקבלת שני ערכים מטיפוסים שונים</h3>
+  <p>הפרמטר הראשון הוא מחרוזת, והשני הוא מספר שלם.</p>
+<pre class="code">static void PrintStudent(string name, int age)
+{
+    Console.WriteLine(name + " is " + age + " years old");
+}</pre>
+  <div class="label">קריאה</div>
+<pre class="code">PrintStudent("Dana", 16);
+
+Console.Write("Enter your name: ");
+string name = Console.ReadLine();
+Console.Write("Enter your age: ");
+int age = int.Parse(Console.ReadLine());
+PrintStudent(name, age);</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Dana is 16 years old
+Enter your name: <b>Noa</b>
+Enter your age: <b>17</b>
+Noa is 17 years old</pre>
+  <div class="note"><strong>שימו לב:</strong> בקריאה חשוב לשמור על הסדר: קודם המחרוזת, ואחר כך המספר. הקריאה <code>PrintStudent(16, "Dana")</code> היא שגיאת קומפילציה.</div>
 </section>
 
 <h2 class="chapter">דף חזרה מהיר</h2>

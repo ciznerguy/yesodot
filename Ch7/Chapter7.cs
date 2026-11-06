@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Yesodot
 {
@@ -22,7 +18,7 @@ namespace Yesodot
             // יש להסיר את סימן ההערה מהדוגמה שרוצים להריץ
 
             // פרק 7: פעולות
-             example66();
+            example66();
             // example67();
             // example68();
             // example69();
@@ -36,6 +32,11 @@ namespace Yesodot
             // example77();
             // example78();
             // example79();
+            // example80();
+            // example81();
+            // example82();
+            // example83();
+            // example84();
         }
 
         // ==========================================================
@@ -72,7 +73,23 @@ namespace Yesodot
         {
             for (int i = 1; i <= size; i++)
             {
-                PrintLine(size);
+                for (int j = 1; j <= size; j++)
+                {
+                    Console.Write("*");
+                }
+            }
+        }
+
+
+        public static void Drew3Square()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                for (int j = 1; j <= 5; j++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
             }
         }
 
@@ -632,6 +649,99 @@ namespace Yesodot
             }
 
             return total;
+        }
+
+        // ==========================================================
+        // דוגמאות פשוטות: פעולות שרק מדפיסות, ופעולות שמקבלות ערכים
+        // ==========================================================
+
+        // דוגמה 80: פעולה שרק מדפיסה, הודעת ברכה
+        // הפעולה לא מקבלת ערכים ולא מחזירה ערך.
+        // בכל קריאה היא מדפיסה את אותה הודעה.
+        public static void example80()
+        {
+            PrintWelcome();
+            PrintWelcome();
+        }
+
+        // הפעולה מדפיסה הודעת ברכה.
+        static void PrintWelcome()
+        {
+            Console.WriteLine("Welcome to the class");
+        }
+
+        // דוגמה 81: פעולה שרק מדפיסה, תפריט
+        // גם הפעולה הזו לא מקבלת ערכים ולא מחזירה ערך.
+        // היא מדפיסה כמה שורות, וקריאה אחת מספיקה כדי להדפיס את כולן.
+        public static void example81()
+        {
+            PrintMenu();
+        }
+
+        // הפעולה מדפיסה תפריט של שלוש שורות.
+        static void PrintMenu()
+        {
+            Console.WriteLine("1. Start");
+            Console.WriteLine("2. Help");
+            Console.WriteLine("3. Exit");
+        }
+
+        // דוגמה 82: פעולה שמקבלת ערך אחד
+        // הערך ששולחים בקריאה נכנס לפרמטר.
+        // אפשר לשלוח מספר, ואפשר לשלוח משתנה.
+        public static void example82()
+        {
+            PrintDouble(6);
+
+            Console.Write("Enter a number: ");
+            int num = int.Parse(Console.ReadLine());
+            PrintDouble(num);
+        }
+
+        // הפעולה מקבלת מספר שלם, ומדפיסה את המספר כפול 2.
+        static void PrintDouble(int num)
+        {
+            Console.WriteLine("Double of " + num + " is " + (num * 2));
+        }
+
+        // דוגמה 83: פעולה שמקבלת שני ערכים מאותו טיפוס
+        // שני הפרמטרים הם מספרים שלמים, וכותבים טיפוס לכל אחד מהם.
+        // בקריאה שולחים שני ערכים, מופרדים בפסיק.
+        public static void example83()
+        {
+            PrintSum(3, 4);
+
+            Console.Write("Enter first number: ");
+            int a = int.Parse(Console.ReadLine());
+            Console.Write("Enter second number: ");
+            int b = int.Parse(Console.ReadLine());
+            PrintSum(a, b);
+        }
+
+        // הפעולה מקבלת שני מספרים שלמים, ומדפיסה את הסכום שלהם.
+        static void PrintSum(int a, int b)
+        {
+            Console.WriteLine("Sum: " + (a + b));
+        }
+
+        // דוגמה 84: פעולה שמקבלת שני ערכים מטיפוסים שונים
+        // הפרמטר הראשון הוא מחרוזת, והשני הוא מספר שלם.
+        // בקריאה חשוב לשמור על הסדר: קודם המחרוזת, ואחר כך המספר.
+        public static void example84()
+        {
+            PrintStudent("Dana", 16);
+
+            Console.Write("Enter your name: ");
+            string name = Console.ReadLine();
+            Console.Write("Enter your age: ");
+            int age = int.Parse(Console.ReadLine());
+            PrintStudent(name, age);
+        }
+
+        // הפעולה מקבלת שם וגיל, ומדפיסה משפט עליהם.
+        static void PrintStudent(string name, int age)
+        {
+            Console.WriteLine(name + " is " + age + " years old");
         }
     }
 }
