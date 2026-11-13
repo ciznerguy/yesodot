@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סיכום פרק 8: מחרוזות</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סיכום דוגמאות: פרק 8, מחרוזות</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>מסמך מלווה לקוד הדוגמאות בקובץ <code>Ch8/Chapter8.cs</code></p>
+</header>
+
+<div class="howto">
+  <strong>איך מריצים דוגמה?</strong>
+  <ol>
+    <li>פותחים ב-Visual Studio את הקובץ <code>Yesodot.slnx</code>.</li>
+    <li>בקובץ הראשי <code>Program.cs</code> מוחקים את שני הלוכסנים בתחילת השורה <code>// Chapter8.Run();</code></li>
+    <li>פותחים את הקובץ <code>Ch8/Chapter8.cs</code>. בפעולה <code>Run</code> שבראשו מוצאים את השורה של הדוגמה, למשל <code>// example90();</code>, ומוחקים את שני הלוכסנים.</li>
+    <li>מריצים (F5 או Ctrl+F5).</li>
+    <li>לפני שעוברים לדוגמה הבאה, מחזירים את הלוכסנים לשורה הקודמת.</li>
+  </ol>
+</div>
+
+<h2 class="chapter first">פרק 8: מחרוזות</h2>
+
+<div class="intro">
+  <p style="margin-top:0"><strong>מחרוזת</strong> היא רצף של תווים, למשל מילה או משפט. כותבים אותה בין גרשיים. לכל תו יש מיקום, והמיקום הראשון הוא 0.</p>
+<pre class="code">string s = "Hello World!";</pre>
+  <table>
+    <tr><th>מיקום</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+    <tr><th>תו</th><td>H</td><td>e</td><td>l</td><td>l</td><td>o</td><td>(רווח)</td><td>W</td><td>o</td><td>r</td><td>l</td><td>d</td><td>!</td></tr>
+  </table>
+  <p style="margin-bottom:0"><strong>אי אפשר לשנות מחרוזת קיימת.</strong> כל פעולה שנראית כאילו היא משנה מחרוזת מחזירה בעצם מחרוזת חדשה, והמקורית נשארת כמו שהיא.</p>
+</div>
+
+<table>
+  <tr><th style="width:70px">דוגמה</th><th>נושא</th></tr>
+  <tr><td>85</td><td>מהי מחרוזת, והשמה בין מחרוזות</td></tr>
+  <tr><td>86</td><td>קליטת מחרוזת</td></tr>
+  <tr><td>87</td><td>אורך מחרוזת ופנייה לתו</td></tr>
+  <tr><td>88</td><td>מעבר על מחרוזת: ספירת מילים</td></tr>
+  <tr><td>89</td><td>מחרוזת פלינדרום</td></tr>
+  <tr><td>90</td><td>שרשור מחרוזות</td></tr>
+  <tr><td>91</td><td>השוואת מחרוזות לשוויון</td></tr>
+  <tr><td>92</td><td>איזו מחרוזת קודמת במילון</td></tr>
+  <tr><td>93</td><td>חיפוש במחרוזת</td></tr>
+  <tr><td>94</td><td>תת מחרוזת</td></tr>
+  <tr><td>95</td><td>החלפה במחרוזת</td></tr>
+  <tr><td>96</td><td>הוספה ומחיקה</td></tr>
+  <tr><td>97</td><td>אותיות גדולות וקטנות</td></tr>
+  <tr><td>98</td><td>שאלת סיכום: התווים המשותפים לשתי מחרוזות</td></tr>
+  <tr><td>99</td><td>שאלת סיכום: הרצף הארוך ביותר</td></tr>
+  <tr><td>100</td><td>שאלת סיכום: מיון מילים במשפט</td></tr>
+</table>
+
+<section class="ex">
+  <h3><span class="num">85</span>מהי מחרוזת, והשמה בין מחרוזות</h3>
+  <p>גם רווח וסימן פיסוק הם תווים. <strong>מחרוזת ריקה</strong> <code>""</code> היא מחרוזת בלי תווים בכלל. מדפיסים את המחרוזת בין שני קווים, כדי לראות בדיוק איפה היא מתחילה ונגמרת.</p>
+<pre class="code">string s1 = "Hello World!";
+string s2 = "H";
+string s3 = "";
+Console.WriteLine("s1 = |" + s1 + "|");
+
+string a = "lion";
+string b = "dog";
+a = b;
+a = "cat";</pre>
+  <div class="label">פלט</div>
+<pre class="out">s1 = |Hello World!|
+s2 = |H|
+s3 = ||
+a = dog, b = dog
+a = cat, b = dog</pre>
+  <div class="note"><strong>שימו לב:</strong> אחרי <code>a = b</code> שני המשתנים שווים ל-<code>"dog"</code>. השמה חדשה ל-<code>a</code> לא משנה את <code>b</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">86</span>קליטת מחרוזת</h3>
+  <p><code>Console.ReadLine()</code> מחזירה תמיד מחרוזת, בדיוק את מה שהמשתמש הקליד. כדי לקבל מספר, הופכים את המחרוזת למספר עם <code>int.Parse</code>.</p>
+<pre class="code">Console.Write("Enter your name: ");
+string name = Console.ReadLine();
+
+Console.Write("Enter an integer number: ");
+string text = Console.ReadLine();
+int num = int.Parse(text);</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter your name: <b>Dana</b>
+You entered |Dana|
+Enter an integer number: <b>41</b>
+The text |41| as a number, plus 1: 42</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">87</span>אורך מחרוזת ופנייה לתו</h3>
+  <p><code>s.Length</code> הוא מספר התווים. כותבים אותו <strong>בלי סוגריים</strong>, כי הוא לא פעולה. פונים לתו לפי המיקום שלו: <code>s[0]</code> הוא התו הראשון, ו-<code>s[s.Length - 1]</code> הוא האחרון.</p>
+<pre class="code">Console.WriteLine("Length: " + word.Length);
+Console.WriteLine("First letter: " + word[0]);
+Console.WriteLine("Last letter: " + word[word.Length - 1]);
+
+for (int i = 0; i &lt; word.Length; i++)
+{
+    Console.WriteLine(i + ": " + word[i]);
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a word: <b>lion</b>
+Length: 4
+First letter: l
+Last letter: n
+0: l
+1: i
+2: o
+3: n</pre>
+  <div class="note"><strong>שימו לב:</strong> במילה באורך 4 המיקומים הם 0 עד 3. פנייה ל-<code>word[4]</code> גורמת לשגיאה בזמן ריצה. לכן תנאי הלולאה הוא <code>i &lt; word.Length</code>, ולא <code>&lt;=</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">88</span>מעבר על מחרוזת: ספירת מילים</h3>
+  <p>סופרים את הרווחים במשפט. בין כל שתי מילים יש רווח אחד, ולכן מספר המילים גדול באחד ממספר הרווחים. תו בודד כותבים בין גרש לגרש: <code>' '</code>.</p>
+<pre class="code">static int CountWords(string str)
+{
+    if (str == "")
+    {
+        return 0;
+    }
+    int count = 0;
+    for (int i = 0; i &lt; str.Length; i++)
+    {
+        if (str[i] == ' ')
+        {
+            count++;
+        }
+    }
+    return count + 1;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter a sentence: <b>i love you so much</b>
+Words: 5</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">89</span>מחרוזת פלינדרום</h3>
+  <p>פלינדרום נקרא אותו דבר משני הכיוונים. משווים את הראשון לאחרון, את השני ללפני האחרון, וכן הלאה. שני משתנים זזים זה לקראת זה, עד שהם נפגשים.</p>
+<pre class="code">static bool IsPalindrome(string str)
+{
+    int begin = 0;
+    int end = str.Length - 1;
+    while (begin &lt; end)
+    {
+        if (str[begin] != str[end])
+        {
+            return false;
+        }
+        begin++;
+        end--;
+    }
+    return true;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">level: True
+hannah: True
+levdl: False</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">90</span>שרשור מחרוזות</h3>
+  <p>הסימן <code>+</code> מחבר מחרוזות למחרוזת חדשה אחת. כשמחברים מחרוזת ומספר, המספר הופך לחלק מהמחרוזת. <code>s += t</code> מוסיף לסוף המחרוזת שבמשתנה.</p>
+<pre class="code">Console.WriteLine(w1 + w2);
+Console.WriteLine(w1 + " " + w2);
+
+Console.WriteLine("Next year you will be " + age + 1);
+Console.WriteLine("Next year you will be " + (age + 1));
+
+string str = "It's a bea";
+str += "utiful day";</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter first word: <b>good</b>
+Enter second word: <b>morning</b>
+goodmorning
+good morning
+How old are you? <b>17</b>
+Next year you will be 171
+Next year you will be 18
+It's a beautiful day</pre>
+  <div class="note"><strong>שימו לב:</strong> השרשור מתבצע משמאל לימין. בלי סוגריים, קודם מצרפים את 17 למחרוזת ואחר כך את 1, ומקבלים 171. עם סוגריים, קודם מחושב הסכום 18.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">91</span>השוואת מחרוזות לשוויון</h3>
+  <p>בודקים אם שתי מחרוזות זהות עם <code>==</code> או עם <code>Equals</code>. לבדיקה שהן שונות משתמשים ב-<code>!=</code>.</p>
+<pre class="code">string s1 = "hello";
+string s2 = "hello";
+string s3 = "Hello";
+Console.WriteLine(s1 == s2);
+Console.WriteLine(s1 == s3);
+Console.WriteLine(s1.Equals(s2));
+Console.WriteLine(s1.Equals(s3));
+Console.WriteLine(s1 != s3);
+
+if (password == "abc123") ...</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">True
+False
+True
+False
+True
+Enter the password: <b>abc123</b>
+Welcome</pre>
+  <div class="note"><strong>שימו לב:</strong> ההשוואה מבחינה בין אות גדולה לקטנה. <code>"hello"</code> ו-<code>"Hello"</code> הן מחרוזות שונות.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">92</span>איזו מחרוזת קודמת במילון</h3>
+  <p><code>s1.CompareTo(s2)</code> משווה לפי סדר המילון, ומחזירה:</p>
+  <ul>
+    <li><strong>מספר שלילי:</strong> <code>s1</code> קודמת במילון.</li>
+    <li><strong>מספר חיובי:</strong> <code>s1</code> באה אחרי.</li>
+    <li><strong>0:</strong> המחרוזות זהות.</li>
+  </ul>
+<pre class="code">int res = s1.CompareTo(s2);
+if (res &lt; 0)
+{
+    Console.WriteLine(s1 + " comes before " + s2);
+}
+else if (res &gt; 0)
+{
+    Console.WriteLine(s2 + " comes before " + s1);
+}
+else
+{
+    Console.WriteLine("The words are the same");
+}</pre>
+  <div class="label">שתי הרצות</div>
+<pre class="out">Enter first word: <b>hello</b>
+Enter second word: <b>world</b>
+CompareTo returns -1
+hello comes before world
+
+Enter first word: <b>Zoo</b>
+Enter second word: <b>apple</b>
+CompareTo returns 1
+apple comes before Zoo</pre>
+  <div class="note"><strong>שימו לב:</strong> בודקים אם התוצאה קטנה מ-0 או גדולה מ-0, ולא אם היא שווה ל-1 או ל-מינוס 1.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">93</span>חיפוש במחרוזת</h3>
+  <p><code>IndexOf</code> מחזירה את המיקום <strong>הראשון</strong> של תו או של מחרוזת, ו-<code>LastIndexOf</code> את המיקום <strong>האחרון</strong>. אם לא נמצא, מוחזר <code>-1</code>. אפשר לשלוח גם מיקום, וממנו יתחיל החיפוש.</p>
+<pre class="code">string s = "abcdabcd";
+Console.WriteLine(s.IndexOf('b'));
+Console.WriteLine(s.IndexOf('z'));
+Console.WriteLine(s.IndexOf("cd"));
+Console.WriteLine(s.IndexOf("cde"));
+Console.WriteLine(s.IndexOf("cd", 3));
+Console.WriteLine(s.LastIndexOf('a'));
+Console.WriteLine(s.LastIndexOf("cd"));</pre>
+  <div class="label">פלט</div>
+<pre class="out">1
+-1
+2
+-1
+6
+4
+6</pre>
+  <div class="note"><strong>שימו לב:</strong> גם בחיפוש שמתחיל ממיקום 3, המיקום שמוחזר נספר מתחילת המחרוזת.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">94</span>תת מחרוזת</h3>
+  <p><code>Substring(5)</code> מחזירה את החלק מהמיקום 5 ועד הסוף. <code>Substring(5, 3)</code> מחזירה 3 תווים החל מהמיקום 5.</p>
+<pre class="code">string s = "good morning";
+Console.WriteLine(s.Substring(5));
+Console.WriteLine(s.Substring(5, 3));
+Console.WriteLine(s.Substring(0, 4));
+
+int space = fullName.IndexOf(' ');
+Console.WriteLine("First name: " + fullName.Substring(0, space));
+Console.WriteLine("Last name: " + fullName.Substring(space + 1));</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">morning
+mor
+good
+Enter your full name: <b>Dana Levi</b>
+First name: Dana
+Last name: Levi</pre>
+  <div class="note"><strong>שימו לב:</strong> מיקום או אורך שחורגים מהמחרוזת גורמים לשגיאה בזמן ריצה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">95</span>החלפה במחרוזת</h3>
+  <p><code>Replace</code> מחליפה כל מופע של תו בתו אחר, או של מחרוזת במחרוזת אחרת.</p>
+<pre class="code">string s = "good morning";
+Console.WriteLine(s.Replace('o', 'O'));
+Console.WriteLine(s.Replace("morning", "night"));
+Console.WriteLine(s);
+
+s = s.Replace("good", "nice");
+Console.WriteLine(s);</pre>
+  <div class="label">פלט</div>
+<pre class="out">gOOd mOrning
+good night
+good morning
+nice morning</pre>
+  <div class="note"><strong>שימו לב:</strong> בשורה השלישית <code>s</code> עדיין <code>"good morning"</code>. כדי לשמור את השינוי, מציבים את התוצאה במשתנה.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">96</span>הוספה ומחיקה</h3>
+  <p><code>Insert(pos, text)</code> מוסיפה מחרוזת החל מהמיקום שקיבלה. <code>Remove(pos, count)</code> מוחקת מספר תווים החל מהמיקום.</p>
+<pre class="code">string str = "C# is nice";
+int pos = str.IndexOf("nice");
+Console.WriteLine(str.Insert(pos, "very "));
+
+string longer = "C# is very nice";
+pos = longer.IndexOf("very");
+Console.WriteLine(longer.Remove(pos, 5));
+Console.WriteLine(longer);</pre>
+  <div class="label">פלט</div>
+<pre class="out">C# is very nice
+C# is nice
+C# is very nice</pre>
+  <div class="note"><strong>שימו לב:</strong> מוחקים 5 תווים, המילה <code>very</code> והרווח שאחריה. אחרת יישארו שני רווחים.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">97</span>אותיות גדולות וקטנות</h3>
+  <p><code>ToLower</code> מחזירה מחרוזת שכל האותיות בה קטנות, ו-<code>ToUpper</code> מחרוזת שכל האותיות בה גדולות. תווים שאינם אותיות לא משתנים.</p>
+<pre class="code">string s = "abc!12ABC#";
+Console.WriteLine(s.ToLower());
+Console.WriteLine(s.ToUpper());
+
+if (answer.ToLower() == "yes") ...</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">abc!12abc#
+ABC!12ABC#
+Do you want to continue? <b>YES</b>
+Continuing</pre>
+  <div class="note"><strong>שימוש נפוץ:</strong> הופכים את הקלט לאותיות קטנות לפני ההשוואה, וכך <code>YES</code>, <code>Yes</code> ו-<code>yes</code> נחשבים אותו דבר.</div>
+</section>
+
+<h2 class="chapter">שאלות סיכום</h2>
+
+<section class="ex">
+  <h3><span class="num">98</span>התווים המשותפים לשתי מחרוזות</h3>
+  <p>עוברים על התווים של המחרוזת הראשונה. תו שנמצא גם בשנייה, ועוד לא נמצא בתוצאה, מוסיפים לתוצאה.</p>
+<pre class="code">static string Intersection(string str1, string str2)
+{
+    string result = "";
+    for (int i = 0; i &lt; str1.Length; i++)
+    {
+        char ch = str1[i];
+        if (str2.IndexOf(ch) != -1 &amp;&amp; result.IndexOf(ch) == -1)
+        {
+            result += ch;
+        }
+    }
+    return result;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">Intersection("happiness", "inspiration")   →  apins
+Intersection("friendship", "wonderful")    →  frend</pre>
+  <div class="note"><strong>שימו לב:</strong> <code>IndexOf</code> שמחזירה <code>-1</code> אומרת "לא נמצא". כך בודקים גם אם התו כבר בתוצאה, ולא מוסיפים אותו פעמיים.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">99</span>הרצף הארוך ביותר</h3>
+  <p>מחפשים את הרצף הארוך ביותר של תווים זהים, זה אחרי זה. משווים כל תו לתו שלפניו: אם הם שווים הרצף ממשיך, ואחרת מתחיל רצף חדש. זה אותו רעיון של מציאת מקסימום מפרק 5.</p>
+<pre class="code">static int LongestRun(string input)
+{
+    if (input == "")
+    {
+        return 0;
+    }
+    int max = 1;
+    int current = 1;
+    for (int i = 1; i &lt; input.Length; i++)
+    {
+        if (input[i] == input[i - 1])
+        {
+            current++;
+            if (current &gt; max)
+            {
+                max = current;
+            }
+        }
+        else
+        {
+            current = 1;
+        }
+    }
+    return max;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">LongestRun("LLOOOVVVVE")    →  4
+LongestRun("inspiration")   →  1
+LongestRun("")              →  0</pre>
+  <div class="note"><strong>שימו לב:</strong> הלולאה מתחילה ב-1 ולא ב-0, כי משווים כל תו לתו שלפניו.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">100</span>מיון מילים במשפט</h3>
+  <p>מפרקים את המשפט למילים לפי הרווחים, וכל מילה מכניסים למקומה במשפט חדש שנשאר ממוין. העבודה מתחלקת בין שתי פעולות:</p>
+  <table>
+    <tr><th>פעולה</th><th>מה היא עושה</th></tr>
+    <tr><td><code>InsertInPlace</code></td><td>מקבלת משפט ממוין ומילה, ומחזירה משפט ממוין חדש שהמילה נמצאת בו במקומה</td></tr>
+    <tr><td><code>SortWords</code></td><td>עוברת על המילים של המשפט, ושולחת כל מילה ל-<code>InsertInPlace</code></td></tr>
+  </table>
+<pre class="code">static string SortWords(string input)
+{
+    string sorted = "";
+    if (input.Length == 0)
+    {
+        return sorted;
+    }
+    int spacePos = input.IndexOf(' ');
+    while (spacePos != -1)
+    {
+        string word = input.Substring(0, spacePos);
+        sorted = InsertInPlace(sorted, word);
+        input = input.Substring(spacePos + 1);
+        spacePos = input.IndexOf(' ');
+    }
+    sorted = InsertInPlace(sorted, input);
+    return sorted;
+}</pre>
+  <div class="label">שלבי ההכנסה</div>
+<pre class="out">elegantly
+dances elegantly
+dances elegantly forward
+a dances elegantly forward
+a big dances elegantly forward
+a big dances elegantly forward gracefully
+a big cat dances elegantly forward gracefully</pre>
+  <div class="note"><strong>שימו לב:</strong> אחרי הלולאה נשארת המילה האחרונה, שאין אחריה רווח. לכן קוראים ל-<code>InsertInPlace</code> פעם נוספת אחרי הלולאה.</div>
+</section>
+
+<h2 class="chapter">דף חזרה מהיר</h2>
+<table>
+  <tr><th>מה רוצים</th><th>איך כותבים</th><th>שימו לב</th></tr>
+  <tr><td>אורך</td><td><code>s.Length</code></td><td>בלי סוגריים</td></tr>
+  <tr><td>תו במיקום</td><td><code>s[i]</code></td><td>מ-0 עד <code>s.Length - 1</code></td></tr>
+  <tr><td>שרשור</td><td><code>s1 + s2</code>, <code>s += t</code></td><td>מספרים בסוגריים: <code>(age + 1)</code></td></tr>
+  <tr><td>שוויון</td><td><code>==</code>, <code>Equals</code>, <code>!=</code></td><td>מבחין בין אות גדולה לקטנה</td></tr>
+  <tr><td>סדר מילון</td><td><code>s1.CompareTo(s2)</code></td><td>שלילי, 0 או חיובי</td></tr>
+  <tr><td>חיפוש</td><td><code>IndexOf</code>, <code>LastIndexOf</code></td><td>לא נמצא: <code>-1</code></td></tr>
+  <tr><td>תת מחרוזת</td><td><code>Substring(pos)</code>, <code>Substring(pos, len)</code></td><td>חריגה: שגיאה בזמן ריצה</td></tr>
+  <tr><td>החלפה</td><td><code>Replace(old, new)</code></td><td>מחזירה מחרוזת חדשה</td></tr>
+  <tr><td>הוספה ומחיקה</td><td><code>Insert(pos, text)</code>, <code>Remove(pos, count)</code></td><td>מחזירות מחרוזת חדשה</td></tr>
+  <tr><td>אותיות</td><td><code>ToUpper()</code>, <code>ToLower()</code></td><td>מחזירות מחרוזת חדשה</td></tr>
+</table>
+
+</div>
+</body>
+</html>
