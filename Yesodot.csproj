@@ -50,6 +50,7 @@
     <Compile Include="Ch6\Chapter6.cs" />
     <Compile Include="Ch7\Chapter7.cs" />
     <Compile Include="Ch8\Chapter8.cs" />
+    <Compile Include="Ch9\Chapter9.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +67,7 @@
     <None Include="Ch7\quiz.html" />
     <None Include="Ch8\Summary_Ch8.html" />
     <None Include="Ch8\quiz.html" />
+    <None Include="Ch9\Summary_Ch9.html" />
     <None Include="Worksheets\Worksheet_1.html" />
     <None Include="Worksheets\Worksheet_2.html" />
     <None Include="Appendices\Getting_Started.html" />

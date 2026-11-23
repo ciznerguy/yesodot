@@ -12,6 +12,7 @@
 | [📝 מבדק](https://ciznerguy.github.io/yesodot/Ch6/quiz.html) | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch6/Summary_Ch6.html) | [💻 קוד](Ch6/Chapter6.cs) | [📁 Ch6](Ch6) | מ-53 עד 65 | לולאת While | 6 |
 | [📝 מבדק](https://ciznerguy.github.io/yesodot/Ch7/quiz.html) | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch7/Summary_Ch7.html) | [💻 קוד](Ch7/Chapter7.cs) | [📁 Ch7](Ch7) | מ-66 עד 84 | פעולות | 7 |
 | [📝 מבדק](https://ciznerguy.github.io/yesodot/Ch8/quiz.html) | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch8/Summary_Ch8.html) | [💻 קוד](Ch8/Chapter8.cs) | [📁 Ch8](Ch8) | מ-85 עד 100 | מחרוזות | 8 |
+| בהכנה | [📘 חוברת](https://ciznerguy.github.io/yesodot/Ch9/Summary_Ch9.html) | [💻 קוד](Ch9/Chapter9.cs) | [📁 Ch9](Ch9) | מ-101 עד 121 | מערך חד ממדי | 9 |
 
 - **חוברת מלווה:** הסבר, דוגמת הרצה ונקודות חשובות לכל דוגמה בקוד. אפשר גם להדפיס אותה מהדפדפן.
 - **מבדק:** בסוף מקבלים ציון ורשימה של הנושאים שכדאי לחזור עליהם.
@@ -43,6 +44,7 @@
 | `Ch6/Chapter6.cs` | הדוגמאות של פרק 6 |
 | `Ch7/Chapter7.cs` | הדוגמאות של פרק 7 |
 | `Ch8/Chapter8.cs` | הדוגמאות של פרק 8 |
+| `Ch9/Chapter9.cs` | הדוגמאות של פרק 9 |
 
 ## איך מריצים דוגמה
 

@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סיכום דוגמאות: פרק 9, מערך חד ממדי</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+    --out-bg: #1e1e1e;
+    --out-ink: #e6e6e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, "David", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  header.cover {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px 28px 20px;
+    margin-bottom: 24px;
+  }
+  header.cover h1 { margin: 0 0 6px; font-size: 28px; }
+  header.cover p { margin: 4px 0; color: var(--muted); }
+  h2.chapter {
+    margin: 40px 0 14px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 22px;
+  }
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+  }
+  section.ex {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px 14px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  section.ex h3 { margin: 0 0 8px; font-size: 19px; }
+  section.ex h3 .num {
+    display: inline-block;
+    min-width: 30px;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    text-align: center;
+  }
+  .label { font-weight: 700; color: var(--muted); font-size: 14px; margin: 12px 0 4px; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 14px;
+  }
+  pre {
+    text-align: left;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  pre.code { background: var(--code-bg); border: 1px solid var(--line); color: var(--ink); }
+  pre.out { background: var(--out-bg); color: var(--out-ink); }
+  pre.out b { color: #9cdcfe; font-weight: 400; }
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 6px;
+  }
+  .note strong { color: var(--warn); }
+  ul, ol { margin: 6px 0; padding-right: 22px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+    font-size: 15px;
+  }
+  th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:last-child td { border-bottom: none; }
+  .howto { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 22px; }
+  @media print {
+    body { background: #fff; font-size: 13px; }
+    .page { padding: 0; max-width: none; }
+    h2.chapter { break-before: page; }
+    h2.chapter.first { break-before: auto; }
+    section.ex, header.cover, .howto, .intro, table { border-color: #bbb; }
+    pre.out { background: #f2f2f2; color: #000; border: 1px solid #bbb; }
+    pre.out b { color: #000; font-weight: 700; }
+  }
+  @media (max-width: 600px) {
+    header.cover, section.ex, .intro { padding: 16px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <h1>סיכום דוגמאות: פרק 9, מערך חד ממדי</h1>
+  <p>יסודות מדעי המחשב, שפת #C</p>
+  <p>מסמך מלווה לקוד הדוגמאות בקובץ <code>Ch9/Chapter9.cs</code></p>
+</header>
+
+<div class="howto">
+  <strong>איך מריצים דוגמה?</strong>
+  <ol>
+    <li>פותחים ב-Visual Studio את הקובץ <code>Yesodot.slnx</code>.</li>
+    <li>בקובץ הראשי <code>Program.cs</code> מוחקים את שני הלוכסנים בתחילת השורה <code>// Chapter9.Run();</code></li>
+    <li>פותחים את הקובץ <code>Ch9/Chapter9.cs</code>. בפעולה <code>Run</code> שבראשו מוצאים את השורה של הדוגמה, למשל <code>// example110();</code>, ומוחקים את שני הלוכסנים.</li>
+    <li>מריצים (F5 או Ctrl+F5).</li>
+    <li>לפני שעוברים לדוגמה הבאה, מחזירים את הלוכסנים לשורה הקודמת.</li>
+  </ol>
+</div>
+
+<h2 class="chapter first">פרק 9: מערך חד ממדי</h2>
+
+<div class="intro">
+  <p style="margin-top:0"><strong>מערך</strong> הוא אוסף של משתנים מאותו טיפוס, עם שם אחד. לכל איבר יש מספר מקום שנקרא <strong>אינדקס</strong>. האינדקס הראשון הוא 0, והאחרון קטן באחד ממספר האיברים.</p>
+<pre class="code">int[] numbers = { 76, 644, 89, 23 };</pre>
+  <table>
+    <tr><th>אינדקס</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+    <tr><th>ערך</th><td>76</td><td>644</td><td>89</td><td>23</td></tr>
+  </table>
+  <p style="margin-bottom:0">מספר האיברים הוא <code>numbers.Length</code>, כאן 4. האיבר האחרון הוא <code>numbers[numbers.Length - 1]</code>.</p>
+</div>
+
+<table>
+  <tr><th style="width:70px">דוגמה</th><th>נושא</th></tr>
+  <tr><td>101</td><td>למה צריך מערך</td></tr>
+  <tr><td>102</td><td>הגדרת מערך ואתחול</td></tr>
+  <tr><td>103</td><td>גישה לאיברי המערך</td></tr>
+  <tr><td>104</td><td>מעבר על מערך בלולאה</td></tr>
+  <tr><td>105</td><td>חריגה מגבולות המערך</td></tr>
+  <tr><td>106</td><td>העתקת מערך</td></tr>
+  <tr><td>107</td><td>מערך כפרמטר לפעולה</td></tr>
+  <tr><td>108</td><td>פעולה שמחזירה מערך</td></tr>
+  <tr><td>109</td><td>הדפסת היסטוגרמה</td></tr>
+  <tr><td>110</td><td>הערך הגדול ביותר והאינדקס שלו</td></tr>
+  <tr><td>111</td><td>היפוך סדר האיברים</td></tr>
+  <tr><td>112</td><td>מערך פלינדרום</td></tr>
+  <tr><td>113</td><td>סיבוב מערך שמאלה</td></tr>
+  <tr><td>114</td><td>התווים השונים במערך</td></tr>
+  <tr><td>115</td><td>מיזוג שני מערכים ממוינים</td></tr>
+  <tr><td>116</td><td>מערך מונים</td></tr>
+  <tr><td>117</td><td>מערך צוברים</td></tr>
+  <tr><td>118</td><td>חיפוש סדרתי</td></tr>
+  <tr><td>119</td><td>מיון בועות</td></tr>
+  <tr><td>120</td><td>מיון בחירה</td></tr>
+  <tr><td>121</td><td>חיפוש בינארי</td></tr>
+</table>
+
+<section class="ex">
+  <h3><span class="num">101</span>למה צריך מערך</h3>
+  <p>רוצים לקלוט מספרים ולהדפיס כמה מהם גדולים מהממוצע. בלי מערך צריך משתנה נפרד לכל מספר ותנאי נפרד לכל משתנה. עם מערך יש שם אחד לכל המספרים, ועוברים עליהם בלולאה. כדי לעבור ל-20 או ל-100 מספרים משנים רק את הקבוע <code>SIZE</code>.</p>
+<pre class="code">const int SIZE = 5;
+int[] numbers = new int[SIZE];
+int sum = 0;
+for (int i = 0; i &lt; numbers.Length; i++)
+{
+    numbers[i] = int.Parse(Console.ReadLine());
+    sum = sum + numbers[i];
+}
+double average = sum / (double)SIZE;
+
+int countAboveAverage = 0;
+for (int i = 0; i &lt; numbers.Length; i++)
+{
+    if (numbers[i] &gt; average)
+    {
+        countAboveAverage++;
+    }
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Please insert 5 numbers:
+<b>4</b>
+<b>8</b>
+<b>15</b>
+<b>16</b>
+<b>23</b>
+3 values are above the average 13.2</pre>
+  <div class="note"><strong>שימו לב:</strong> צריך לעבור על המספרים פעמיים. בלולאה הראשונה עוד לא יודעים מה הממוצע, ולכן אפשר להשוות אליו רק בלולאה השנייה. בלי מערך המספרים מהלולאה הראשונה היו הולכים לאיבוד.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">102</span>הגדרת מערך ואתחול</h3>
+  <p>בהגדרה כותבים את הטיפוס, סוגריים מרובעים, ואחרי <code>new</code> את מספר האיברים. במערך של מספרים כל האיברים מקבלים בהתחלה 0. אפשר גם לתת ערכים כבר בהגדרה, בתוך סוגריים מסולסלים, ואז מספר האיברים נקבע לפי מספר הערכים.</p>
+<pre class="code">int[] numbers = new int[5];
+
+int[] grades = { 85, 92, 70 };
+char[] letters = { 'm', 'A', 'k' };
+string[] names = { "Dana", "Moshe", "Haim" };</pre>
+  <div class="label">פלט</div>
+<pre class="out">numbers: 0 0 0 0 0
+grades: 85 92 70
+letters: m A k
+names: Dana Moshe Haim</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">103</span>גישה לאיברי המערך</h3>
+  <p>פונים לאיבר עם שם המערך והאינדקס בסוגריים מרובעים. עם איבר במערך עושים כל מה שעושים עם משתנה רגיל: השמה, חישוב והגדלה ב-1. <code>Length</code> כותבים בלי סוגריים, כי הוא לא פעולה.</p>
+<pre class="code">int[] numbers = new int[3];
+numbers[0] = 25;
+numbers[0]++;
+numbers[1] = numbers[0] * 2;
+numbers[2] = numbers[0] + numbers[1];
+Console.WriteLine("The array has " + numbers.Length + " elements");
+Console.WriteLine("The last element is " + numbers[numbers.Length - 1]);</pre>
+  <div class="label">פלט</div>
+<pre class="out">numbers[0] = 26
+numbers[1] = 52
+numbers[2] = 78
+The array has 3 elements
+The last element is 78</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">104</span>מעבר על מערך בלולאה</h3>
+  <p>הלולאה עוברת על כל האינדקסים, מ-0 עד <code>Length - 1</code>. כך קולטים ערכים וכך גם מדפיסים. להדפסה מהסוף להתחלה, הלולאה מתחילה באינדקס האחרון ויורדת עד 0.</p>
+<pre class="code">for (int i = 0; i &lt; numbers.Length; i++)
+{
+    numbers[i] = int.Parse(Console.ReadLine());
+}
+
+for (int i = numbers.Length - 1; i &gt;= 0; i--)
+{
+    Console.Write(numbers[i] + " ");
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Enter 4 numbers:
+<b>7</b>
+<b>2</b>
+<b>9</b>
+<b>4</b>
+From start to end: 7 2 9 4
+From end to start: 4 9 2 7</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">105</span>חריגה מגבולות המערך</h3>
+  <p>במערך של 4 איברים האינדקסים הם 0 עד 3. פנייה לאינדקס 4, או לאינדקס שלילי, היא <strong>חריגה מגבולות המערך</strong>. המהדר לא מזהה את הטעות, כי ערך האינדקס ידוע רק בזמן הריצה. בזמן הריצה התוכנית נעצרת עם שגיאה.</p>
+<pre class="code">int[] arr = new int[4];
+for (int i = 0; i &lt; arr.Length; i++)
+{
+    arr[i] = i * 10;
+}
+// השורה הבאה גורמת לשגיאה בזמן ריצה
+arr[4] = 40;</pre>
+  <div class="label">פלט</div>
+<pre class="out">arr[0] = 0
+arr[1] = 10
+arr[2] = 20
+arr[3] = 30
+Now trying to put a value in arr[4]...
+Unhandled Exception: System.IndexOutOfRangeException:
+Index was outside the bounds of the array.</pre>
+  <div class="note"><strong>שימו לב:</strong> הטעות הנפוצה היא <code>i &lt;= arr.Length</code> בתנאי הלולאה. התנאי הנכון הוא <code>i &lt; arr.Length</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">106</span>העתקת מערך</h3>
+  <p>השמה של מערך למערך <strong>לא מעתיקה את הערכים</strong>. אחרי <code>arr2 = arr1</code> שני השמות מצביעים על אותו מערך, ושינוי באחד נראה גם בשני. כדי לקבל עותק נפרד, יוצרים מערך חדש ומעתיקים בלולאה איבר אחרי איבר.</p>
+<pre class="code">int[] arr1 = { 1, 2, 3 };
+
+// השמה: אותו מערך
+int[] arr2 = arr1;
+arr2[0] = 100;
+
+// העתקה: מערך חדש
+int[] arr3 = new int[arr1.Length];
+for (int i = 0; i &lt; arr1.Length; i++)
+{
+    arr3[i] = arr1[i];
+}
+arr3[1] = 200;</pre>
+  <div class="label">פלט</div>
+<pre class="out">arr1 after changing arr2: 100 2 3
+arr1 after changing arr3: 100 2 3
+arr3: 100 200 3</pre>
+  <div class="note"><strong>שימו לב:</strong> מכאן והלאה הדוגמאות משתמשות בפעולת העזר <code>PrintArray</code>, שמדפיסה את כל איברי המערך בשורה אחת.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">107</span>מערך כפרמטר לפעולה</h3>
+  <p>כשמעבירים לפעולה משתנה רגיל, היא מקבלת עותק, והמשתנה המקורי לא משתנה. כשמעבירים מערך, הפעולה מקבלת <strong>את אותו מערך</strong>, ולכן שינוי של האיברים בתוכה נשאר גם אחרי שהיא מסתיימת.</p>
+<pre class="code">static void ChangeNumber(int num)
+{
+    num = num * 2;
+}
+
+static void DoubleValues(int[] arr)
+{
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        arr[i] = arr[i] * 2;
+    }
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">x after ChangeNumber: 5
+arr after DoubleValues: 2 4 6 8</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">108</span>פעולה שמחזירה מערך</h3>
+  <p>הטיפוס המוחזר של פעולה כזו הוא <code>int[]</code>. <code>CreateAndReadArr</code> יוצרת מערך בגודל שקיבלה, קולטת אליו ערכים ומחזירה אותו. <code>ResizeArr</code> יוצרת מערך חדש בגודל אחר ומעתיקה אליו את הערכים.</p>
+<pre class="code">static int[] ResizeArr(int[] arr, int size)
+{
+    int[] tmp = new int[size];
+    for (int i = 0; i &lt; size; i++)
+    {
+        if (i &lt; arr.Length)
+        {
+            tmp[i] = arr[i];
+        }
+    }
+    return tmp;
+}
+
+numbers = ResizeArr(numbers, newSize);</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">How many elements? <b>3</b>
+Enter element 0: <b>62</b>
+Enter element 1: <b>29</b>
+Enter element 2: <b>17</b>
+62 29 17
+What is the new elements amount? <b>5</b>
+62 29 17 0 0</pre>
+  <div class="note"><strong>שימו לב:</strong> מערך חדש שנוצר בתוך פעולה חייבים להחזיר ולשים במשתנה. בלי <code>numbers = ...</code> המערך החדש הולך לאיבוד, ו-<code>numbers</code> נשאר המערך הישן.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">109</span>הדפסת היסטוגרמה</h3>
+  <p>לכל איבר מדפיסים שורה עם מספר כוכביות כמו הערך שלו. הלולאה החיצונית עוברת על האיברים, והפנימית מדפיסה את הכוכביות.</p>
+<pre class="code">for (int i = 0; i &lt; arr.Length; i++)
+{
+    Console.Write(arr[i] + ": ");
+    for (int j = 0; j &lt; arr[i]; j++)
+    {
+        Console.Write("*");
+    }
+    Console.WriteLine();
+}</pre>
+  <div class="label">פלט עבור המערך <code>{ 3, 7, 1, 5 }</code></div>
+<pre class="out">3: ***
+7: *******
+1: *
+5: *****</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">110</span>הערך הגדול ביותר והאינדקס שלו</h3>
+  <p>מתחילים מהאיבר הראשון כמקסימום ובודקים את כל השאר. כשצריך לדעת <strong>איפה</strong> נמצא המקסימום, שומרים את האינדקס. מהאינדקס תמיד אפשר לקבל גם את הערך.</p>
+<pre class="code">static int IndexOfMax(int[] arr)
+{
+    int maxIndex = 0;
+    for (int i = 1; i &lt; arr.Length; i++)
+    {
+        if (arr[i] &gt; arr[maxIndex])
+        {
+            maxIndex = i;
+        }
+    }
+    return maxIndex;
+}</pre>
+  <div class="label">פלט עבור המערך <code>{ 12, 45, 7, 45, 30 }</code></div>
+<pre class="out">Max value: 45
+Index of max: 1 (value 45)</pre>
+  <div class="note"><strong>שימו לב:</strong> הערך 45 מופיע פעמיים. בגלל התנאי <code>&gt;</code> (ולא <code>&gt;=</code>) מוחזר המקום הראשון שלו.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">111</span>היפוך סדר האיברים</h3>
+  <p>הפעולה יוצרת מערך חדש באותו גודל. האיבר במקום <code>i</code> עובר למקום <code>arr.Length - 1 - i</code>. סכום האינדקסים של שני תאים סימטריים שווה תמיד ל-<code>Length - 1</code>.</p>
+<pre class="code">static int[] Reverse(int[] arr)
+{
+    int[] res = new int[arr.Length];
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        res[arr.Length - 1 - i] = arr[i];
+    }
+    return res;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">Original: 1 2 3 4 5
+Reversed: 5 4 3 2 1</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">112</span>מערך פלינדרום</h3>
+  <p>מערך פלינדרום נקרא אותו דבר משני הכיוונים. משתמשים בשני אינדקסים: <code>left</code> מתחיל בהתחלה ו-<code>right</code> בסוף, ושניהם מתקרבים למרכז. ברגע שנמצאו שני איברים שונים, התשובה היא לא.</p>
+<pre class="code">static bool IsPalindrome(int[] arr)
+{
+    int left = 0;
+    int right = arr.Length - 1;
+    while (left &lt; right)
+    {
+        if (arr[left] != arr[right])
+        {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">1 2 3 2 1 is palindrome: True
+1 2 3 4 is palindrome: False</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">113</span>סיבוב מערך שמאלה</h3>
+  <p>הערך הראשון עובר לסוף, וכל שאר האיברים זזים מקום אחד שמאלה. שומרים קודם את האיבר הראשון במשתנה עזר, אחרת הוא יימחק.</p>
+<pre class="code">static void RotateLeft(int[] arr)
+{
+    int first = arr[0];
+    for (int i = 1; i &lt; arr.Length; i++)
+    {
+        arr[i - 1] = arr[i];
+    }
+    arr[arr.Length - 1] = first;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">Before: 10 20 30 40 50
+After:  20 30 40 50 10</pre>
+  <div class="note"><strong>שימו לב:</strong> הפעולה היא <code>void</code> ובכל זאת המערך המקורי משתנה, כי מערך שמועבר לפעולה הוא אותו מערך (דוגמה 107).</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">114</span>התווים השונים במערך</h3>
+  <p>מדפיסים כל תו פעם אחת וסופרים כמה תווים שונים יש. תו מודפס רק אם הוא לא הופיע באף מקום לפניו. לכל משימה יש פעולת עזר משלה.</p>
+<pre class="code">static bool HadAppearBefore(char[] arr, int index)
+{
+    for (int i = 0; i &lt; index; i++)
+    {
+        if (arr[i] == arr[index])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+static int CountAndShowUnique(char[] arr)
+{
+    int count = 0;
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        if (HadAppearBefore(arr, i) == false)
+        {
+            Console.Write(arr[i] + " ");
+            count++;
+        }
+    }
+    Console.WriteLine();
+    return count;
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">The letters are:
+a 0 ? T T 0 $ a T x
+The different letters are:
+a 0 ? T $ x
+There are 6 unique letters</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">115</span>מיזוג שני מערכים ממוינים</h3>
+  <p>מערך ממוין הוא מערך שאיבריו מסודרים מהקטן לגדול. יוצרים מערך חדש בגודל של שניהם יחד. בכל שלב משווים את האיבר הנוכחי בכל מערך ומעתיקים את הקטן. כשאחד המערכים נגמר, מעתיקים את מה שנשאר בשני.</p>
+<pre class="code">int[] res = new int[arr1.Length + arr2.Length];
+int i = 0;
+int j = 0;
+int m = 0;
+while (i &lt; arr1.Length &amp;&amp; j &lt; arr2.Length)
+{
+    if (arr1[i] &lt;= arr2[j])
+    {
+        res[m] = arr1[i];
+        i++;
+    }
+    else
+    {
+        res[m] = arr2[j];
+        j++;
+    }
+    m++;
+}
+// אחר כך שתי לולאות שמעתיקות את מה שנשאר</pre>
+  <div class="label">פלט עבור <code>{ 1, 4, 7, 9 }</code> ו-<code>{ 2, 3, 8, 10, 12 }</code></div>
+<pre class="out">Merged: 1 2 3 4 7 8 9 10 12</pre>
+  <div class="note"><strong>שימו לב:</strong> רק אחת משתי הלולאות שאחרי הלולאה הראשית באמת רצה, כי רק באחד המערכים נשארו איברים.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">116</span>מערך מונים</h3>
+  <p>בוחרים את המורה של המדינה מתוך 4 מועמדים. לכל מועמד יש תא במערך <code>votes</code>: האינדקס הוא מספר המועמד, והערך הוא מספר הקולות שלו. כל בחירה מגדילה ב-1 את התא של המועמד שנבחר. בסוף מחפשים את האינדקס עם הערך הגדול ביותר (הפעולה מדוגמה 110).</p>
+<pre class="code">string[] names = { "gogo", "momo", "yoyo", "koko" };
+int[] votes = new int[names.Length];
+
+int choice = int.Parse(Console.ReadLine());
+while (choice != -1)
+{
+    if (choice &gt;= 0 &amp;&amp; choice &lt; votes.Length)
+    {
+        votes[choice]++;
+    }
+    else
+    {
+        Console.WriteLine("Invalid choice");
+    }
+    choice = int.Parse(Console.ReadLine());
+}
+int winner = IndexOfMax(votes);</pre>
+  <div class="label">דוגמת הרצה (קלט: 1, 2, 1, 4, 3, 1, 2, 3, 1, -1)</div>
+<pre class="out">Choose 0 for gogo, 1 for momo, 2 for yoyo, 3 for koko, -1 to exit: <b>4</b>
+Invalid choice
+...
+Each teacher and number of votes:
+gogo --&gt; 0 votes
+momo --&gt; 4 votes
+yoyo --&gt; 2 votes
+koko --&gt; 2 votes
+The chosen teacher is: momo</pre>
+  <div class="note"><strong>שימו לב:</strong> בלי בדיקת התחום, הבחירה 4 הייתה גורמת לחריגה מגבולות המערך.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">117</span>מערך צוברים</h3>
+  <p>ברפת יש כמה פרות, ולכל פרה יש תא במערך שבו מצטברת כמות החלב שלה בכל הימים. פרה שתפוקתה פחות ממחצית הממוצע נשלחת לווטרינר. בדוגמה יש יומיים כדי שיהיה קל להריץ. בחודש אמיתי משנים ל-30.</p>
+<pre class="code">static double[] BuildMilkArray(int numCows, int days)
+{
+    double[] arr = new double[numCows];
+    for (int day = 1; day &lt;= days; day++)
+    {
+        for (int cow = 1; cow &lt;= numCows; cow++)
+        {
+            Console.Write("day #" + day + " cow #" + cow + ": ");
+            arr[cow - 1] = arr[cow - 1] + double.Parse(Console.ReadLine());
+        }
+    }
+    return arr;
+}</pre>
+  <div class="label">דוגמת הרצה</div>
+<pre class="out">Num Cows: <b>3</b>
+day #1 cow #1: <b>20</b>
+day #1 cow #2: <b>18</b>
+day #1 cow #3: <b>5</b>
+day #2 cow #1: <b>22</b>
+day #2 cow #2: <b>19</b>
+day #2 cow #3: <b>4</b>
+Average per cow: 29.3333333333333
+Cows to send to the vet:
+Cow #3 with 9</pre>
+  <div class="note"><strong>שימו לב:</strong> מספרי הפרות מתחילים ב-1 והאינדקסים מתחילים ב-0. לכן החלב של פרה מספר <code>cow</code> נצבר בתא <code>cow - 1</code>, ובהדפסה כותבים <code>(i + 1)</code>.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">118</span>חיפוש סדרתי</h3>
+  <p>עוברים על האיברים אחד אחרי השני, עד שמוצאים את המספר או עד סוף המערך. החיפוש עובד גם במערך שאינו ממוין, אבל במערך גדול הוא לוקח זמן רב.</p>
+<pre class="code">static bool Search(int[] arr, int number)
+{
+    for (int i = 0; i &lt; arr.Length; i++)
+    {
+        if (arr[i] == number)
+        {
+            return true;
+        }
+    }
+    return false;
+}</pre>
+  <div class="label">דוגמת הרצה (המערך <code>{ 15, 3, 42, 8, 23 }</code>)</div>
+<pre class="out">Enter a number to search: <b>42</b>
+42 was found</pre>
+  <div class="note"><strong>שימו לב:</strong> <code>return false</code> נמצא <strong>אחרי</strong> הלולאה. רק כשבדקנו את כל האיברים אפשר לדעת שהמספר לא נמצא.</div>
+</section>
+
+<section class="ex">
+  <h3><span class="num">119</span>מיון בועות</h3>
+  <p>משווים כל שני איברים שכנים, ואם הם לא בסדר הנכון מחליפים ביניהם. אחרי סיבוב שלם, הערך הגדול ביותר מגיע לסוף המערך, כמו בועה שעולה למעלה. בכל סיבוב הבא עוצרים מקום אחד קודם, כי הסוף כבר מסודר.</p>
+<pre class="code">static void Swap(int[] arr, int i, int j)
+{
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+static void BubbleSort(int[] arr)
+{
+    for (int round = 0; round &lt; arr.Length - 1; round++)
+    {
+        for (int i = 0; i &lt; arr.Length - 1 - round; i++)
+        {
+            if (arr[i] &gt; arr[i + 1])
+            {
+                Swap(arr, i, i + 1);
+            }
+        }
+    }
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">Before: 5 1 4 2 8
+After:  1 2 4 5 8</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">120</span>מיון בחירה</h3>
+  <p>בכל סיבוב מחפשים את הערך הקטן ביותר בחלק שעוד לא מוין, ומחליפים אותו עם האיבר הראשון של החלק הזה. כך החלק הממוין בתחילת המערך גדל באיבר אחד בכל סיבוב.</p>
+<pre class="code">static void SelectionSort(int[] arr)
+{
+    for (int start = 0; start &lt; arr.Length - 1; start++)
+    {
+        int minIndex = start;
+        for (int i = start + 1; i &lt; arr.Length; i++)
+        {
+            if (arr[i] &lt; arr[minIndex])
+            {
+                minIndex = i;
+            }
+        }
+        Swap(arr, start, minIndex);
+    }
+}</pre>
+  <div class="label">פלט</div>
+<pre class="out">Before: 29 10 14 37 13
+After:  10 13 14 29 37</pre>
+</section>
+
+<section class="ex">
+  <h3><span class="num">121</span>חיפוש בינארי</h3>
+  <p>עובד <strong>רק על מערך ממוין</strong>. בודקים את האיבר האמצעי. אם המספר קטן ממנו, ממשיכים רק בחצי השמאלי, ואם גדול ממנו, רק בחצי הימני. בכל צעד החלק שבו מחפשים קטן בחצי, ולכן החיפוש מהיר מאוד. הפעולה מחזירה את האינדקס, או <code>-1</code> אם המספר לא נמצא.</p>
+<pre class="code">static int BinarySearch(int[] arr, int number)
+{
+    int low = 0;
+    int high = arr.Length - 1;
+    while (low &lt;= high)
+    {
+        int middle = (low + high) / 2;
+        if (arr[middle] == number)
+        {
+            return middle;
+        }
+        if (number &lt; arr[middle])
+        {
+            high = middle - 1;
+        }
+        else
+        {
+            low = middle + 1;
+        }
+    }
+    return -1;
+}</pre>
+  <div class="label">דוגמת הרצה (המערך <code>{ 3, 8, 15, 23, 42, 57, 61, 78, 90 }</code>)</div>
+<pre class="out">Enter a number to search: <b>61</b>
+Checking index 4 (value 42)
+Checking index 6 (value 61)
+61 was found at index 6</pre>
+  <div class="note"><strong>שימו לב:</strong> במערך של 9 איברים נמצא המספר אחרי 2 בדיקות בלבד. בחיפוש סדרתי היו צריכים 7 בדיקות.</div>
+</section>
+
+<h2 class="chapter">דף חזרה מהיר</h2>
+<table>
+  <tr><th>מה רוצים</th><th>איך כותבים</th><th>שימו לב</th></tr>
+  <tr><td>הגדרה</td><td><code>int[] arr = new int[5];</code></td><td>כל האיברים מתחילים ב-0</td></tr>
+  <tr><td>הגדרה עם ערכים</td><td><code>int[] arr = { 5, 3, 1 };</code></td><td>הגודל לפי מספר הערכים</td></tr>
+  <tr><td>מספר איברים</td><td><code>arr.Length</code></td><td>בלי סוגריים</td></tr>
+  <tr><td>איבר</td><td><code>arr[i]</code></td><td>מ-0 עד <code>arr.Length - 1</code></td></tr>
+  <tr><td>מעבר על כל האיברים</td><td><code>for (int i = 0; i &lt; arr.Length; i++)</code></td><td><code>&lt;</code> ולא <code>&lt;=</code></td></tr>
+  <tr><td>העתקה</td><td>מערך חדש ולולאה</td><td><code>arr2 = arr1</code> לא מעתיקה</td></tr>
+  <tr><td>מערך כפרמטר</td><td><code>static void F(int[] arr)</code></td><td>שינוי בפעולה משנה את המקור</td></tr>
+  <tr><td>החזרת מערך</td><td><code>static int[] F(...)</code></td><td>לשים את התוצאה במשתנה</td></tr>
+  <tr><td>מערך מונים</td><td><code>counts[x]++</code></td><td>לבדוק שהאינדקס בתחום</td></tr>
+  <tr><td>מערך צוברים</td><td><code>sums[x] = sums[x] + value</code></td><td>מספור מ-1: תא <code>x - 1</code></td></tr>
+  <tr><td>חיפוש בינארי</td><td>אמצע, חצי שמאלי או ימני</td><td>רק במערך ממוין</td></tr>
+</table>
+
+</div>
+</body>
+</html>
