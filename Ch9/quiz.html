@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מבדק פרק 9</title>
+<style>
+  :root {
+    --ink: #1d2433;
+    --muted: #5b6475;
+    --line: #d9dde5;
+    --paper: #ffffff;
+    --bg: #f4f6f9;
+    --accent: #1f5f99;
+    --accent-soft: #e8f0f8;
+    --ok: #2e7d32;
+    --ok-soft: #e8f5e9;
+    --bad: #c62828;
+    --bad-soft: #fdecea;
+    --warn: #9a5a00;
+    --warn-soft: #fff5e6;
+    --code-bg: #f6f8fa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e6e9ef;
+      --muted: #a3abba;
+      --line: #343a46;
+      --paper: #1c2029;
+      --bg: #12151b;
+      --accent: #6aa8e0;
+      --accent-soft: #1d2b3a;
+      --ok: #81c784;
+      --ok-soft: #1c2e1f;
+      --bad: #ef9a9a;
+      --bad-soft: #3a1f1f;
+      --warn: #ffb74d;
+      --warn-soft: #33281a;
+      --code-bg: #232833;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .page { max-width: 780px; margin: 0 auto; padding: 24px 16px 80px; }
+  header {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 4px 0; color: var(--muted); }
+  .name-row { margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .name-row input {
+    font: inherit;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    min-width: 0;
+    flex: 1 1 200px;
+  }
+  .progress {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 8px 0 10px;
+  }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .progress small { color: var(--muted); }
+  .q {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .q .head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .q .qnum { font-weight: 700; color: var(--accent); }
+  .q .topic { font-size: 13px; color: var(--muted); }
+  .q .text { margin: 6px 0 10px; font-weight: 600; }
+  code, pre {
+    font-family: Consolas, "Cascadia Mono", "Courier New", monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 15px;
+  }
+  pre.code {
+    text-align: left;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0 0 12px;
+    font-size: 15px;
+    overflow-x: auto;
+  }
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--paper);
+  }
+  .opt:hover { border-color: var(--accent); }
+  .opt input { margin: 0; flex: none; width: 18px; height: 18px; accent-color: var(--accent); }
+  .opt pre { margin: 0; text-align: left; white-space: pre; font-size: 15px; }
+  .opt.correct { background: var(--ok-soft); border-color: var(--ok); }
+  .opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+  .explain {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    font-size: 15px;
+  }
+  .done .explain { display: block; }
+  .done .opt { cursor: default; }
+  .verdict { font-weight: 700; margin-left: 6px; }
+  .verdict.ok { color: var(--ok); }
+  .verdict.bad { color: var(--bad); }
+  button {
+    font: inherit;
+    font-weight: 700;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+  .msg { color: var(--warn); font-weight: 600; margin: 8px 0; }
+  #result {
+    display: none;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .score { font-size: 54px; font-weight: 800; line-height: 1.1; }
+  .score.high { color: var(--ok); }
+  .score.mid { color: var(--warn); }
+  .score.low { color: var(--bad); }
+  .review {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--warn-soft);
+    border-right: 4px solid var(--warn);
+    border-radius: 8px;
+  }
+  .review ul { margin: 6px 0; padding-right: 20px; }
+  .review li { margin: 6px 0; }
+  .review .ex { color: var(--muted); font-size: 15px; }
+  .allgood {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--ok-soft);
+    border-right: 4px solid var(--ok);
+    border-radius: 8px;
+  }
+  a { color: var(--accent); }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .q { padding: 14px; }
+    header { padding: 16px; }
+    .score { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>מבדק חזרה: פרק 9</h1>
+  <p>מערך חד ממדי</p>
+  <p>יש במבדק 24 שאלות. יש לבחור תשובה אחת בכל שאלה, ובסוף ללחוץ על "בדיקת המבדק".</p>
+  <p>אפשר להיעזר בטבלת מעקב על דף, אבל בלי להריץ את הקוד.</p>
+  <div class="name-row">
+    <label for="name">שם:</label>
+    <input id="name" type="text" autocomplete="off" placeholder="לא חובה">
+  </div>
+</header>
+
+<div class="progress">
+  <div class="bar"><div id="barFill"></div></div>
+  <small id="progressText"></small>
+</div>
+
+<div id="result"></div>
+<div id="quiz"></div>
+
+<div class="actions" id="actions">
+  <button id="submitBtn" type="button">בדיקת המבדק</button>
+</div>
+<div class="msg" id="msg"></div>
+
+</div>
+
+<script>
+var BOOKLET = "Summary_Ch9.html";
+
+var TOPICS = {
+  "define": {
+    "name": "הגדרת מערך ואתחול",
+    "ex": [
+      102
+    ]
+  },
+  "index": {
+    "name": "גישה לאיברים ומספר האיברים",
+    "ex": [
+      103
+    ]
+  },
+  "loop": {
+    "name": "מעבר על מערך בלולאה",
+    "ex": [
+      104
+    ]
+  },
+  "bounds": {
+    "name": "חריגה מגבולות המערך",
+    "ex": [
+      105
+    ]
+  },
+  "copy": {
+    "name": "העתקת מערך מול השמה",
+    "ex": [
+      106
+    ]
+  },
+  "param": {
+    "name": "מערך כפרמטר ופעולה שמחזירה מערך",
+    "ex": [
+      107,
+      108
+    ]
+  },
+  "max": {
+    "name": "הערך הגדול ביותר והאינדקס שלו",
+    "ex": [
+      110
+    ]
+  },
+  "algo": {
+    "name": "היפוך, פלינדרום וסיבוב מערך",
+    "ex": [
+      111,
+      112,
+      113
+    ]
+  },
+  "count": {
+    "name": "מערך מונים ומערך צוברים",
+    "ex": [
+      116,
+      117
+    ]
+  },
+  "search": {
+    "name": "חיפוש סדרתי וחיפוש בינארי",
+    "ex": [
+      118,
+      121
+    ]
+  },
+  "sort": {
+    "name": "מיון בועות ומיון בחירה",
+    "ex": [
+      119,
+      120
+    ]
+  }
+};
+
+// כל שאלה: נושא, טקסט, קוד (לא חובה), אפשרויות, אינדקס התשובה הנכונה, הסבר
+// אפשרות שמתחילה ב-"$" מוצגת כקוד
+var QUESTIONS = [
+  {
+    "t": "define",
+    "text": "מה יודפס?",
+    "code": "int[] arr = new int[4];\nConsole.WriteLine(arr[2]);",
+    "opts": [
+      "2",
+      "4",
+      "0",
+      "שגיאה, למערך עוד לא נתנו ערכים"
+    ],
+    "a": 2,
+    "exp": "במערך של מספרים שנוצר עם new כל האיברים מקבלים בהתחלה את הערך 0."
+  },
+  {
+    "t": "define",
+    "text": "מה יודפס?",
+    "code": "int[] a = { 5, 3, 1, 8 };\nConsole.WriteLine(a.Length);",
+    "opts": [
+      "3",
+      "4",
+      "5",
+      "8"
+    ],
+    "a": 1,
+    "exp": "Length הוא מספר האיברים במערך. יש כאן ארבעה ערכים, ולכן 4."
+  },
+  {
+    "t": "index",
+    "text": "מה יודפס?",
+    "code": "int[] a = { 10, 20, 30, 40, 50 };\nConsole.WriteLine(a[1] + a[3]);",
+    "opts": [
+      "40",
+      "70",
+      "80",
+      "60"
+    ],
+    "a": 3,
+    "exp": "האינדקס הראשון הוא 0. לכן a[1] הוא 20 ו-a[3] הוא 40, וביחד 60."
+  },
+  {
+    "t": "index",
+    "text": "איזה ביטוי מחזיר את האיבר האחרון במערך a?",
+    "opts": [
+      "$a[a.Length - 1]",
+      "$a[a.Length]",
+      "$a[-1]",
+      "$a.Length - 1"
+    ],
+    "a": 0,
+    "exp": "האינדקסים הם מ-0 עד Length פחות 1. הביטוי a.Length - 1 בלי סוגריים מרובעים הוא רק מספר, לא איבר."
+  },
+  {
+    "t": "loop",
+    "text": "מה יודפס?",
+    "code": "int[] a = { 2, 4, 6, 8 };\nint sum = 0;\nfor (int i = 0; i < a.Length; i += 2)\n{\n    sum = sum + a[i];\n}\nConsole.WriteLine(sum);",
+    "opts": [
+      "20",
+      "12",
+      "8",
+      "6"
+    ],
+    "a": 2,
+    "exp": "הלולאה מתקדמת בקפיצות של 2, ולכן עוברת רק על האינדקסים 0 ו-2: הערכים 2 ו-6, וביחד 8."
+  },
+  {
+    "t": "loop",
+    "text": "מה יודפס?",
+    "code": "int[] a = { 1, 2, 3 };\nfor (int i = a.Length - 1; i >= 0; i--)\n{\n    Console.Write(a[i]);\n}",
+    "opts": [
+      "123",
+      "321",
+      "32",
+      "21"
+    ],
+    "a": 1,
+    "exp": "הלולאה מתחילה באינדקס האחרון (2) ויורדת עד 0, כולל 0. לכן כל האיברים מודפסים מהסוף להתחלה."
+  },
+  {
+    "t": "bounds",
+    "text": "מה יקרה כשהקוד ירוץ?",
+    "code": "int[] a = new int[5];\nfor (int i = 0; i <= a.Length; i++)\n{\n    a[i] = i;\n}",
+    "opts": [
+      "שגיאת קומפילציה",
+      "הקוד ירוץ, ובמערך יהיו הערכים 0 עד 5",
+      "הלולאה לא תרוץ אף פעם",
+      "שגיאה בזמן ריצה כש-i שווה 5"
+    ],
+    "a": 3,
+    "exp": "האינדקסים הם 0 עד 4. התנאי <= מאפשר גם את i = 5, והפנייה ל-a[5] היא חריגה מגבולות המערך. המהדר לא מזהה את זה, ולכן השגיאה רק בזמן ריצה."
+  },
+  {
+    "t": "sort",
+    "text": "מה יהיה המערך אחרי הסיבוב הראשון של מיון בחירה?",
+    "code": "int[] arr = { 29, 10, 14, 37, 13 };",
+    "opts": [
+      "$10 29 14 37 13",
+      "$10 13 14 29 37",
+      "$29 10 14 13 37",
+      "$10 14 29 37 13"
+    ],
+    "a": 0,
+    "exp": "בסיבוב הראשון מוצאים את הערך הקטן ביותר (10) ומחליפים אותו עם האיבר הראשון (29). שאר האיברים לא זזים."
+  },
+  {
+    "t": "copy",
+    "text": "מה יודפס?",
+    "code": "int[] a = { 1, 2, 3 };\nint[] b = a;\nb[0] = 9;\nConsole.WriteLine(a[0]);",
+    "opts": [
+      "1",
+      "0",
+      "שגיאת קומפילציה",
+      "9"
+    ],
+    "a": 3,
+    "exp": "b = a לא מעתיקה את הערכים. שני השמות מצביעים על אותו מערך, ולכן השינוי דרך b נראה גם דרך a."
+  },
+  {
+    "t": "copy",
+    "text": "איך יוצרים עותק נפרד של המערך a, כך ששינוי בעותק לא ישנה את a?",
+    "opts": [
+      "כותבים b = a",
+      "יוצרים מערך חדש באותו גודל, ומעתיקים בלולאה איבר אחרי איבר",
+      "כותבים b[] = a[]",
+      "אי אפשר להעתיק מערך"
+    ],
+    "a": 1,
+    "exp": "רק new יוצר מערך חדש. אחרי שיש מערך חדש, מעתיקים אליו את הערכים בלולאה."
+  },
+  {
+    "t": "param",
+    "text": "מה יודפס?",
+    "code": "static void F(int[] arr)\n{\n    arr[0] = 100;\n}\n\nint[] a = { 1, 2, 3 };\nF(a);\nConsole.WriteLine(a[0]);",
+    "opts": [
+      "1",
+      "0",
+      "100",
+      "שגיאת קומפילציה"
+    ],
+    "a": 2,
+    "exp": "פעולה שמקבלת מערך מקבלת את אותו מערך, ולא עותק. לכן השינוי בתוך הפעולה נשאר גם אחריה."
+  },
+  {
+    "t": "param",
+    "text": "מה יודפס?",
+    "code": "static void G(int x)\n{\n    x = 100;\n}\n\nint n = 5;\nG(n);\nConsole.WriteLine(n);",
+    "opts": [
+      "5",
+      "100",
+      "0",
+      "105"
+    ],
+    "a": 0,
+    "exp": "משתנה רגיל מועבר לפעולה כעותק. הפעולה משנה את העותק, והמשתנה n נשאר 5."
+  },
+  {
+    "t": "param",
+    "text": "במערך numbers יש 3 איברים. כתבו רק ResizeArr(numbers, 5); בלי השמה. כמה איברים יש ב-numbers אחרי הקריאה?",
+    "opts": [
+      "5",
+      "8",
+      "3",
+      "0"
+    ],
+    "a": 2,
+    "exp": "הפעולה יוצרת מערך חדש ומחזירה אותו. בלי numbers = ResizeArr(numbers, 5); המערך החדש הולך לאיבוד ו-numbers נשאר המערך הישן."
+  },
+  {
+    "t": "max",
+    "text": "הפעולה IndexOfMax מדוגמה 110 בודקת arr[i] > arr[maxIndex]. מה היא תחזיר עבור המערך { 4, 9, 2, 9 }?",
+    "opts": [
+      "3",
+      "9",
+      "2",
+      "1"
+    ],
+    "a": 3,
+    "exp": "הפעולה מחזירה אינדקס ולא ערך. כשמגיעים ל-9 השני התנאי > לא מתקיים (9 לא גדול מ-9), ולכן נשאר המקום הראשון, 1."
+  },
+  {
+    "t": "max",
+    "text": "מה יודפס?",
+    "code": "int[] arr = { -5, -2, -8 };\nint max = 0;\nfor (int i = 0; i < arr.Length; i++)\n{\n    if (arr[i] > max)\n    {\n        max = arr[i];\n    }\n}\nConsole.WriteLine(max);",
+    "opts": [
+      "-2",
+      "0",
+      "-5",
+      "-8"
+    ],
+    "a": 1,
+    "exp": "כל המספרים שליליים, ואף אחד מהם לא גדול מ-0. לכן max נשאר 0, ערך שבכלל לא נמצא במערך. נכון להתחיל מ-max = arr[0]."
+  },
+  {
+    "t": "algo",
+    "text": "במערך באורך 6, מה סכום האינדקסים של כל שני תאים סימטריים (למשל הראשון והאחרון)?",
+    "opts": [
+      "6",
+      "3",
+      "5",
+      "7"
+    ],
+    "a": 2,
+    "exp": "הראשון הוא 0 והאחרון הוא 5, וסכומם 5. כך גם 1 ו-4, 2 ו-3. הסכום תמיד Length פחות 1."
+  },
+  {
+    "t": "algo",
+    "text": "מה יהיה המערך { 1, 2, 3, 4 } אחרי סיבוב אחד שמאלה?",
+    "opts": [
+      "$2 3 4 1",
+      "$4 1 2 3",
+      "$4 3 2 1",
+      "$2 3 4 4"
+    ],
+    "a": 0,
+    "exp": "הערך הראשון עובר לסוף וכל השאר זזים מקום אחד שמאלה. 2 3 4 4 מתקבל כששוכחים לשמור את הערך הראשון במשתנה עזר."
+  },
+  {
+    "t": "algo",
+    "text": "איזה מהמערכים הבאים הוא פלינדרום?",
+    "opts": [
+      "${ 3, 7, 3, 7 }",
+      "${ 1, 2, 3 }",
+      "${ 7, 3, 3 }",
+      "${ 3, 7, 7, 3 }"
+    ],
+    "a": 3,
+    "exp": "פלינדרום נקרא אותו דבר משני הכיוונים: הראשון שווה לאחרון, השני לשני מהסוף, וכן הלאה."
+  },
+  {
+    "t": "count",
+    "text": "במערך המונים votes יש 4 תאים. הבחירות שהוקלדו הן 2, 0, 2, 3, 2 ואחריהן -1. מה הערך של votes[2]?",
+    "opts": [
+      "2",
+      "3",
+      "1",
+      "0"
+    ],
+    "a": 1,
+    "exp": "כל בחירה מגדילה ב-1 את התא של המועמד. המועמד 2 נבחר שלוש פעמים."
+  },
+  {
+    "t": "count",
+    "text": "סופרים את הספרות של המספר 5155 במערך מונים count בגודל 10. מה הערך של count[5]?",
+    "opts": [
+      "1",
+      "5",
+      "3",
+      "4"
+    ],
+    "a": 2,
+    "exp": "האינדקס הוא הספרה, והערך הוא כמה פעמים היא הופיעה. הספרה 5 מופיעה במספר שלוש פעמים."
+  },
+  {
+    "t": "count",
+    "text": "מספרי הפרות מתחילים ב-1, והמערך arr בגודל מספר הפרות. באיזה תא נצבר החלב של פרה מספר 4?",
+    "opts": [
+      "$arr[4]",
+      "$arr[3]",
+      "$arr[5]",
+      "$arr[0]"
+    ],
+    "a": 1,
+    "exp": "האינדקסים מתחילים ב-0, ולכן החלב של פרה מספר x נצבר בתא x - 1."
+  },
+  {
+    "t": "search",
+    "text": "מה התנאי לשימוש בחיפוש בינארי?",
+    "opts": [
+      "המערך קטן",
+      "אין במערך ערכים כפולים",
+      "המספר שמחפשים בטוח נמצא במערך",
+      "המערך ממוין"
+    ],
+    "a": 3,
+    "exp": "החיפוש הבינארי מחליט לאיזה חצי להמשיך לפי השוואה לאיבר האמצעי. זה נכון רק כשהמערך ממוין."
+  },
+  {
+    "t": "search",
+    "text": "מחפשים את 15 בחיפוש בינארי במערך { 3, 8, 15, 23, 42, 57, 61, 78, 90 }. איזה ערך נבדק ראשון?",
+    "opts": [
+      "42",
+      "3",
+      "90",
+      "15"
+    ],
+    "a": 0,
+    "exp": "בודקים קודם את האמצעי: (0 + 8) / 2 = 4, ובאינדקס 4 נמצא 42. מכיוון ש-15 קטן מ-42, ממשיכים בחצי השמאלי."
+  },
+  {
+    "t": "sort",
+    "text": "מה יהיה המערך אחרי הסיבוב הראשון של מיון בועות?",
+    "code": "int[] arr = { 5, 1, 4, 2, 8 };",
+    "opts": [
+      "$1 2 4 5 8",
+      "$5 1 4 2 8",
+      "$1 4 2 5 8",
+      "$1 5 4 2 8"
+    ],
+    "a": 2,
+    "exp": "משווים שכנים ומחליפים כשצריך: 5 עובר את 1, את 4 ואת 2, ונעצר לפני 8. בסוף הסיבוב הערך הגדול ביותר (8) בסוף, והמערך עוד לא ממוין לגמרי."
+  }
+];
+
+function esc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function optHtml(o) {
+  if (o.charAt(0) === "$") return "<pre>" + esc(o.slice(1)) + "</pre>";
+  return "<span>" + esc(o) + "</span>";
+}
+
+function render() {
+  var html = "";
+  QUESTIONS.forEach(function (q, i) {
+    html += '<div class="q" id="q' + i + '">';
+    html += '<div class="head"><span class="qnum">שאלה ' + (i + 1) + '</span>';
+    html += '<span class="topic">' + esc(TOPICS[q.t].name) + '</span></div>';
+    html += '<div class="text">' + esc(q.text) + '</div>';
+    if (q.code) html += '<pre class="code">' + esc(q.code) + '</pre>';
+    html += '<div class="opts">';
+    q.opts.forEach(function (o, j) {
+      html += '<label class="opt" id="q' + i + 'o' + j + '"><input type="radio" name="q' + i + '" value="' + j + '">' + optHtml(o) + '</label>';
+    });
+    html += '</div>';
+    html += '<div class="explain" id="e' + i + '"></div>';
+    html += '</div>';
+  });
+  document.getElementById("quiz").innerHTML = html;
+  document.querySelectorAll('#quiz input[type=radio]').forEach(function (r) {
+    r.addEventListener("change", updateProgress);
+  });
+  updateProgress();
+}
+
+function answers() {
+  return QUESTIONS.map(function (q, i) {
+    var c = document.querySelector('input[name="q' + i + '"]:checked');
+    return c ? parseInt(c.value, 10) : -1;
+  });
+}
+
+function updateProgress() {
+  var n = answers().filter(function (a) { return a >= 0; }).length;
+  document.getElementById("barFill").style.width = (n / QUESTIONS.length * 100) + "%";
+  document.getElementById("progressText").textContent = "נענו " + n + " מתוך " + QUESTIONS.length + " שאלות";
+}
+
+var submittedOnce = false;
+
+function grade() {
+  var ans = answers();
+  var missing = ans.filter(function (a) { return a < 0; }).length;
+  var msg = document.getElementById("msg");
+  if (missing > 0 && !submittedOnce) {
+    msg.textContent = (missing === 1 ? "נשארה שאלה אחת בלי תשובה." : "נשארו " + missing + " שאלות בלי תשובה.") + " אפשר לחזור ולענות, או ללחוץ שוב כדי לבדוק בכל זאת.";
+    submittedOnce = true;
+    var first = ans.indexOf(-1);
+    document.getElementById("q" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  msg.textContent = "";
+
+  var correct = 0;
+  var wrongByTopic = {};
+  QUESTIONS.forEach(function (q, i) {
+    var box = document.getElementById("q" + i);
+    box.classList.add("done");
+    box.querySelectorAll("input").forEach(function (r) { r.disabled = true; });
+    var ok = ans[i] === q.a;
+    if (ok) correct++;
+    else wrongByTopic[q.t] = (wrongByTopic[q.t] || 0) + 1;
+    document.getElementById("q" + i + "o" + q.a).classList.add("correct");
+    if (ans[i] >= 0 && !ok) document.getElementById("q" + i + "o" + ans[i]).classList.add("wrong");
+    var verdict = ok ? '<span class="verdict ok">נכון.</span>'
+                     : (ans[i] < 0 ? '<span class="verdict bad">לא נענתה.</span>' : '<span class="verdict bad">לא נכון.</span>');
+    document.getElementById("e" + i).innerHTML = verdict + " " + esc(q.exp);
+  });
+
+  var total = QUESTIONS.length;
+  var score = Math.round(correct / total * 100);
+  var level = score >= 85 ? "high" : (score >= 60 ? "mid" : "low");
+  var name = document.getElementById("name").value.trim();
+
+  var r = '<div>' + (name ? esc(name) + ", " : "") + 'הציון:</div>';
+  r += '<div class="score ' + level + '">' + score + '</div>';
+  r += '<div>תשובות נכונות: ' + correct + ' מתוך ' + total + '.</div>';
+
+  var keys = Object.keys(TOPICS).filter(function (k) { return wrongByTopic[k]; });
+  if (keys.length === 0) {
+    r += '<div class="allgood"><strong>כל הכבוד!</strong> כל התשובות נכונות. אפשר להמשיך לפרק הבא.</div>';
+  } else {
+    r += '<div class="review"><strong>נושאים שכדאי לחזור עליהם:</strong><ul>';
+    keys.forEach(function (k) {
+      var tp = TOPICS[k];
+      r += '<li>' + esc(tp.name) + ' <span class="ex">(טעויות: ' + wrongByTopic[k] + '. לחזור על דוגמה ' + tp.ex.join(", ") + ' בקוד ובחוברת)</span></li>';
+    });
+    r += '</ul>';
+    r += '<div>החוברת המלווה: <a href="' + BOOKLET + '" target="_blank" rel="noopener">לפתיחת החוברת</a></div>';
+    r += '</div>';
+  }
+  r += '<p style="margin:14px 0 0;color:var(--muted)">למטה מופיעות כל השאלות עם התשובה הנכונה והסבר.</p>';
+
+  var res = document.getElementById("result");
+  res.innerHTML = r;
+  res.style.display = "block";
+
+  document.getElementById("actions").innerHTML = '<button id="againBtn" type="button" class="secondary">התחלה מחדש</button>';
+  document.getElementById("againBtn").addEventListener("click", restart);
+  res.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function restart() {
+  submittedOnce = false;
+  var res = document.getElementById("result");
+  res.style.display = "none";
+  res.innerHTML = "";
+  document.getElementById("actions").innerHTML = '<button id="submitBtn" type="button">בדיקת המבדק</button>';
+  document.getElementById("submitBtn").addEventListener("click", grade);
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("submitBtn").addEventListener("click", grade);
+render();
+</script>
+</body>
+</html>
