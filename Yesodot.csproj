@@ -68,6 +68,7 @@
     <None Include="Ch8\Summary_Ch8.html" />
     <None Include="Ch8\quiz.html" />
     <None Include="Ch9\Summary_Ch9.html" />
+    <None Include="Ch9\quiz.html" />
     <None Include="Worksheets\Worksheet_1.html" />
     <None Include="Worksheets\Worksheet_2.html" />
     <None Include="Appendices\Getting_Started.html" />
